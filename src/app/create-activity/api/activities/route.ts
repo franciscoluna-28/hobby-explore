@@ -15,7 +15,6 @@ export async function POST(request: Request) {
   if (session) {
     const user_id = session.user.id;
 
-    // Extract activity data and tip data from the request body
     const { activityData, tipData } = requestBody;
 
     // Create the activity and get its ID
