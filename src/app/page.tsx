@@ -56,13 +56,15 @@ export default function Home() {
   }
 
   return (
-    <main className="p-32">
-      <h1 className="font-bold text-4xl mb-8">Login Screen</h1>
+    <main className="overflow-y-hidden!">
+      <section className="w-full flex justify-center flex-col items-center m-auto p-32">
+      <h1 className="font-bold text-4xl text-mainBlack">Welcome!</h1>
+      <span className="text-mainBlack pt-2 block font-light">Sharing your pro tips of your hobbies with whom also like to do them.</span>
+      <div className="mt-4 w-full">
       <Button
         onClick={loginWithGoogle}
-        className="bg-white border hover:border-black duration-200 flex gap-2 w-full my-4 text-slate-500 font-normal hover:bg-white"
+        className="bg-mainGray items-center p-4 w-full flex justify-center hover:bg-mainGray"
       >
-        Login with Google
         <img
           className="h-4 w-4"
           src={
@@ -73,6 +75,8 @@ export default function Home() {
           height={16} // px height
         />
       </Button>
+      </div>
+      <div className="w-full mt-4">
       <Form {...form}>
         <form method="post" className="space-y-8">
           <FormField
@@ -82,9 +86,8 @@ export default function Home() {
               <FormItem>
                 <FormLabel>Email</FormLabel>
                 <FormControl>
-                  <Input placeholder="email@gmail.com" {...field} />
+                  <Input placeholder="youremail@gmail.com" {...field} />
                 </FormControl>
-                <FormDescription>This is your email</FormDescription>
                 <FormMessage />
               </FormItem>
             )}
@@ -98,16 +101,17 @@ export default function Home() {
                 <FormControl>
                   <Input type="password" placeholder="*********" {...field} />
                 </FormControl>
-                <FormDescription>This is your password</FormDescription>
                 <FormMessage />
               </FormItem>
             )}
           />
-          <Button formAction="auth/sign-in" type="submit">
+          <Button className="bg-mainGreen" formAction="auth/sign-in" type="submit">
             Login
           </Button>
         </form>
       </Form>
+      </div>
+      </section>
     </main>
   );
 }
