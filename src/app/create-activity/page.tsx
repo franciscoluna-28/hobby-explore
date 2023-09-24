@@ -15,7 +15,6 @@ import { activitySchema } from "@/schemas/activitySchema";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { tipSchema } from "@/schemas/tipSchema";
-import { BiCurrentLocation } from "react-icons/bi";
 import {
   Select,
   SelectContent,
@@ -31,8 +30,12 @@ import {
 } from "@/constants/create-activity";
 import { Dropzone } from "@/components/create-tips/dropzone";
 import { TipList } from "@/components/create-tips/tip-list";
+import useImageStore from "@/store/tips-store";
+import { useState } from "react";
 
 export default function CreateActivity() {
+  const [successMessage, setSuccessMessage] = useState("");
+  const tips = useImageStore((state) => state.tips);
   const activityForm = useForm<z.infer<typeof activitySchema>>({
     resolver: zodResolver(activitySchema),
     defaultValues: {
@@ -44,8 +47,60 @@ export default function CreateActivity() {
     resolver: zodResolver(tipSchema),
   });
 
-  function onSubmit(values: z.infer<typeof activitySchema & typeof tipForm>) {
-    console.log(values);
+  const config = {
+    api: {
+      bodyParser: false,
+    },
+  };
+
+  async function submitFormData(formData: FormData) {
+    try {
+      const response = await fetch("create-activity/api/activities", {
+        method: "POST",
+        body: formData,
+        headers: {
+          content: "application/json"
+        }
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        if (data.success) {
+          setSuccessMessage("Activity and tips created successfully!");
+        } else {
+          console.error("Error:", data.error);
+        }
+      } else {
+        console.error("HTTP Error:", response.status);
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  }
+
+  async function onSubmit(values: z.infer<typeof activitySchema>, e: any) {
+    try {
+      // Create a new form data object
+      const formData = new FormData();
+
+      // Append activity values
+      formData.append("name", values.name);
+      formData.append("location", values.location);
+      formData.append("category", values.category);
+      formData.append("accessibility", values.accessibility.toString());
+      formData.append("participants", values.participants.toString());
+
+      // Append tips values
+      tips.forEach((tip, index) => {
+        formData.append(`tips[${index}][id]`, tip.id);
+        formData.append(`tips[${index}][text]`, tip.text);
+        formData.append(`tips[${index}][image]`, tip.image, tip.image.name);
+      });
+
+      await submitFormData(formData);
+    } catch (error) {
+      console.error("Error:", error);
+    }
   }
 
   return (
@@ -53,6 +108,7 @@ export default function CreateActivity() {
       <h1>Share your activity</h1>
       <Form {...activityForm}>
         <form
+          encType="multipart/form-data"
           onSubmit={activityForm.handleSubmit(onSubmit)}
           className="space-y-6 mt-4"
         >
@@ -130,14 +186,14 @@ export default function CreateActivity() {
             )}
           />
 
-<h2>Photos & Tips</h2>
+          <h2>Photos & Tips</h2>
 
-<TipList/>
-<Dropzone/>
+          <TipList />
+          <Dropzone />
 
           <FormField
             control={activityForm.control}
-            name="cost"
+            name="accessibility"
             render={({ field: { value, onChange } }) => (
               <FormItem>
                 <FormLabel>Cost</FormLabel>
@@ -172,7 +228,6 @@ export default function CreateActivity() {
             )}
           />
 
-
           <FormField
             control={activityForm.control}
             name="participants"
@@ -200,139 +255,22 @@ export default function CreateActivity() {
                 </FormControl>
                 <FormMessage />
                 <FormDescription>
-                Adjust the number of participants for your activity using the slider. 
-  Move the slider to select the desired number of participants within the range of 1 to 100.
+                  Adjust the number of participants for your activity using the
+                  slider. Move the slider to select the desired number of
+                  participants within the range of 1 to 100.
                 </FormDescription>
               </FormItem>
             )}
           />
-          <Button className="bg-mainGreen rounded-full p-6 px-8" type="submit">Post</Button>
+          <Button
+            onClick={() => onSubmit}
+            className="bg-mainGreen rounded-full p-6 px-8"
+            type="submit"
+          >
+            Post
+          </Button>
         </form>
       </Form>
     </section>
   );
 }
-
-/*   const [name, setName] = useState("");
-  const [participants, setParticipants] = useState("");
-  const [accessibility, setAccessibility] = useState("");
-  const [price, setPrice] = useState("");
-  const [tipText, setTipText] = useState("");
-  const [imageUrl, setImageUrl] = useState("");
-  const [activityId, setActivityId] = useState(null);
-  const [successMessage, setSuccessMessage] = useState("");
-
-  // Estado para almacenar el ID de la actividad creada
-  const handleSubmitActivity = async (e) => {
-    e.preventDefault();
-
-    // Datos de la actividad a crear
-    const activityData = {
-      name,
-      accessibility: parseInt(accessibility),
-      participants: parseInt(participants),
-      price: parseInt(price),
-    };
-
-    // Datos del tip a crear
-    const tipData = {
-      text: tipText,
-      image_url: imageUrl,
-    };
-
-    try {
-      const response = await fetch("create-activity/api/activities", {
-        method: "POST",
-        body: JSON.stringify({ activityData, tipData }), // Send both activity and tip data
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        if (data.success) {
-          // Obtiene el ID de la actividad creada desde la respuesta
-          const newActivityId = data.activity_id;
-          setActivityId(newActivityId); // Almacena el ID en el estado
-          // Limpia los campos del formulario después de la inserción exitosa
-          setName("");
-          setParticipants("");
-          setAccessibility("");
-          setPrice("");
-          setTipText("");
-          setImageUrl("");
-          // Muestra el mensaje de éxito
-          setSuccessMessage("Activity and tip created successfully!");
-        } else {
-          console.error("Error al crear actividad:", data.error);
-        }
-      } else {
-        console.error("Error al crear actividad:", response.status);
-      }
-    } catch (error) {
-      console.error("Error al crear actividad:", error);
-    }
-  };
-
-  return (
-    <div>
-      <h1>Create Activity</h1>
-      <form onSubmit={handleSubmitActivity}>
-        <div>
-          <label>
-            Name:
-            <input
-              type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-            />
-          </label>
-          <label>
-            Accessibility:
-            <input
-              type="text"
-              value={accessibility}
-              onChange={(e) => setAccessibility(e.target.value)}
-            />
-          </label>
-          <label>
-            Price:
-            <input
-              type="text"
-              value={price}
-              onChange={(e) => setPrice(e.target.value)}
-            />
-          </label>
-        </div>
-        <div>
-          <label>
-            Participants:
-            <input
-              type="number"
-              value={participants}
-              onChange={(e) => setParticipants(e.target.value)}
-            />
-          </label>
-        </div>
-        <div>
-          <label>
-            Tip Text:
-            <input
-              type="text"
-              value={tipText}
-              onChange={(e) => setTipText(e.target.value)}
-            />
-          </label>
-        </div>
-        <div>
-          <label>
-            Image URL:
-            <input
-              type="text"
-              value={imageUrl}
-              onChange={(e) => setImageUrl(e.target.value)}
-            />
-          </label>
-        </div>
-        <button type="submit">Add Activity</button>
-      </form>
-      {successMessage && <p>{successMessage}</p>}
-    </div> */
