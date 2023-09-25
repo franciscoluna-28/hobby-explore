@@ -18,8 +18,7 @@ const activitySchema = z.object({
     .max(100, {
       message: "A maximum of 100 participants is allowed.",
     }),
-  accessibility: z.coerce.number().min(0, {}).max(1),
-  cost: z.coerce.number().min(0, {}).max(1),
+  accessibility: z.coerce.number().min(0, {}).max(10),
   category: z.string().min(1, {
     message: "Please select a valid type.",
   }),
