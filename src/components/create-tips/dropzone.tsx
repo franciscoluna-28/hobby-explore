@@ -1,6 +1,7 @@
+"use client";
 import React, { useState } from "react";
 import { AiOutlinePlus } from "react-icons/ai";
-import { ChangeEvent, useEffect } from "react";
+import { useEffect } from "react";
 import useTipStore from "@/store/tips-store";
 import { useDropzone } from "react-dropzone";
 import { MAX_TIPS_ALLOWED_VALUE } from "@/constants/create-activity";
@@ -57,7 +58,7 @@ export function Dropzone() {
             Add Photos
           </span>
           <span className="block text-sm mt-1 text-slate-500/60">
-          Show off your expertise! Upload images and add your tips and tricks.
+            Show off your expertise! Upload images and add your tips and tricks.
             Drag and drop supported!
           </span>
         </div>
