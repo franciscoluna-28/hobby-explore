@@ -1,6 +1,6 @@
-import { isUserAuthenticated } from "../auth/is-user-authenticated";
+/* import { isUserAuthenticated } from "../auth/is-user-authenticated";
 import { SupabaseClient } from "@supabase/supabase-js";
-
+ */
 /**
  * Upload an activity to Supabase.
  *
@@ -9,7 +9,7 @@ import { SupabaseClient } from "@supabase/supabase-js";
  * @param {string} user_uuid - The user's UUID.
  * @returns {Promise<object>} - A promise that resolves to the result of the activity upload.
  */
-async function uploadActivityToSupabase(
+/* async function uploadActivityToSupabase(
   supabase: SupabaseClient,
   activityData: any,
   user_uuid: string
@@ -53,6 +53,7 @@ async function uploadActivityToSupabase(
       };
     }
   }
-}
+} */
 
-export { uploadActivityToSupabase };
+/* export { uploadActivityToSupabase };
+ */
