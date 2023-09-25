@@ -29,7 +29,7 @@ export default function SavedActivities() {
     }
 
     fetchUserActivities();
-  }, []);
+  }, [error]);
 
   if (loading) {
     return <p>Loading...</p>;
