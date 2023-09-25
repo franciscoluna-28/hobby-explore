@@ -44,7 +44,7 @@ export default function SavedActivities() {
       <h1>Hi, these are your saved activities</h1>
       <ul>
         {activities.map((activity: any) => (
-          <li> {activity.name}</li>
+          <li key={activity.id}> {activity.name}</li>
         ))}
       </ul>
     </div>
