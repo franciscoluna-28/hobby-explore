@@ -1,6 +1,7 @@
 'use client'
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
+import Image from "next/image";
 
 import { Button } from "@/components/ui/button";
 import {
