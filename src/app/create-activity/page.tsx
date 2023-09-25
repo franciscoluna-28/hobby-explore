@@ -121,7 +121,7 @@ export default function CreateActivity() {
         <h1>Share your activity</h1>
 
         </div>
-        <CreateActivityForm handleSubmit={onSubmit} isLoading={!isLoading}>
+        <CreateActivityForm handleSubmit={onSubmit} isLoading={isLoading}>
           <TipList />
           <Dropzone />
         </CreateActivityForm>
