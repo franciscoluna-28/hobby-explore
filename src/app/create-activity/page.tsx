@@ -1,74 +1,70 @@
 "use client";
-
-import {
-  FormField,
-  Form,
-  FormItem,
-  FormDescription,
-  FormMessage,
-  FormControl,
-  FormLabel,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import z from "zod";
 import { activitySchema } from "@/schemas/activitySchema";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { tipSchema } from "@/schemas/tipSchema";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Slider } from "@/components/ui/slider";
-import { Button } from "@/components/ui/button";
-import {
-  INITIAL_COST_VALUE,
-  INITIAL_PARTICIPANTS_VALUE,
-} from "@/constants/create-activity";
 import { Dropzone } from "@/components/create-tips/dropzone";
 import { TipList } from "@/components/create-tips/tip-list";
 import useImageStore from "@/store/tips-store";
-import { useState } from "react";
+import CreateActivityForm from "@/components/form/create-activity-form";
+import { ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
+import "react-toastify/dist/ReactToastify.css";
+import { Button } from "@/components/ui/button";
+import { BiArrowBack } from "react-icons/bi"
+
 
 export default function CreateActivity() {
-  const [successMessage, setSuccessMessage] = useState("");
   const tips = useImageStore((state) => state.tips);
-  const activityForm = useForm<z.infer<typeof activitySchema>>({
-    resolver: zodResolver(activitySchema),
-    defaultValues: {
-      location: "Anywhere",
-    },
-  });
+  const router = useRouter();
 
-  const tipForm = useForm<z.infer<typeof tipSchema>>({
-    resolver: zodResolver(tipSchema),
-  });
-
-  const config = {
-    api: {
-      bodyParser: false,
-    },
-  };
-
+  // TODO: Create objects and use guard clauses 
+  // TODO: Avoid nesting if statements
+  // TODO: Create helper functions to deal with form submission
+  // TODO: Try to encapsulate this logic in a hook
+  // TODO: Create constants to deal with form submission and toast notifications
   async function submitFormData(formData: FormData) {
     try {
       const response = await fetch("create-activity/api/activities", {
         method: "POST",
         body: formData,
         headers: {
-          content: "application/json"
-        }
+          content: "application/json",
+        },
       });
 
       if (response.ok) {
         const data = await response.json();
+
         if (data.success) {
-          setSuccessMessage("Activity and tips created successfully!");
+          toast("Activity uploaded Successfully!", {
+            hideProgressBar: true,
+            autoClose: 2000,
+            type: "success",
+          });
         } else {
-          console.error("Error:", data.error);
+          if (data.error === "Tips must not have empty text!") {
+            if (data.emptyTipIndices) {
+              const emptyTipIndices = data.emptyTipIndices;
+              if (emptyTipIndices.length > 0) {
+                const emptyTipIndicesText = emptyTipIndices
+                  .map((index: number) => `Tip number ${index + 1}`)
+                  .join(", ");
+                toast.error(
+                  `The following tips have empty descriptions: ${emptyTipIndicesText}`,
+                  {
+                    hideProgressBar: true,
+                    autoClose: 5000,
+                  }
+                );
+              }
+            }
+          }
+          if (data.error === "Activity must have at least one tip!") {
+            toast.error("You need to add at least one tip to your activity!", {
+              hideProgressBar: true,
+              autoClose: 5000,
+            });
+          }
         }
       } else {
         console.error("HTTP Error:", response.status);
@@ -78,7 +74,7 @@ export default function CreateActivity() {
     }
   }
 
-  async function onSubmit(values: z.infer<typeof activitySchema>, e: any) {
+  async function onSubmit(values: z.infer<typeof activitySchema>) {
     try {
       // Create a new form data object
       const formData = new FormData();
@@ -104,173 +100,19 @@ export default function CreateActivity() {
   }
 
   return (
-    <section className="p-16">
-      <h1>Share your activity</h1>
-      <Form {...activityForm}>
-        <form
-          encType="multipart/form-data"
-          onSubmit={activityForm.handleSubmit(onSubmit)}
-          className="space-y-6 mt-4"
-        >
-          <FormField
-            control={activityForm.control}
-            name="name"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Activity</FormLabel>
-                <FormControl>
-                  <Input
-                    className="rounded-xl"
-                    placeholder="What's the activity?"
-                    {...field}
-                  />
-                </FormControl>
+    <>
+      <section className="p-16">
+        <div className="flex gap-4">
+        <Button onClick={ router.back} className="p-0 m-0 bg-transparent hover:bg-transparent"><BiArrowBack className="text-mainBlack text-3xl"/></Button>
+        <h1>Share your activity</h1>
 
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={activityForm.control}
-            name="location"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Location</FormLabel>
-                <FormControl>
-                  <div>
-                    <Input
-                      className="rounded-xl"
-                      placeholder="Location"
-                      {...field}
-                    ></Input>
-                  </div>
-                </FormControl>
-
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={activityForm.control}
-            name="category"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Category</FormLabel>
-                <Select
-                  {...field}
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
-                >
-                  <FormControl>
-                    <SelectTrigger className="rounded-xl">
-                      <SelectValue
-                        className="!text-left"
-                        placeholder="Choose a category"
-                      />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent className="rounded-xl">
-                    <SelectItem value="education">Education</SelectItem>
-                    <SelectItem value="recreational">Recreational</SelectItem>
-                    <SelectItem value="social">Social</SelectItem>
-                    <SelectItem value="diy">DIY</SelectItem>
-                    <SelectItem value="charity">Charity</SelectItem>
-                    <SelectItem value="cooking">Cooking</SelectItem>
-                    <SelectItem value="relaxation">Relaxation</SelectItem>
-                    <SelectItem value="music">Music</SelectItem>
-                    <SelectItem value="busywork">Busywork</SelectItem>
-                  </SelectContent>
-                </Select>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <h2>Photos & Tips</h2>
-
+        </div>
+        <CreateActivityForm handleSubmit={onSubmit}>
           <TipList />
           <Dropzone />
-
-          <FormField
-            control={activityForm.control}
-            name="accessibility"
-            render={({ field: { value, onChange } }) => (
-              <FormItem>
-                <FormLabel>Cost</FormLabel>
-                <FormControl>
-                  <div className="border p-6 rounded-xl flex flex-col gap-4">
-                    <div className="flex justify-between">
-                      <span className="block">
-                        {value ?? INITIAL_COST_VALUE}
-                      </span>
-                      <span className="block font-light text-sm">
-                        Cost (USD)
-                      </span>
-                    </div>
-                    <Slider
-                      defaultValue={[1]}
-                      min={1}
-                      max={10}
-                      step={1}
-                      onValueChange={(vals) => {
-                        onChange(vals[0]);
-                      }}
-                    />
-                  </div>
-                </FormControl>
-                <FormDescription>
-                  Rate the cost of your activity on a scale from 1 to 10, with 1
-                  being the least expensive and 10 being the most expensive.
-                </FormDescription>
-
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={activityForm.control}
-            name="participants"
-            render={({ field: { value, onChange } }) => (
-              <FormItem>
-                <FormLabel>Participants</FormLabel>
-                <FormControl>
-                  <div className="border p-6 rounded-xl flex flex-col gap-4">
-                    <div className="flex justify-between">
-                      <span className="block">
-                        {value ?? INITIAL_PARTICIPANTS_VALUE}
-                      </span>
-                      <span className="block font-light text-sm">Total</span>
-                    </div>
-                    <Slider
-                      defaultValue={[1]}
-                      min={1}
-                      max={100}
-                      step={1}
-                      onValueChange={(vals) => {
-                        onChange(vals[0]);
-                      }}
-                    />
-                  </div>
-                </FormControl>
-                <FormMessage />
-                <FormDescription>
-                  Adjust the number of participants for your activity using the
-                  slider. Move the slider to select the desired number of
-                  participants within the range of 1 to 100.
-                </FormDescription>
-              </FormItem>
-            )}
-          />
-          <Button
-            onClick={() => onSubmit}
-            className="bg-mainGreen rounded-full p-6 px-8"
-            type="submit"
-          >
-            Post
-          </Button>
-        </form>
-      </Form>
-    </section>
+        </CreateActivityForm>
+      </section>
+      <ToastContainer />
+    </>
   );
 }
