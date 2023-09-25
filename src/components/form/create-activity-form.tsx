@@ -103,7 +103,7 @@ export default function CreateActivityForm({ handleSubmit, children }: Props) {
                     <span className="block text-sm">Cost (USD)</span>
                   </div>
                   <Slider
-                    defaultValue={[1]}
+                    defaultValue={[INITIAL_COST_VALUE]}
                     min={1}
                     max={10}
                     step={1}
@@ -138,7 +138,7 @@ export default function CreateActivityForm({ handleSubmit, children }: Props) {
                     <span className="block text-sm">Total</span>
                   </div>
                   <Slider
-                    defaultValue={[1]}
+                    defaultValue={[INITIAL_PARTICIPANTS_VALUE]}
                     min={1}
                     max={100}
                     step={1}
