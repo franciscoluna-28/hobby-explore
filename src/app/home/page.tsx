@@ -22,6 +22,9 @@ export default async function Test() {
         <Link href="/create-activity">
         <Button>Create Activity</Button>
         </Link>
+        <Link href="/home/saved-activities">
+        <Button>Saved Activities</Button>
+        </Link>
       </form>
     </div>
   );
