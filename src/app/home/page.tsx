@@ -10,7 +10,6 @@ export default async function Test() {
     data: { user },
   } = await supabase.auth.getUser();
 
-  console.log( await supabase.auth.getUser());
 
   return (
     <div className="p-8">
