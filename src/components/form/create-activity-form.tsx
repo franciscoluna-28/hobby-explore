@@ -19,20 +19,24 @@ import React from "react";
 import { Button } from "../ui/button";
 import { INITIAL_PARTICIPANTS_VALUE } from "@/constants/create-activity";
 import { CategorySelector } from "./category-selector";
-import { AVAILABLE_ACTIVITY_TYPES } from "@/constants/activity-types";
+import { AVAILABLE_ACTIVITY_TYPES } from "@/constants/activity-types";  
+import LoadingSpinner from "../ui/loading-spinner";
 
 type Props = {
   handleSubmit(values: z.infer<typeof activitySchema>): void;
   children: React.ReactNode;
+  isLoading: boolean;
 };
 
-export default function CreateActivityForm({ handleSubmit, children }: Props) {
+export default function CreateActivityForm({ handleSubmit, children, isLoading }: Props) {
   const activityForm = useForm<z.infer<typeof activitySchema>>({
     resolver: zodResolver(activitySchema),
     defaultValues: {
       location: "Anywhere",
     },
   });
+
+ 
 
   // TODO: Fix default values bugs "[1]"
   return (
@@ -159,10 +163,11 @@ export default function CreateActivityForm({ handleSubmit, children }: Props) {
         />
         <Button
           onClick={activityForm.handleSubmit(handleSubmit)}
-          className="bg-mainGreen rounded-full p-6 px-8"
+          className="bg-mainGreen rounded-full p-6 px-6 disabled:"
           type="submit"
+          disabled={isLoading}
         >
-          Post
+           {isLoading ? (<div className="flex gap-2 items-center"><LoadingSpinner/></div>) : 'Post'}
         </Button>
       </form>
     </Form>

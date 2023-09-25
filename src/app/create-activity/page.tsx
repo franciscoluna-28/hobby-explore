@@ -11,11 +11,22 @@ import { useRouter } from "next/navigation";
 import "react-toastify/dist/ReactToastify.css";
 import { Button } from "@/components/ui/button";
 import { BiArrowBack } from "react-icons/bi"
+import { useState } from "react";
 
 
 export default function CreateActivity() {
   const tips = useImageStore((state) => state.tips);
   const router = useRouter();
+
+  const startLoading = () => {
+    setIsLoading(true);
+  };
+
+  const stopLoading = () => {
+    setIsLoading(false);
+  };
+
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   // TODO: Create objects and use guard clauses 
   // TODO: Avoid nesting if statements
@@ -76,6 +87,7 @@ export default function CreateActivity() {
 
   async function onSubmit(values: z.infer<typeof activitySchema>) {
     try {
+      startLoading();
       // Create a new form data object
       const formData = new FormData();
 
@@ -96,6 +108,8 @@ export default function CreateActivity() {
       await submitFormData(formData);
     } catch (error) {
       console.error("Error:", error);
+    } finally {
+      stopLoading();
     }
   }
 
@@ -107,7 +121,7 @@ export default function CreateActivity() {
         <h1>Share your activity</h1>
 
         </div>
-        <CreateActivityForm handleSubmit={onSubmit}>
+        <CreateActivityForm handleSubmit={onSubmit} isLoading={!isLoading}>
           <TipList />
           <Dropzone />
         </CreateActivityForm>
