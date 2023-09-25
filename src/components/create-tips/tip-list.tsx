@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import useImageStore from "@/store/tips-store";
 import { AiFillDelete } from "react-icons/ai";
 import { Textarea } from "../ui/textarea";
+import Image from "next/image";
 
 export function TipList() {
   const tips = useImageStore((state) => state.tips);
@@ -50,7 +51,7 @@ export function TipList() {
         <div key={tip.id} className="mb-4">
           {imageData[tip.id] && (
             <div className="w-full relative">
-              <img
+              <Image
                 src={imageData[tip.id]!}
                 alt={tip.text}
                 className="w-96 rounded-2xl max-h-64 border bg-blue"

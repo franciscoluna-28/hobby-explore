@@ -64,7 +64,7 @@ export default function Home() {
         onClick={loginWithGoogle}
         className="bg-mainGray items-center p-4 w-full flex justify-center hover:bg-mainGray"
       >
-        <img
+        <Image
           className="h-4 w-4"
           src={
             "https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/588px-Google_%22G%22_Logo.svg.png?20230305195327"
