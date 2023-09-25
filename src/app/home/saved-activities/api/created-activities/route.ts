@@ -2,10 +2,11 @@ import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
-const supabase = createRouteHandlerClient({ cookies });
+export const dynamic = 'force-dynamic';
 
 // Function to fetch activities for the current user
 async function fetchUserActivities(user_id: string) {
+  const supabase = createRouteHandlerClient({ cookies });
   const {
     data: { session },
   } = await supabase.auth.getSession();
@@ -41,6 +42,7 @@ async function fetchUserActivities(user_id: string) {
 
 // Your GET request handler to fetch user activities
 export async function GET(_request: Request) {
+  const supabase = createRouteHandlerClient({ cookies });
   const {
     data: { session },
   } = await supabase.auth.getSession();
