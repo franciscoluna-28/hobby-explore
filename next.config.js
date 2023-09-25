@@ -1,10 +1,5 @@
 const nextConfig = {
     images: {
-      remotePatterns: [
-        {
-          protocol: "https",
-          hostname: "**",
-        },
-      ],
-    },
+        domains: ["upload.wikimedia.org", "hobby-explore.vercel"]
+    }
   };
