@@ -54,13 +54,24 @@ export default function Home() {
       router.refresh();
     }
   }
+  async function loginWithTwitter() {
+    const { data, error } = await supabase.auth.signInWithOAuth({
+      provider: "twitter",
+      options: {
+        redirectTo: `${location.origin}/auth/callback`,
+      },
+    });
+    if (data) {
+      console.log(data);
+    }
+  }
 
   return (
     <main className="overflow-y-hidden!">
       <section className="w-full flex justify-center flex-col items-center m-auto p-32">
       <h1 className="font-bold text-4xl text-mainBlack">Welcome!</h1>
       <span className="text-mainBlack pt-2 block font-light text-center ">Sharing your pro tips of your hobbies with whom also like to do them.</span>
-      <div className="mt-4 w-full">
+      <div className="mt-4 w-full flex gap-4">
       <Button
         onClick={loginWithGoogle}
         className="bg-mainGray items-center p-4 w-full flex justify-center hover:bg-mainGray"
@@ -69,6 +80,20 @@ export default function Home() {
           className="h-6 w-6"
           src={
            "/images/google.svg"
+          }
+          alt="Google logo"
+          width={16} // px width
+          height={16} // px height
+        />
+      </Button>
+      <Button
+        onClick={loginWithTwitter}
+        className="bg-mainGray items-center p-4 w-full flex justify-center hover:bg-mainGray"
+      >
+        <Image
+          className="h-6 w-6"
+          src={
+           "/images/x.svg"
           }
           alt="Google logo"
           width={16} // px width
