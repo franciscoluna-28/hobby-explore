@@ -59,16 +59,16 @@ export default function Home() {
     <main className="overflow-y-hidden!">
       <section className="w-full flex justify-center flex-col items-center m-auto p-32">
       <h1 className="font-bold text-4xl text-mainBlack">Welcome!</h1>
-      <span className="text-mainBlack pt-2 block font-light">Sharing your pro tips of your hobbies with whom also like to do them.</span>
+      <span className="text-mainBlack pt-2 block font-light text-center ">Sharing your pro tips of your hobbies with whom also like to do them.</span>
       <div className="mt-4 w-full">
       <Button
         onClick={loginWithGoogle}
         className="bg-mainGray items-center p-4 w-full flex justify-center hover:bg-mainGray"
       >
         <Image
-          className="h-4 w-4"
+          className="h-6 w-6"
           src={
-            "https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/588px-Google_%22G%22_Logo.svg.png?20230305195327"
+           "/images/google.svg"
           }
           alt="Google logo"
           width={16} // px width
