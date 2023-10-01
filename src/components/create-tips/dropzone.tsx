@@ -45,8 +45,6 @@ export function Dropzone() {
     },
   });
 
-  useEffect(() => console.log(images), [images]);
-
   return (
     <div
       {...getRootProps()}
