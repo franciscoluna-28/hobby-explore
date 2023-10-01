@@ -10,11 +10,11 @@ import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
 import { SupabaseClient } from "@supabase/supabase-js";
 import { isUserAuthenticated } from "@/utils/auth/is-user-authenticated";
 
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
 
 export async function POST(request: Request) {
   // Supabase client
-const supabase = createRouteHandlerClient({ cookies });
+  const supabase = createRouteHandlerClient({ cookies });
   const { session } = (await supabase.auth.getSession()).data;
 
   async function uploadActivityToSupabase(
