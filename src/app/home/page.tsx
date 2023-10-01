@@ -15,9 +15,9 @@ export default async function Test() {
     <div className="p-8">
       <h1>Hi! {user?.email}</h1>
       <form action="/auth/sign-out" method="post">
-        <button className="button block" type="submit">
-          Sign out
-        </button>
+          <button className="button block" type="submit">
+            Sign out
+          </button>
 
         <div className="flex gap-4">
         <Link href="/create-activity">
