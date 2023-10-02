@@ -1,10 +1,10 @@
 "use client";
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import { HiLocationMarker } from "react-icons/hi"
-import  { AiTwotoneStar} from "react-icons/ai"
+import { HiLocationMarker } from "react-icons/hi";
+import { AiTwotoneStar } from "react-icons/ai";
 
 export default function SavedActivities() {
   const [activities, setActivities] = useState([]);
@@ -61,36 +61,37 @@ export default function SavedActivities() {
               </div>
               <div className="p-8">
                 <div className="flex">
-                <div>
-                <Avatar>
-  <AvatarImage src="https://github.com/shadcn.png" />
-  <AvatarFallback>User</AvatarFallback>
-</Avatar>
+                  <div>
+                    <Avatar>
+                      <AvatarImage src="https://github.com/shadcn.png" />
+                      <AvatarFallback>User</AvatarFallback>
+                    </Avatar>
+                  </div>
+                  <div
+                    className="flex flex-col ml-4
+                "
+                  >
+                    <span className="block text-sm font-medium">
+                      Francisco Luna
+                    </span>
+                    <span className="block text-sm">{activity.created_at}</span>
+                  </div>
                 </div>
-                <div className="flex flex-col ml-4
-                ">
-<span className="block text-sm font-medium">
-  Francisco Luna
-</span>
-<span className="block text-sm">
-  {activity.created_at}
-</span>
-</div>
-                </div>
-                <h2 className="font-bold mt-6 text-mainBlack text-2xl">{activity.name}</h2>
+                <h2 className="font-bold mt-6 text-mainBlack text-2xl">
+                  {activity.name}
+                </h2>
                 <div className="flex justify-between">
                   <div className="flex gap-2 mt-6 text-sm text-gray-800 font-medium">
-                  <HiLocationMarker className="text-xl"/>
-               <span>{activity.location}</span>
+                    <HiLocationMarker className="text-xl" />
+                    <span>{activity.location}</span>
                   </div>
                   <div className="flex items-end">
-<div className="flex items-center gap-2">
-                  <AiTwotoneStar className="text-yellow-500"/>
-                  <span className="block text-yellow-500">5.0</span>
-                  </div> 
+                    <div className="flex items-center gap-2">
+                      <AiTwotoneStar className="text-yellow-500" />
+                      <span className="block text-yellow-500">5.0</span>
+                    </div>
+                  </div>
                 </div>
-                </div>
-             
               </div>
             </article>
           </li>
