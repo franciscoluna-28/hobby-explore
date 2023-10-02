@@ -22,8 +22,6 @@ async function getActivityById(activity_id: string) {
     .from("activities")
     .select("*")
     .eq("id", activity_id);
-    console.log(activity_id)
-    console.log(activity)
 
   if (activitiesError) {
     return {
@@ -34,10 +32,7 @@ async function getActivityById(activity_id: string) {
   }
 
   // Check if the activity belongs to the current user
-  const activityBelongsToCurrentUser = activity[0].user_uuid === session.user.id;
-
-  console.log(activity[0].user_uuid)
-  console.log(session.user.id)
+  const activityBelongsToCurrentUser = activity.user_id === session.user.id;
 
   return {
     success: true,
@@ -46,10 +41,8 @@ async function getActivityById(activity_id: string) {
   };
 }
 
-export async function POST(request: Request): Promise<NextResponse> {
-    const { activity_id } = await request.json()
-
-    console.log("id is ", activity_id)
+export default async function POST(request: Request): Promise<NextResponse> {
+    const activity_id = await request.json()
 
   if(!activity_id) {
     return NextResponse.json({success: false, error: "Please, insert a valid activity id."})
@@ -65,8 +58,15 @@ export async function POST(request: Request): Promise<NextResponse> {
     });
   }
 
+  if (!result.activityBelongsToCurrentUser) {
+    return NextResponse.json({
+      success: false,
+      error: "Activity does not belong to the current user",
+      status: 403,
+    });
+  }
+
   return NextResponse.json({
-    isActivityFromCurrentUser: result.activityBelongsToCurrentUser,
     success: true,
     activity: result.activity,
     status: 200,
