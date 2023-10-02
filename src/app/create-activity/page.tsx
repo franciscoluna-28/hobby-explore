@@ -14,12 +14,16 @@ import { useUploadActivity } from "@/hooks/use-upload-activity";
 
 export default function CreateActivity() {
   const tips = useImageStore((state) => state.tips);
+  const resetTips = useImageStore((state) => state.resetTips);
   const router = useRouter();
+
+  console.log("hola");
 
   const { isLoading, uploadActivity } = useUploadActivity();
 
   const onSubmit = async (values: z.infer<typeof activitySchema>) => {
     const formData = new FormData();
+    console.log(formData);
 
     formData.append("name", values.name);
     formData.append("location", values.location);
