@@ -14,6 +14,8 @@ export function TipList() {
     updateTipText(tipId, newText);
   };
 
+  console.log(tips)
+
   const handleRemoveTip = (tipId: string) => {
     removeTip(tipId);
   };
