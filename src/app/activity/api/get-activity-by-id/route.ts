@@ -41,7 +41,7 @@ async function getActivityById(activity_id: string) {
   };
 }
 
-export default async function POST(request: Request): Promise<NextResponse> {
+export async function POST(request: Request): Promise<NextResponse> {
     const activity_id = await request.json()
 
   if(!activity_id) {

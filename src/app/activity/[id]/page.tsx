@@ -38,12 +38,11 @@ export default function Activity({ params }: { params: { id: string } }) {
       <h1>{activity.name}</h1>
       <p>Actividad</p>
 
-        {activityBelongsToCurrentUser ? (
-          <p>Epa chamo esta actividad es tuya</p>
-        ) : (
-          <p>Hey! Esto no es tuyo</p>
-        )}
-
+      {activityBelongsToCurrentUser ? (
+        <p>Epa chamo esta actividad es tuya</p>
+      ) : (
+        <p>Hey! Esto no es tuyo</p>
+      )}
     </div>
   );
 }
