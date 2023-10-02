@@ -62,7 +62,6 @@ export default function Home() {
       },
     });
     if (data) {
-      console.log(data);
     }
   }
 
