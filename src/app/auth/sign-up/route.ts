@@ -19,8 +19,6 @@ export async function POST(request: Request) {
     },
   });
 
-  console.log(error);
-
   if (error) {
     return NextResponse.redirect(
       `${requestUrl.origin}/login?error=Could not authenticate user`,
