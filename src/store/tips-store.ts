@@ -16,10 +16,14 @@ type Actions = {
   resetTips: () => void;
 };
 
+const initialState: State = {
+  tips: [],
+  images: []
+}
+
 // Store with both state and actions
 const useTipStore = create<State & Actions>((set) => ({
-  tips: [],
-  images: [],
+  ...initialState,
 
   addTipWithImage: (image: File) =>
     set((state) => {
@@ -60,11 +64,10 @@ const useTipStore = create<State & Actions>((set) => ({
       return state;
     }),
 
-  resetTips: () =>
-    set(() => ({
-      tips: [],
-      images: [],
-    })),
+
+    resetTips: () => {
+      set(initialState);
+    }
 }));
 
 export default useTipStore;
