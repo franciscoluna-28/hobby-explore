@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useRouter } from "next/router";
 import { toast } from "react-toastify";
 import { UPLOAD_ACTIVITY_CONSTANTS } from "@/constants/upload-activity/upload-activity";
 import useImageStore from "@/store/tips-store";
@@ -8,6 +7,8 @@ export const useUploadActivity = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const resetTips = useImageStore((state) => state.resetTips);
   const tips = useImageStore((state) => state.tips);
+
+  console.log(tips);
 
   const startLoading = () => {
     setIsLoading(true);
@@ -33,15 +34,16 @@ export const useUploadActivity = () => {
       }
 
       const data = await response.json();
+      console.log(data);
 
       if (data.success) {
-        console.log(tips)
         toast(UPLOAD_ACTIVITY_CONSTANTS.successMessage, {
           hideProgressBar: true,
           autoClose: 2000,
           type: "success",
         });
 
+        resetTips();
       } else {
         handleUploadError(data.error, data.emptyTipIndices);
       }
