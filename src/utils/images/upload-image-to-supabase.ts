@@ -26,7 +26,6 @@ async function uploadImageToSupabase(
       });
 
   if (imageUploadError) {
-    console.log(imageUploadError)
     throw new Error(imageUploadError.message);
   }
 
