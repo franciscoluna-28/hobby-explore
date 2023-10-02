@@ -54,6 +54,8 @@ export function TipList() {
               <Image
                 src={imageData[tip.id]!}
                 alt={tip.text}
+                width={300}
+                height={300}
                 className="w-96 rounded-2xl max-h-64 border bg-blue"
               />
               <button
