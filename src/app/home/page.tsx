@@ -13,7 +13,7 @@ export default async function Test() {
 
   return (
     <div className="p-8">
-      <h1>Hi! {user?.email}</h1>
+      <h1>Hi! {user?.email} yooooo  </h1>
       <form action="/auth/sign-out" method="post">
           <button className="button block" type="submit">
             Sign out
