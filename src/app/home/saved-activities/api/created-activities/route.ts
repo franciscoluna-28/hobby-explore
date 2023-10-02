@@ -60,6 +60,7 @@ export async function GET(_request: Request) {
     const user_id = session.user.id;
 
     const result = await fetchUserActivities(user_id);
+    const { email } = session.user;
 
     if (!result.success) {
       return NextResponse.json({
