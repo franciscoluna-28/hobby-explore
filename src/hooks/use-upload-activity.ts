@@ -43,7 +43,7 @@ export const useUploadActivity = () => {
           type: "success",
         });
 
-        resetTips();
+
       } else {
         handleUploadError(data.error, data.emptyTipIndices);
       }

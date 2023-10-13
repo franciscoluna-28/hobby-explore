@@ -103,8 +103,13 @@ export async function POST(request: Request) {
       supabase
     );
 
+      console.log(tipsWithImageURLs)
+
+
     // Now with the tips processed with the image URL, upload them
     await supabase.from("tips").upsert(tipsWithImageURLs);
+
+
 
     return NextResponse.json({
       success: true,

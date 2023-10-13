@@ -55,7 +55,7 @@ export default function SavedActivities() {
                   width={600}
                   className="rounded-t-2xl max-h-64"
                   height={200}
-                  src={activity.main_image_url}
+                  src={activity.main_image_url || "/google.svg" }
                   alt="Activity image"
                 ></Image>
               </div>
