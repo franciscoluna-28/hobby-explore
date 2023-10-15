@@ -8,10 +8,11 @@ import clsx from 'clsx'; // Importa clsx
 
 interface ImageSliderProps {
   rotationDegree: number;
+  isNegative: boolean;
 }
 
 
-const ImageSlider: React.FC<ImageSliderProps> = ({ rotationDegree }) => {
+const ImageSlider: React.FC<ImageSliderProps> = ({ rotationDegree, isNegative }) => {
   const [currentImage, setCurrentImage] = useState<LandingPageImage | null>(
     null
   );
@@ -38,9 +39,9 @@ const ImageSlider: React.FC<ImageSliderProps> = ({ rotationDegree }) => {
 
   const imageContainerClasses = clsx(
     'absolute',
-    `rotate-[${rotationDegree}deg]`,
+    `!rotate-[${rotationDegree}deg]`,
     'max-w-fit',
-    'max-h-[800px]',
+    'max-h-[800px]',  
     'z-40',
     'w-full',
     'hover:scale-105',
@@ -54,6 +55,8 @@ const ImageSlider: React.FC<ImageSliderProps> = ({ rotationDegree }) => {
     }
   );
 
+  console.log(rotationDegree)
+
   return (
     <div className={imageContainerClasses}>
       {loading && <div className="loading-indicator"></div>}
@@ -65,7 +68,9 @@ const ImageSlider: React.FC<ImageSliderProps> = ({ rotationDegree }) => {
           height={600}
           className={clsx(
             'rounded-md',
-            'object-cover'
+            'object-cover',
+            
+            
           )}
           onLoad={handleImageLoad}
         />
