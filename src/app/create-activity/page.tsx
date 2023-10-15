@@ -5,7 +5,7 @@ import { Dropzone } from "@/components/create-tips/dropzone";
 import { TipList } from "@/components/create-tips/tip-list";
 import useImageStore from "@/store/tips-store";
 import CreateActivityForm from "@/components/form/create-activity-form";
-import { ToastContainer } from "react-toastify";
+import { Toaster } from "sonner";
 import { useRouter } from "next/navigation";
 import "react-toastify/dist/ReactToastify.css";
 import { Button } from "@/components/ui/button";
@@ -57,7 +57,7 @@ export default function CreateActivity() {
           <Dropzone />
         </CreateActivityForm>
       </section>
-      <ToastContainer />
+      <Toaster richColors />
     </>
   );
 }
