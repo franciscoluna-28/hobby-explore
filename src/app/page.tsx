@@ -101,9 +101,20 @@ export default function Home() {
       <section className="grid grid-cols-1 md:grid-cols-2 h-screen">
         {/* Landing page aesthetics and details */}
         <div className="h-screen items-center justify-center relative w-full hidden md:flex">
-        <ImageSlider rotationDegree={-10}/>
 
-        <ImageSlider rotationDegree={10}/>
+
+        <div className="absolute rotate-[-10deg] z-50 rounded-2xl overflow-hidden border-white shadow-lg border-[5px]">
+          <Image width={700} height={700} alt="Image" src={"/images/piano.jpg"}>
+
+          </Image>
+        </div>
+        <div className="absolute rotate-[10deg] z-50 rounded-2xl overflow-hidden border-white shadow-xl border-[5px]">
+          <Image width={700} height={700} alt="Image" src={"/images/dogs.jpg"}>
+
+          </Image>
+        </div>
+
+        
           <AnimatePresence mode="wait">
             <motion.div
               key={currentTipIndex}
