@@ -19,7 +19,8 @@ module.exports = {
       colors: {
         "mainBlack": "#1E1E1E",
         "mainGray": "#F8F8F8",
-        "mainGreen": "#00CAA7"
+        "mainGreen": "#00CAA7",
+        "mainYellow": "#F6B704"
       },
       keyframes: {
         "accordion-down": {
