@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { toast } from "react-toastify";
+import { Toaster, toast } from "sonner"
 import { UPLOAD_ACTIVITY_CONSTANTS } from "@/constants/upload-activity/upload-activity";
 import useImageStore from "@/store/tips-store";
 
@@ -37,11 +37,7 @@ export const useUploadActivity = () => {
       console.log(data);
 
       if (data.success) {
-        toast(UPLOAD_ACTIVITY_CONSTANTS.successMessage, {
-          hideProgressBar: true,
-          autoClose: 2000,
-          type: "success",
-        });
+        toast.success(UPLOAD_ACTIVITY_CONSTANTS.successMessage);
 
 
       } else {
