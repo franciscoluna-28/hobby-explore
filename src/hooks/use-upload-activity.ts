@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Toaster, toast } from "sonner"
+import { toast } from "sonner"
 import { UPLOAD_ACTIVITY_CONSTANTS } from "@/constants/upload-activity/upload-activity";
 import useImageStore from "@/store/tips-store";
 
@@ -55,18 +55,12 @@ export const useUploadActivity = () => {
           .map((index) => `Tip number ${index + 1}`)
           .join(", ");
         toast.error(
-          `The following tips have empty descriptions: ${emptyTipIndicesText}`,
-          {
-            hideProgressBar: true,
-            autoClose: 5000,
-          }
+          `The following tips have empty descriptions: ${emptyTipIndicesText}`
         );
       }
     },
     [UPLOAD_ACTIVITY_CONSTANTS.activityTipError]: () => {
       toast.error("You need to add at least one tip to your activity!", {
-        hideProgressBar: true,
-        autoClose: 5000,
       });
     },
   };
