@@ -1,4 +1,4 @@
-"use client"
+/* "use client"
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
@@ -38,7 +38,7 @@ export default function Profile({ params }: { params: { id: string } }) {
     return <div>Loading...</div>;
   }
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = async (event:) => {
     event.preventDefault();
 
     const response = await fetch(`/profile/api/update-name-last-name`, {
@@ -88,3 +88,4 @@ export default function Profile({ params }: { params: { id: string } }) {
     </div>
   );
 }
+ */
