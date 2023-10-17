@@ -1,12 +1,14 @@
-/* "use client"
-
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
+interface User {
+  name: string;
+  // Add other properties as needed
+}
+
 export default function Profile({ params }: { params: { id: string } }) {
-  const [user, setUser] = useState(null);
-  const [activityBelongsToCurrentUser, setActivityBelongsToCurrentUser] =
-    useState(null);
+  const [user, setUser] = useState<User | null>(null);
+  const [activityBelongsToCurrentUser, setActivityBelongsToCurrentUser] = useState<boolean | null>(null);
   const [name, setName] = useState("");
   const [last_name, setLastName] = useState("");
 
@@ -38,7 +40,7 @@ export default function Profile({ params }: { params: { id: string } }) {
     return <div>Loading...</div>;
   }
 
-  const handleSubmit = async (event:) => {
+  const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
 
     const response = await fetch(`/profile/api/update-name-last-name`, {
@@ -53,18 +55,18 @@ export default function Profile({ params }: { params: { id: string } }) {
     });
     const data = await response.json();
 
-    console.log(data)
+    console.log(data);
 
     if (data.success) {
       router.refresh();
     } else {
-
+      // Handle the error case if needed
     }
   };
 
   return (
     <div>
-      <h1>{user.name} </h1>
+      <h1>{user.name}</h1>
       <p>Actividad</p>
       {activityBelongsToCurrentUser ? (
         <form onSubmit={handleSubmit}>
@@ -88,4 +90,3 @@ export default function Profile({ params }: { params: { id: string } }) {
     </div>
   );
 }
- */

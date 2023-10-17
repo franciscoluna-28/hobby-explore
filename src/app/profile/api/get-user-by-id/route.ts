@@ -1,9 +1,10 @@
 import { NextResponse } from "next/server";
 import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
+import { Database } from "@/types/supabase";
 
 async function getUserById(user_id: string) {
-  const supabase = createRouteHandlerClient({ cookies });
+  const supabase = createRouteHandlerClient<Database>({ cookies });
   const {
     data: { session: userSession },
   } = await supabase.auth.getSession();
