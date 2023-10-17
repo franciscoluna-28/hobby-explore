@@ -1,15 +1,17 @@
-"use client";
-
 import { useEffect, useState } from "react";
 
+interface Activity {
+  name: string;
+  // Add other properties as needed
+}
+
 export default function Activity({ params }: { params: { id: string } }) {
-  const [activity, setActivity] = useState(null);
-  const [activityBelongsToCurrentUser, setActivityBelongsToCurrentUser] =
-    useState(null);
+  const [activity, setActivity] = useState<Activity | null>(null);
+  const [activityBelongsToCurrentUser, setActivityBelongsToCurrentUser] = useState<boolean | null>(null);
 
   useEffect(() => {
     async function fetchActivityData() {
-      const response = await fetch(`/activity/api/get-activity-by-id  `, {
+      const response = await fetch(`/activity/api/get-activity-by-id`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -39,9 +41,9 @@ export default function Activity({ params }: { params: { id: string } }) {
       <p>Actividad</p>
 
       {activityBelongsToCurrentUser ? (
-        <p>Epa chamo esta actividad es tuya</p>
+        <p>This isn't yours</p>
       ) : (
-        <p>Hey! Esto no es tuyo</p>
+        <p>This isn't yours</p>
       )}
     </div>
   );
