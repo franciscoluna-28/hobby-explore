@@ -3,14 +3,17 @@ import { Slider } from "../ui/slider";
 import Cropper from "react-easy-crop";
 import getCroppedImg from "@/lib/get-cropped-image";
 import { Button } from "../ui/button";
+import { FORMERR } from "dns";
 
+// TODO: Add typescript to the whole component
 const EasyCrop = ({ image }) => {
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
   const [rotation, setRotation] = useState(0);
   const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
+  
   const [croppedImage, setCroppedImage] = useState<string | null>(null);
-
+  const [fileToUpload, setFiletoUpload] = useState<string | null>(null);
   console.log(croppedImage);
 
   const onCropComplete = useCallback((croppedArea, croppedAreaPixels) => {
@@ -24,8 +27,11 @@ const EasyCrop = ({ image }) => {
         croppedAreaPixels,
         rotation
       );
+
+      setFiletoUpload(croppedImage);
+
       console.log("donee", { croppedImage });
-      setCroppedImage(croppedImage);
+      setCroppedImage(URL.createObjectURL(croppedImage));
     } catch (e) {
       console.error(e);
     }
@@ -35,24 +41,29 @@ const EasyCrop = ({ image }) => {
     setCroppedImage(null);
   }, []);
 
+const createImageFileFromBlob = (blob: Blob, filename: string) => {
+  const file = new File([blob], filename, { type: "image/jpeg" });
+  return file;
+};
+
+
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     if (croppedImage && croppedAreaPixels) {
       const formData = new FormData();
-      formData.append("croppedImage", croppedImage);
+      formData.append("croppedImage", fileToUpload)
+      console.log(formData)
+      
       // You can now submit the formData to your server for further processing.
       // For example, you can use the fetch API to send the formData to your server.
       try {
         // Replace "YOUR_SERVER_ENDPOINT" with the actual server endpoint for image upload.
         const response = await fetch(`/get-started/api/upload-profile-images`, {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json", // Fix typo here
-          },
-          body: JSON.stringify(croppedImage),
+          body: formData,
         });
         if (response.ok) {
-          console.log(croppedImage)
+
           // Image uploaded successfully
           console.log("Image uploaded successfully");
         } else {
@@ -133,7 +144,7 @@ const EasyCrop = ({ image }) => {
           <img className="cropped-image" src={croppedImage} alt="cropped" />
         )}
         {croppedImage && (
-          <form onSubmit={handleFormSubmit}>
+          <form encType="multipart/form-data" onSubmit={handleFormSubmit}>
             <button type="submit" className="text-black">
               Subir
             </button>
