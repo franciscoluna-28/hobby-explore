@@ -1,16 +1,14 @@
 import { z } from "zod";
 
-// Contract for the schema
-interface AboutUserSchema {
-  name: string;
-  birthDate: Date;
-}
-
-// Handles the basic user information
+// Define a schema for the user's personal information.
 export const AboutUserSchema = z.object({
-  name: z
-    .string()
-    .min(1, { message: "Your name must have at least 1 character!" }),
-  birthDate: z.date(),
-  home: z.string().min(2, {message: "Your home must have at least 2 characters!"})
+  name: z.string().min(2, "The name must have at least 2 characters."),
+  birthDate: z.date().refine((date) => {
+    // Calculate the user's age based on their birth date.
+    const today = new Date();
+    const userAge = today.getFullYear() - date.getFullYear();
+    // Check if the user is at least 16 years old.
+    return userAge >= 16;
+  }, "You must be at least 16 years old to register."),
+  home: z.string().min(2, "The home must have at least 2 characters."),
 });
