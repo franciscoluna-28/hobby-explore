@@ -1,5 +1,3 @@
-import Image from "next/image";
-
 export default function GetStartedLayout({
   children,
 }: {
@@ -7,7 +5,7 @@ export default function GetStartedLayout({
 }) {
   return (
     <main className="p-16 h-screen items-center flex flex-col justify-center">
-      <div className="p-6 bg-white border shadow-md rounded-2xl">
+      <div className="p-6 bg-white border shadow-md rounded-2xl h-full">
         {children}
       </div>
     </main>

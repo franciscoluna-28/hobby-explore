@@ -16,7 +16,7 @@ export async function POST(req: Request, res: NextApiResponse) {
     // Upload the data to Supabase
     const { data: user, error } = await supabase
       .from("users")
-      .update({ name: name, home: home, birthDate: birthDate })
+      .update({ name: name, home: home, birth_date: birthDate })
       .eq("id", session.user.id);
 
     if (error) {
@@ -25,7 +25,14 @@ export async function POST(req: Request, res: NextApiResponse) {
       return NextResponse.json({ error: error.message, status: 500 });
     }
 
-    return NextResponse.json({ success: true, user }, { status: 200 });
+    return NextResponse.json(
+      {
+        success: true,
+        user,
+        message: "Your profile information has been updated successfully!",
+      },
+      { status: 200 }
+    );
   } catch (error) {
     console.error("Internal Server Error:", error);
     return NextResponse.json(

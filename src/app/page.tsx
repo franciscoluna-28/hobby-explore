@@ -28,7 +28,6 @@ import { useState } from "react";
 import Animatepresence, { AnimatePresence, motion } from "framer-motion";
 import Motion from "framer-motion";
 import { TypeAnimation } from "react-type-animation";
-import ImageSlider from "@/components/landing-page/ImageSlider";
 
 const formSchema = z.object({
   email: z.string().min(2).email({
@@ -53,21 +52,32 @@ export default function Home() {
     },
   });
 
-  async function loginWithGoogle() {
-    const { data, error } = await supabase.auth.signInWithOAuth({
-      provider: "google",
-      options: {
-        redirectTo: `${location.origin}/auth/callback`,
-        queryParams: {
-          access_type: "offline",
-          prompt: "consent",
+  const loginWithGoogle = async () => {
+    try {
+      const { data, error } = await supabase.auth.signInWithOAuth({
+        provider: "google",
+        options: {
+          redirectTo: `${location.origin}/auth/callback`,
+          queryParams: {
+            access_type: "offline",
+            prompt: "consent",
+          },
         },
-      },
-    });
-    if (data) {
-      router.refresh();
+      });
+
+      if (data) {
+        router.refresh();
+      }
+
+      if (error) {
+        console.error("Google login error:", error);
+      }
+    } catch (error) {
+      console.error("An unexpected error occurred:", error);
     }
-  }
+  };
+
+
   async function loginWithTwitter() {
     const { data } = await supabase.auth.signInWithOAuth({
       provider: "twitter",
@@ -103,13 +113,14 @@ export default function Home() {
         <div className="h-screen items-center justify-center relative w-full hidden md:flex">
 
 
+        
         <div className="absolute rotate-[-10deg] z-50 rounded-2xl overflow-hidden border-white shadow-lg border-[5px]">
-          <Image width={700} height={700} alt="Image" src={"/images/piano.jpg"}>
+          <Image width={600} height={600} alt="Image" src={"/images/piano.jpg"}>
 
           </Image>
         </div>
         <div className="absolute rotate-[10deg] z-50 rounded-2xl overflow-hidden border-white shadow-xl border-[5px]">
-          <Image width={700} height={700} alt="Image" src={"/images/dogs.jpg"}>
+          <Image width={600} height={600} alt="Image" src={"/images/dogs.jpg"}>
 
           </Image>
         </div>
@@ -133,14 +144,14 @@ export default function Home() {
         </div>
 
         {/* Actual form where users are able to login */}
-        <div className="h-screen bg-white flex items-center justify-center flex-col relative p-8 md:p-16 lg:p-32">
-          <div className="flex flex-col">
-            <h1 className="font-normal text-3xl max-w-lg text-mainBlack uppercase text-center leading-relaxed">
+        <div className="h-screen bg-white flex items-center text-center justify-center flex-col relative p-8 md:p-16 lg:p-32 m-auto">
+          <div className="flex flex-col text-center m-auto justify-center items-center">
+            <h1 className="text-3xl max-w-lg text-mainBlack uppercase text-center font-medium">
               Share your unique
             </h1>
             <div className="m-auto">
               <TypeAnimation
-                className="flex justify-center text-center !uppercase !text-3xl !text-mainBlack"
+                className="flex justify-center text-center !uppercase !text-3xl !text-mainBlack !font-medium"
                 sequence={[
                   "Hobbies",
                   2000,
@@ -158,6 +169,7 @@ export default function Home() {
                   justifyContent: "center",
                   textAlign: "center",
                   textTransform: "uppercase",
+                
                 }}
               />
             </div>
@@ -237,7 +249,7 @@ export default function Home() {
 
                 <Button
                   className="bg-mainBlack w-full !py-4 rounded-full"
-                  formAction="auth/sign-in"
+                  formAction="auth/sign-up"
                   type="submit"
                 >
                   Login
