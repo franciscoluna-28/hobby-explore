@@ -54,7 +54,7 @@ function GetStartedStepOne() {
     const userData = {
       name: name,
       home: home,
-      birthDate: birthDate.toISOString(),
+      birth_date: birthDate.toISOString(),
     };
 
     try {
@@ -69,7 +69,8 @@ function GetStartedStepOne() {
       if (response.ok) {
         const data = await response.json();
         if(data.success) {
-          toast.success(CREATE_USER_DATA_CONSTANTS.success)
+          toast.success(data.message)
+          router.push("/get-started/step-2")
         }
         console.log(data);
       } else {
