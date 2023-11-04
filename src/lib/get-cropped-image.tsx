@@ -1,5 +1,6 @@
+import { type } from "os";
 
-export const createImage = (url) =>
+export const createImage = (url: string) =>
   new Promise((resolve, reject) => {
     const image = new Image();
     image.addEventListener("load", () => resolve(image));
@@ -8,11 +9,11 @@ export const createImage = (url) =>
     image.src = url;
   });
 
-export function getRadianAngle(degreeValue) {
+export function getRadianAngle(degreeValue: number) {
   return (degreeValue * Math.PI) / 180;
 }
 
-export function rotateSize(width, height, rotation) {
+export function rotateSize(width: number, height: number, rotation: number) {
   const rotRad = getRadianAngle(rotation);
 
   return {
@@ -71,7 +72,7 @@ export default async function getCroppedImg(
 
   return new Promise((resolve, reject) => {
     canvas.toBlob((file) => {
-      resolve(URL.createObjectURL(file));
+      resolve(new File([file!], "image.jpeg", {type: file?.type, lastModified: new Date().getTime()}));
     }, "image/jpeg");
   });
 }
