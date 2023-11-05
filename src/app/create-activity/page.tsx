@@ -17,8 +17,6 @@ export default function CreateActivity() {
   const resetTips = useImageStore((state) => state.resetTips);
   const router = useRouter();
 
-  console.log("hola");
-
   const { isLoading, uploadActivity } = useUploadActivity();
 
   const onSubmit = async (values: z.infer<typeof activitySchema>) => {
@@ -42,19 +40,8 @@ export default function CreateActivity() {
 
   return (
     <>
-      <section className="p-16">
-        <div className="flex gap-4">
-          <Button
-            onClick={router.back}
-            className="p-0 m-0 bg-transparent hover:bg-transparent"
-          >
-            <BiArrowBack className="text-mainBlack text-3xl" />
-          </Button>
-          <h1>Share your activity</h1>
-        </div>
+      <section className="w-full">
         <CreateActivityForm handleSubmit={onSubmit} isLoading={isLoading}>
-          <TipList />
-          <Dropzone />
         </CreateActivityForm>
       </section>
       <Toaster richColors />
