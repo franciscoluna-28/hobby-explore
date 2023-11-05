@@ -12,8 +12,10 @@ import { isUserAuthenticated } from "@/utils/auth/is-user-authenticated";
 
 export const dynamic = "force-dynamic";
 
+// TODO: Don't upload the activity unless you upload its relationship
+// TODO: Make sure you upload a tip before uplading the activity
 export async function POST(request: Request) {
-  // Supabase client
+  // Supabase client setup
   const supabase = createRouteHandlerClient({ cookies });
   const { session } = (await supabase.auth.getSession()).data;
 
@@ -22,6 +24,7 @@ export async function POST(request: Request) {
     activityData: any,
     user_uuid: string
   ) {
+    // Check if the user is authenticated
     const isAuthenticated = await isUserAuthenticated(supabase);
 
     if (!isAuthenticated) {
@@ -30,27 +33,59 @@ export async function POST(request: Request) {
       };
     }
 
+    // Extract the required parameters from activity data
+    const { name, location, accessibility, participants, category } =
+      activityData;
+
+    // Try to upload the activity to the regarding tables of PostgreSQL
     try {
       const { data: activityResult, error: activityError } = await supabase
         .from("activities")
-        .upsert([{ ...activityData, user_uuid }])
-        .select("id");
+        .upsert([
+          {
+            name: name,
+            location: location,
+            accessibility: accessibility,
+            participants: participants,
+          },
+        ])
+        .select("activity_id");
 
+      // Error handling in case the activity isn't uploaded properly
       if (activityError) {
         return {
-          success: false,
+          error: activityError,
         };
       }
 
-      const activity_id = activityResult[0].id;
+      // Get the activity ID from activity result
+      const activity_id = activityResult[0].activity_id;
+
+      // Create the respective relationship of the activity according to the normal forms
+      const {
+        data: activityRelationshipResult,
+        error: activityRelationshipError,
+      } = await supabase.from("activities_relationships").insert({
+        activity_id: activity_id,
+        created_by_user_id: user_uuid,
+        category_id: Number(category),
+      });
+
+      if (activityRelationshipError) {
+        return {
+          error: activityRelationshipError,
+        };
+      }
 
       return {
         success: true,
         activity_id,
+        activityRelationshipResult,
       };
     } catch (error) {
+      console.log(error);
       return {
-        success: false,
+        error: error,
       };
     }
   }
@@ -91,7 +126,7 @@ export async function POST(request: Request) {
     if (!activityUploadResult?.success) {
       return NextResponse.json({
         success: false,
-        error: "Failed to upload activity.",
+        error: activityUploadResult.error,
       });
     }
 
@@ -99,17 +134,37 @@ export async function POST(request: Request) {
     const tipsWithImageURLs = await uploadTipsToSupabase(
       tips as Tips[],
       session!.user.id,
-      activityUploadResult.activity_id,
       supabase
     );
 
-      console.log(tipsWithImageURLs)
-
-
     // Now with the tips processed with the image URL, upload them
-    await supabase.from("tips").upsert(tipsWithImageURLs);
+    const { data: tipSubmissionResult, error: tipSubmissionError } =
+      await supabase.from("tips").upsert(tipsWithImageURLs).select("tip_id");
 
+    if (tipSubmissionError) {
+      return NextResponse.json({
+        success: false,
+        error: tipSubmissionError,
+      });
+    }
 
+    if (tipSubmissionResult) {
+      const tip_id = tipSubmissionResult[0].tip_id;
+      const { error: tipRelationshipError } = await supabase
+        .from("tips_relationships")
+        .insert({
+          activity_id: activityUploadResult.activity_id,
+          created_by_user_id: session?.user.id,
+          tip_id: tip_id,
+        });
+
+      if (tipRelationshipError) {
+        return NextResponse.json({
+          status: 500,
+          error: tipRelationshipError,
+        });
+      }
+    }
 
     return NextResponse.json({
       success: true,
