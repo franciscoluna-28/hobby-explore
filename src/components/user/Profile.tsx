@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+/* import { useCallback, useState } from "react";
 import { Slider } from "../ui/slider";
 import Cropper from "react-easy-crop";
 import getCroppedImg from "@/lib/get-cropped-image";
@@ -159,3 +159,10 @@ const createImageFileFromBlob = (blob: Blob, filename: string) => {
 };
 
 export default EasyCrop;
+ */
+
+export default function Profile () {
+  return (
+    <h1>Profile</h1>
+  )
+}

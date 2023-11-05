@@ -1,4 +1,11 @@
-"use client"
+/* "use client"
+
+
+
+
+
+
+
 
 import React, { useState } from "react";
 import EasyCrop from "@/components/user/Profile";
@@ -29,4 +36,12 @@ function App() {
   );
 }
 
-export default App;
+export default App; */
+
+// Use client
+
+function App () {
+  return (
+    <h1>Hi</h1>
+  )
+}
