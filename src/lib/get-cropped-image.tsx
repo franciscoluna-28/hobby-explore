@@ -1,4 +1,4 @@
-import { type } from "os";
+/* import { type } from "os";
 
 export const createImage = (url: string) =>
   new Promise((resolve, reject) => {
@@ -75,4 +75,4 @@ export default async function getCroppedImg(
       resolve(new File([file!], "image.jpeg", {type: file?.type, lastModified: new Date().getTime()}));
     }, "image/jpeg");
   });
-}
+} */
