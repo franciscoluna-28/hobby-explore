@@ -48,11 +48,11 @@ export function Dropzone() {
   return (
     <div
       {...getRootProps()}
-      className="border bg-white p-4 rounded-xl border-dashed flex items-center justify-between"
+      className="border bg-white p-4 rounded-xl border-dashed flex items-center justify-between border-slate-200"
     >
       <div className="flex items-center">
         <div className="flex flex-col">
-          <span className="block text-xl text-slate-500/40 font-bold mr-2">
+          <span className="block text-lg text-slate-500/40 font-bold mr-2">
             Add Photos
           </span>
           <span className="block text-sm mt-1 text-slate-500/60">
@@ -61,10 +61,9 @@ export function Dropzone() {
           </span>
         </div>
       </div>
-      <div className="bg-mainGreen p-1 rounded-full w-min cursor-pointer">
-        <label htmlFor="fileInput" className="cursor-pointer">
-          <AiOutlinePlus className="text-white text-2xl" />
-        </label>
+      <div className="bg-mainGreen p-1 rounded-full max-h-[32px] cursor-pointer ">
+        <AiOutlinePlus className="text-white text-2xl flex" />
+        <label htmlFor="fileInput" className="cursor-pointer"></label>
         <input
           {...getInputProps()}
           type="file"
