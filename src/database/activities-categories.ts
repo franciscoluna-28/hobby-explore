@@ -1,5 +1,6 @@
+// Respective activities type declarations in the client side
 type ActivityType =
-| "All"
+  | "All"
   | "Gaming"
   | "Education"
   | "Chess"
@@ -15,13 +16,14 @@ type ActivityCategory = {
   name: ActivityType;
 };
 
+// Used to categorize activities in the frontend section
 export const ACTIVITY_CATEGORIES: ActivityCategory[] = [
-{
+  {
     category_id: 0,
-    name: "All"
-},
+    name: "All",
+  },
 
-    {
+  {
     category_id: 1,
     name: "Gaming",
   },
