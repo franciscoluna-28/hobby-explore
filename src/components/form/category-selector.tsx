@@ -21,6 +21,9 @@ type CategorySelectorProps = {
   options: string[];
 };
 
+
+
+
 export function CategorySelector({
   name,
   label,
@@ -28,6 +31,7 @@ export function CategorySelector({
 }: CategorySelectorProps) {
   const { register } = useFormContext();
 
+    console.log(options)
   return (
     <FormField
       name={name}
@@ -43,7 +47,8 @@ export function CategorySelector({
             <FormControl>
               <SelectTrigger className="rounded-xl">
                 <SelectValue
-                  className="!text-left"
+
+                  className="!text-left !text-black"
                   placeholder={`Choose a ${label}`}
                 />
               </SelectTrigger>
