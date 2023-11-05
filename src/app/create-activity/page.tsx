@@ -41,8 +41,8 @@ export default function CreateActivity() {
   return (
     <>
       <section className="w-full">
-        <CreateActivityForm handleSubmit={onSubmit} isLoading={isLoading}>
-        </CreateActivityForm>
+        <CreateActivityForm handleSubmit={onSubmit} isLoading={isLoading}/>
+
       </section>
       <Toaster richColors />
     </>
