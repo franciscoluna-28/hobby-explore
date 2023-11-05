@@ -44,17 +44,14 @@ export function extractTips(formData: FormData): Tips[] {
 
 /**
  * Uploads tips to Supabase.
- *
  * @param {Tips[]} tipData - An array of tip objects.
  * @param {string} user_id - The user's ID.
- * @param {string} activity_id - The ID of the associated activity.
  * @param {SupabaseClient} supabase - The Supabase client.
  * @returns {Promise<object[]>} - A promise that resolves to an array of uploaded tip objects.
  */
 export async function uploadTipsToSupabase(
   tipData: Tips[],
   user_id: string,
-  activity_id: string,
   supabase: SupabaseClient
 ) {
   return Promise.all(
@@ -74,9 +71,8 @@ export async function uploadTipsToSupabase(
         );
 
         return {
-          activity_id: activity_id,
-          text: tip.text,
-          image_url: publicURL,
+          description: tip.text,
+          display_image_url: publicURL,
         };
       } catch (error) {
         if (error instanceof Error) {
