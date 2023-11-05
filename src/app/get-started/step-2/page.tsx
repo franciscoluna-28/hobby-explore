@@ -40,8 +40,6 @@ export default App; */
 
 // Use client
 
-export function App () {
-  return (
-    <h1>Hi</h1>
-  )
+export function PageTwo() {
+  return <h1>Hi</h1>;
 }
