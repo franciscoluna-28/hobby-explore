@@ -40,6 +40,6 @@ export default App; */
 
 // Use client
 
-export function PageTwo() {
+function GetStartedStepTwo() {
   return <h1>Hi</h1>;
 }
