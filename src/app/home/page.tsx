@@ -10,20 +10,13 @@ import { activitySchema } from "@/schemas/activitySchema";
 import z from "zod";
 import React from "react";
 import Link from "next/link";
-
-const supabase = createClientComponentClient();
+import { Button } from "@/components/ui/button";
 
 export default function Test() {
-  const activityForm = useForm<z.infer<typeof activitySchema>>({
-    resolver: zodResolver(activitySchema),
-    defaultValues: {
-      location: "Anywhere",
-    },
-  });
 
-  const handleSubmit = (data: z.infer<typeof activitySchema>) => {
-    console.log(data);
-  };
+  const supabase = createClientComponentClient();
+
+
 
   return (
     <>
@@ -66,6 +59,10 @@ export default function Test() {
           </div>
         </div>
       </Link>
+
+      <form action="/auth/sign-out" method="POST">
+        <Button variant="destructive">Sign Out</Button>
+      </form>
     </>
   );
 }

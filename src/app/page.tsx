@@ -23,6 +23,7 @@ import { useEffect } from "react";
 import { TIPS } from "@/database/tips-placeholder";
 import { useState } from "react";
 import Animatepresence, { AnimatePresence, motion } from "framer-motion";
+
 import { TypeAnimation } from "react-type-animation";
 
 const formSchema = z.object({
