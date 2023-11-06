@@ -46,7 +46,7 @@ export default function Test() {
                 <AvatarFallback>CN</AvatarFallback>
               </Avatar>
               <span className="text-slate-500 text-sm ">
-                Hey Francisco! Get started by creating some activities and
+                Hey user! Get started by creating some activities and
                 teaching others your favorite hobbies
               </span>
             </div>
