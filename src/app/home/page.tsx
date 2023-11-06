@@ -60,7 +60,7 @@ export default function Test() {
         </div>
       </Link>
 
-      <form action="/auth/sign-out" method="POST">
+      <form action="/auth/sign-out" className="w-fit mt-4" method="POST">
         <Button variant="destructive">Sign Out</Button>
       </form>
     </>
