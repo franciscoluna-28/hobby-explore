@@ -60,15 +60,18 @@ export default function Home() {
             prompt: "consent",
           },
         },
+
+        
+
       });
 
-      if (data) {
-        router.refresh();
-      }
+      
+
 
       if (error) {
         console.error("Google login error:", error);
       }
+
     } catch (error) {
       console.error("An unexpected error occurred:", error);
     }
