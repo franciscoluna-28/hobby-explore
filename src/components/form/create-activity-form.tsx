@@ -228,7 +228,7 @@ export default function CreateActivityForm({ handleSubmit, isLoading }: Props) {
 
             <Button
               onClick={activityForm.handleSubmit(handleSubmit)}
-              className="bg-mainGreen rounded-full w-auto p-6 px-6 hover:bg-transparent"
+              className="bg-mainGreen rounded-full w-auto p-6 px-6 hover:bg-transparent border hover:text-mainGreen hover:border-mainGreen"
               type="submit"
               disabled={isLoading}
             >
