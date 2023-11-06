@@ -17,16 +17,12 @@ import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
-import { AiOutlineMail } from "react-icons/ai";
-import { BsLock } from "react-icons/bs";
 import Link from "next/link";
-import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Badge } from "@/components/ui/badge";
 import { useEffect } from "react";
 import { TIPS } from "@/database/tips-placeholder";
 import { useState } from "react";
 import Animatepresence, { AnimatePresence, motion } from "framer-motion";
-import Motion from "framer-motion";
 import { TypeAnimation } from "react-type-animation";
 
 const formSchema = z.object({
@@ -77,7 +73,6 @@ export default function Home() {
     }
   };
 
-
   async function loginWithTwitter() {
     const { data } = await supabase.auth.signInWithOAuth({
       provider: "twitter",
@@ -111,21 +106,23 @@ export default function Home() {
       <section className="grid grid-cols-1 md:grid-cols-2 h-screen">
         {/* Landing page aesthetics and details */}
         <div className="h-screen items-center justify-center relative w-full hidden md:flex">
+          <div className="absolute rotate-[-10deg] z-50 rounded-2xl overflow-hidden border-white shadow-lg border-[5px]">
+            <Image
+              width={600}
+              height={600}
+              alt="Image"
+              src={"/images/piano.jpg"}
+            ></Image>
+          </div>
+          <div className="absolute rotate-[10deg] z-50 rounded-2xl overflow-hidden border-white shadow-xl border-[5px]">
+            <Image
+              width={600}
+              height={600}
+              alt="Image"
+              src={"/images/dogs.jpg"}
+            ></Image>
+          </div>
 
-
-        
-        <div className="absolute rotate-[-10deg] z-50 rounded-2xl overflow-hidden border-white shadow-lg border-[5px]">
-          <Image width={600} height={600} alt="Image" src={"/images/piano.jpg"}>
-
-          </Image>
-        </div>
-        <div className="absolute rotate-[10deg] z-50 rounded-2xl overflow-hidden border-white shadow-xl border-[5px]">
-          <Image width={600} height={600} alt="Image" src={"/images/dogs.jpg"}>
-
-          </Image>
-        </div>
-
-        
           <AnimatePresence mode="wait">
             <motion.div
               key={currentTipIndex}
@@ -169,7 +166,6 @@ export default function Home() {
                   justifyContent: "center",
                   textAlign: "center",
                   textTransform: "uppercase",
-                
                 }}
               />
             </div>
@@ -178,16 +174,15 @@ export default function Home() {
               with others.
             </span>
           </div>
-          <div className="inline-flex items-center justify-center w-full">
-            <hr className="w-64 h-px my-6 bg-gray-200 border-0 dark:bg-gray-700" />
-            <span className="absolute px-3 text-mainBlack/80 -translate-x-1/2 bg-white left-1/2 dark:text-white dark:bg-gray-900">
-              or
-            </span>
+          <div className="flex items-center w-full gap-4">
+            <hr className="flex-grow border-slate-200" />
+            <span className="text-slate-300 font-light">or</span>
+            <hr className="flex-grow border-slate-200" />
           </div>
           <div className="mt-4 w-full flex gap-2 justify-center max-w-sm">
             <Button
               onClick={loginWithGoogle}
-              className="bg-white border transition-shadow duration-300 hover:shadow-lg rounded-xl hover:bg-white items-center p-4 w-full flex justify-center"
+              className="bg-white border border-slate-200 transition-shadow duration-300 hover:shadow-lg rounded-xl hover:bg-white items-center p-4 w-full flex justify-center"
             >
               <Image
                 className="h-6 w-6"
@@ -199,7 +194,7 @@ export default function Home() {
             </Button>
             <Button
               onClick={loginWithTwitter}
-              className="bg-white border transition-shadow duration-300 hover:shadow-lg rounded-xl hover:bg-white items-center p-4 w-full flex justify-center"
+              className="bg-white border transition-shadow border-slate-200 duration-300 hover:shadow-lg rounded-xl hover:bg-white items-center p-4 w-full flex justify-center"
             >
               <Image
                 className="h-6 w-6"
