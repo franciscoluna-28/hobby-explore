@@ -60,18 +60,11 @@ export default function Home() {
             prompt: "consent",
           },
         },
-
-        
-
       });
-
-      
-
 
       if (error) {
         console.error("Google login error:", error);
       }
-
     } catch (error) {
       console.error("An unexpected error occurred:", error);
     }
