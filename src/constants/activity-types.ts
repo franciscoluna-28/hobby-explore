@@ -7,7 +7,8 @@ export type ActivityType =
   | "Music"
   | "Busywork"
   | "Coding"
-  | "Recreational";
+  | "Recreational"
+  | "3D - Modelling";
 
   export const AVAILABLE_ACTIVITY_TYPES: { id: number; name: string }[] = [
     { id: 1, name: "Gaming" },
@@ -19,6 +20,7 @@ export type ActivityType =
     { id: 7, name: "Busywork" },
     { id: 8, name: "Coding" },
     { id: 9, name: "Recreational" },
+    {id: 10, name: "3D - Modelling"}
   ];
   
   
