@@ -9,7 +9,8 @@ type ActivityType =
   | "Music"
   | "Busywork"
   | "Coding"
-  | "Recreational";
+  | "Recreational"
+  | "3D - Modelling"
 
 type ActivityCategory = {
   category_id: number;
@@ -49,10 +50,19 @@ export const ACTIVITY_CATEGORIES: ActivityCategory[] = [
   },
   {
     category_id: 7,
-    name: "Coding",
+    name: "Busywork",
   },
   {
     category_id: 8,
+    name: "Coding"
+  },
+  {
+    category_id: 9,
     name: "Recreational",
   },
+  {
+    category_id: 10,
+    name: "3D - Modelling"
+  }
+
 ];
