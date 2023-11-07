@@ -4,20 +4,11 @@ import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { IoIosAdd } from "react-icons/io";
 import { ACTIVITY_CATEGORIES } from "@/database/activities-categories";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { activitySchema } from "@/schemas/activitySchema";
-import z from "zod";
 import React from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 
 export default function Test() {
-
-  const supabase = createClientComponentClient();
-
-
-
   return (
     <>
       <div className="">
@@ -46,8 +37,8 @@ export default function Test() {
                 <AvatarFallback>CN</AvatarFallback>
               </Avatar>
               <span className="text-slate-500 text-sm ">
-                Hey user! Get started by creating some activities and
-                teaching others your favorite hobbies
+                Hey user! Get started by creating some activities and teaching
+                others your favorite hobbies
               </span>
             </div>
 
