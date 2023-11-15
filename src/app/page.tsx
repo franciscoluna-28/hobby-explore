@@ -19,19 +19,20 @@ import { useRouter } from "next/navigation";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
-import { useEffect } from "react";
+import { FormEvent, useEffect } from "react";
 import { TIPS } from "@/database/tips-placeholder";
 import { useState } from "react";
 import Animatepresence, { AnimatePresence, motion } from "framer-motion";
+import { Toaster, toast } from "sonner";
 
 import { TypeAnimation } from "react-type-animation";
 
 const formSchema = z.object({
-  email: z.string().min(2).email({
-    message: "Username must be at least 2 characters.",
+  email: z.string().min(1, {message: "You must provide an email adress"}).email({
+    message: "You must provide a valid email address",
   }),
-  password: z.string().min(2, {
-    message: "Username must be at least 2 characters.",
+  password: z.string().min(6, {
+    message: "Your password must be at least 6 characters",
   }),
 });
 
@@ -98,7 +99,46 @@ export default function Home() {
     exit: { x: 100, opacity: 0 }, // Fuera de la pantalla a la derecha
   };
 
+  const handleSubmit = async (values: z.infer<typeof formSchema>) => {
+
+    try {
+      const formData = new FormData();
+
+      formData.append("email", values.email);
+      formData.append("password", values.password);
+      
+      const response = await fetch('/auth/sign-up', {
+        method: 'POST',
+        body: formData,
+      });
+
+      const data = await response.json();
+
+      console.log(data);
+
+      if(data.status === 200) {
+        router.refresh();
+      }
+
+
+      if(data.status === 301) {
+        toast.error(data.message);
+      }
+
+      console.log(data)
+
+
+
+
+
+      console.log('Server response:', data);
+    } catch (error) {
+      console.error('Error submitting form:', error);
+    }
+  };
   return (
+    <>
+    <Toaster richColors/>
     <main className="overflow-y-hidden h-screen">
       <section className="grid grid-cols-1 md:grid-cols-2 h-screen">
         {/* Landing page aesthetics and details */}
@@ -203,8 +243,8 @@ export default function Home() {
             </Button>
           </div>
           <div className="w-full mt-4">
-            <Form {...form}>
-              <form method="post" className="space-y-8">
+            <Form {...form} control={form.control}>
+              <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-8">
                 <FormField
                   control={form.control}
                   name="email"
@@ -217,7 +257,7 @@ export default function Home() {
                           {...field}
                         />
                       </FormControl>
-                      <FormMessage />
+                      <FormMessage className="text-left" />
                     </FormItem>
                   )}
                 />
@@ -234,17 +274,17 @@ export default function Home() {
                           {...field}
                         />
                       </FormControl>
-                      <FormMessage />
+                      <FormMessage className="text-left" />
                     </FormItem>
                   )}
                 />
 
                 <Button
                   className="bg-mainBlack w-full !py-4 rounded-full"
-                  formAction="auth/sign-up"
+
                   type="submit"
                 >
-                  Login
+                  Register
                 </Button>
                 <div className="!mt-6 flex justify-between">
                   <Link
@@ -266,5 +306,6 @@ export default function Home() {
         </div>
       </section>
     </main>
+    </>
   );
 }
