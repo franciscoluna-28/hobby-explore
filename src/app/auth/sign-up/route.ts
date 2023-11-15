@@ -1,10 +1,10 @@
 import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 export const dynamic = "force-dynamic";
 
-export async function POST(request: Request) {
+export async function POST(request: NextRequest, res: NextResponse) {
   const requestUrl = new URL(request.url);
   const formData = await request.formData();
   const email = String(formData.get("email"));
@@ -23,12 +23,10 @@ export async function POST(request: Request) {
   });
 
   if (error) {
-    return NextResponse.json({status: 301, message: error.message})
+    return NextResponse.json({ status: 500, message: error.message });
   }
 
-  
-
-/*   if (error) {
+  /*   if (error) {
     return NextResponse.redirect(
       `${requestUrl.origin}/login?error=Could not authenticate user`,
       {
@@ -38,11 +36,13 @@ export async function POST(request: Request) {
   } */
 
   console.log(data);
-  
 
-  if(data.user) {
- return NextResponse.json({status: 200, message: "User created successfully"})   
+  if (data.user) {
+    return NextResponse.redirect(`${requestUrl.origin}/home`, {
+      status: 301,
+    })
+  }
+
+  return res;
   
-  ;
-}
 }
