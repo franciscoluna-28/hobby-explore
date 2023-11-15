@@ -9,9 +9,12 @@ export async function POST(request: Request) {
   const formData = await request.formData();
   const email = String(formData.get("email"));
   const password = String(formData.get("password"));
+
+  console.log(email, password);
+
   const supabase = createRouteHandlerClient({ cookies });
 
-  const { error } = await supabase.auth.signUp({
+  const { error, data } = await supabase.auth.signUp({
     email,
     password,
     options: {
@@ -20,18 +23,26 @@ export async function POST(request: Request) {
   });
 
   if (error) {
+    return NextResponse.json({status: 301, message: error.message})
+  }
+
+  
+
+/*   if (error) {
     return NextResponse.redirect(
       `${requestUrl.origin}/login?error=Could not authenticate user`,
       {
         status: 301,
       }
     );
-  }
+  } */
 
-  return NextResponse.redirect(
-    `${requestUrl.origin}/login?message=Check email to continue sign in process`,
-    {
-      status: 301,
-    }
-  );
+  console.log(data);
+  
+
+  if(data.user) {
+ return NextResponse.json({status: 200, message: "User created successfully"})   
+  
+  ;
+}
 }
