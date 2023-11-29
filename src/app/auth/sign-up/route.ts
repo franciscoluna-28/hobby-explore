@@ -40,9 +40,8 @@ export async function POST(request: NextRequest, res: NextResponse) {
   if (data.user) {
     return NextResponse.redirect(`${requestUrl.origin}/home`, {
       status: 301,
-    })
+    });
   }
 
   return res;
-  
 }
