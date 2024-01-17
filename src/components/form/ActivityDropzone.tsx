@@ -4,10 +4,10 @@ import Image from "next/image";
 import { AspectRatio } from "@/components/ui/aspect-ratio"
 
 export function MyDropzone() {
-  const [image, setImage] = useState(null);
+  const [image, setImage] = useState<any>(null);
 
-  const onDrop = useCallback((acceptedFiles) => {
-    acceptedFiles.forEach((file) => {
+  const onDrop = useCallback((acceptedFiles: any) => {
+    acceptedFiles.forEach((file: any) => {
       const reader = new FileReader();
 
       reader.onabort = () => console.log("file reading was aborted");
