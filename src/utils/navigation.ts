@@ -1,0 +1,1 @@
+type ProfilePages = "/profile" | "profile/settings"
