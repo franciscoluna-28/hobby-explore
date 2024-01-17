@@ -34,3 +34,11 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+.env
+/tests/example.spec.ts
+/tests/demo-todo-app-spec.ts
+/tests-examples/demo-todo-app.spec.ts
