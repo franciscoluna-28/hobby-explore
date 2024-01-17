@@ -1,6 +1,5 @@
 "use client";
 
-import { Textarea } from "@/components/ui/textarea";
 import { EditDescription } from "../EditDescription";
 import { EditPictures } from "../EditPictures";
 import { useProfileDescription } from "@/context/ProfileDescriptionContext";
@@ -36,16 +35,19 @@ export function ProfileEditButtonsSection({
           />
         ) : (
           <>
-          <motion.div     initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ease: "circIn", duration: 0.25}}
-        exit={{ opacity: 0 }} className="flex justify-center gap-4">
-            <EditDescription key="editDescription" />
-            <EditPictures key="editPicture" userId={userId} />
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ ease: "circIn", duration: 0.15 }}
+              exit={{ opacity: 0 }}
+              className="grid gap-4 sm:flex"
+            >
+              <EditDescription key="editDescription" />
+              <EditPictures key="editPicture" userId={userId} />
             </motion.div>
           </>
         )}
-</AnimatePresence>
+      </AnimatePresence>
     </section>
   );
 }

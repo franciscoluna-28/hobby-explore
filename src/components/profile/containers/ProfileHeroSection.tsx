@@ -54,10 +54,12 @@ export function ProfileHeroSection({
         isUploadingProfile={isUploadingProfile}
       />
       <div className="flex gap-2 items-center">
-        <h2 className="font-bold text-3xl z-50">{displayName ?? ""}</h2>
+        <h2 className="font-bold text-3xl z-50 text-center">{displayName ?? ""}</h2>
         <ShareProfileModal />
       </div>
-      <p className="text-slate-600">{userDescription}</p>
+      <div className="px-4">
+      <p className="text-slate-600 text-center mx-4">{userDescription}</p>
+      </div>
     </section>
   );
 }
