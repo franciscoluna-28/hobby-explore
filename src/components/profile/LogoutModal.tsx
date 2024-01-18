@@ -32,9 +32,11 @@ export function LogoutModal() {
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction className="bg-red-500 text-white hover:bg-red-600 duration-200">
+          <form action="/auth/sign-out" method="POST">
+          <AlertDialogAction type="submit" className="bg-red-500 text-white hover:bg-red-600 duration-200">
             Log Out
           </AlertDialogAction>
+          </form>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
