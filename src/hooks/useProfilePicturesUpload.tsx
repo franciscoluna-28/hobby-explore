@@ -10,6 +10,7 @@ import { uploadPictureToSupabase } from "@/services/supabase/storage";
 import { AcceptedBuckets } from "@/types/files";
 import { convertWordFirstLetterToUppercase } from "@/utils/strings";
 import { useUploadContext } from "./context/useUploadContext";
+import { PostgrestError } from "@supabase/supabase-js";
 
 function getBucketString(bucket: AcceptedBuckets): string {
   if (bucket === "avatars") return "avatar";
@@ -79,13 +80,11 @@ export function usePictureUpload(userId: string) {
         )} picture updated successfully!`
       );
       updateFunction(filePath ?? "");
-    } catch (error) {
-      console.error(
-        `Error uploading ${getBucketString(bucket)} picture:`,
-        error
-      );
+    } catch (error: PostgrestError | any) {
+      console.log(error.message);
+
       toast.error(
-        `Failed to update ${getBucketString(bucket)} picture. Please try again.`
+        `Error uploading ${getBucketString(bucket)} picture: ${error.message}`
       );
     } finally {
       if (bucket === "avatars") {
