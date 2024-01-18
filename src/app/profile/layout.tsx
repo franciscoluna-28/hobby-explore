@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "../globals.css";
 import { UploadProvider } from "@/context/UploadContext";
 import { ProfileDescriptionProvider } from "@/context/ProfileDescriptionContext";
+import { Toaster } from "sonner";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,6 +19,7 @@ export default function ProfileLayout({
 }) {
   return (
     <main className="m-4 sm:m-6 md:m-8">
+      <Toaster richColors/>
     <UploadProvider>
       <ProfileDescriptionProvider>{children}</ProfileDescriptionProvider>
     </UploadProvider>
