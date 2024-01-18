@@ -14,25 +14,6 @@ type ActionResponse = {
 // File used exclusively created for user CRUD operations
 const supabase = createServerComponentClient<Database>({ cookies });
 
-export async function updateUserUsername(
-  username: string,
-  userId: Tables<"users">["user_id"]
-): Promise<ActionResponse> {
-  const { error } = await supabase
-    .from("users")
-    .update({ username: username })
-    .match({ user_id: userId });
-
-  if (error) {
-    return error;
-  }
-
-  return {
-    success: true,
-    message: "Username updated successfully",
-  };
-}
-
 export async function updateUserDescription(
   description: string,
   userId: Tables<"users">["description"]
@@ -45,12 +26,52 @@ export async function updateUserDescription(
   if (error) {
     return {
       ...error,
-      success: false
-    }
+      success: false,
+    };
   }
 
   return {
     success: true,
     message: "User description updated successfully",
+  };
+}
+
+export async function updateUserUsername(username: string, userId: string) {
+  const { error } = await supabase
+    .from("users")
+    .update({ username })
+    .match({ user_id: userId });
+
+  if (error) {
+    return {
+      ...error,
+      success: false,
+    };
+  }
+
+  return {
+    success: true,
+    message: "Username updated successfully",
+  };
+}
+
+export async function updateDisplayName(displayName: string, userId: string) {
+  const { error } = await supabase
+    .from("users")
+    .update({ displayName })
+    .match({ user_id: userId });
+
+    console.log(error)
+
+  if (error) {
+    return {
+      ...error,
+      success: false,
+    };
+  }
+
+  return {
+    success: true,
+    message: "Display name updated successfully",
   };
 }

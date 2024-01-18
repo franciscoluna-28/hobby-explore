@@ -26,6 +26,8 @@ export function ProfileHeroSection({
   const bannerPictureUrl = useAuth((state) => state.userBannerProfilePhoto);
   const userDescription = useAuth((state) => state.userDescription);
   const setUserDescription = useAuth((state) => state.setUserDescription);
+  const setUserDisplayName = useAuth((state) => state.setDisplayName);
+  const userDisplayName = useAuth((state) => state.displayName);
 
   // The effects are used to avoid infinite renders and to change the pictures dinamically
   useEffect(() => {
@@ -39,6 +41,10 @@ export function ProfileHeroSection({
   useEffect(() => {
     setUserDescription(description);
   }, [setUserDescription]);
+
+  useEffect(() => {
+    setUserDisplayName(displayName);
+  }, [setUserDisplayName]);
 
   // Access upload provider in profile page
   const { isUploadingProfile, isUploadingBanner } = useUploadContext();
@@ -54,7 +60,7 @@ export function ProfileHeroSection({
         isUploadingProfile={isUploadingProfile}
       />
       <div className="flex gap-2 items-center">
-        <h2 className="font-bold text-3xl z-50 text-center">{displayName ?? ""}</h2>
+        <h2 className="font-bold text-3xl z-50 text-center">{userDisplayName}</h2>
         <ShareProfileModal />
       </div>
       <div className="px-4">
