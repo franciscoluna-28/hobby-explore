@@ -65,7 +65,7 @@ export function ChangeDisplayNameModal({ defaultDisplayName, userId }: Props) {
         <DialogHeader>
           <DialogTitle>Edit profile</DialogTitle>
           <DialogDescription>
-            Change your display name here. Click save when you're done.
+            Change your display name here. Click save when you&apos;re done.
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">
