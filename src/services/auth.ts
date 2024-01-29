@@ -3,8 +3,6 @@
 import { cookies } from "next/headers";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { Database, Tables } from "@/lib/database";
-import { PostgrestError } from "@supabase/supabase-js";
-import { useAuth } from "@/store/useAuthStore";
 
 const supabase = createServerComponentClient<Database>({ cookies });
 

@@ -28,6 +28,7 @@ module.exports = {
         mainBlack: "#1E1E1E",
         lightGray: "#FAFAFA",
         darkGray: "#818181",
+        textGray: "#7E7E7E",
         ring: "hsl(var(--ring))",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
