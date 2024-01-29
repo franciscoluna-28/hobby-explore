@@ -19,10 +19,10 @@ export default function ProfileLayout({
 }) {
   return (
     <main className="m-4 sm:m-6 md:m-8">
-      <Toaster richColors/>
-    <UploadProvider>
-      <ProfileDescriptionProvider>{children}</ProfileDescriptionProvider>
-    </UploadProvider>
+      <Toaster richColors />
+      <UploadProvider>
+        <ProfileDescriptionProvider>{children}</ProfileDescriptionProvider>
+      </UploadProvider>
     </main>
   );
 }

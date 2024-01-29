@@ -29,22 +29,22 @@ export function ProfileHeroSection({
   const setUserDisplayName = useAuth((state) => state.setDisplayName);
   const userDisplayName = useAuth((state) => state.displayName);
 
-  // The effects are used to avoid infinite renders and to change the pictures dinamically
-  useEffect(() => {
-    setProfilePictureUrl(defaultProfilePictureUrl);
-  }, [setProfilePictureUrl]);
+    // The effects are used to avoid infinite renders and to change the pictures dinamically
+    useEffect(() => {
+      setProfilePictureUrl(defaultProfilePictureUrl);
+    }, [setProfilePictureUrl]);
 
-  useEffect(() => {
-    setBannerPictureUrl(defaultBannerPictureUrl);
-  }, [setBannerPictureUrl]);
+    useEffect(() => {
+      setBannerPictureUrl(defaultBannerPictureUrl);
+    }, [setBannerPictureUrl]);
 
-  useEffect(() => {
-    setUserDescription(description);
-  }, [setUserDescription]);
+    useEffect(() => {
+      setUserDescription(description);
+    }, [setUserDescription]);
 
-  useEffect(() => {
-    setUserDisplayName(displayName);
-  }, [setUserDisplayName]);
+    useEffect(() => {
+      setUserDisplayName(displayName);
+    }, [setUserDisplayName]);
 
   // Access upload provider in profile page
   const { isUploadingProfile, isUploadingBanner } = useUploadContext();
