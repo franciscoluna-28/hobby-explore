@@ -32,7 +32,7 @@ type HeaderLinkProps = {
 } & LinkProps &
   VariantProps<typeof headerLinkVariants>;
 
-export const HeaderLink = forwardRef(function HeaderLinkComponent({
+export function HeaderLink({
   ActiveLinkIcon,
   InactiveLinkIcon,
   href,
@@ -58,4 +58,4 @@ export const HeaderLink = forwardRef(function HeaderLinkComponent({
       {children}
     </Link>
   );
-});
+}

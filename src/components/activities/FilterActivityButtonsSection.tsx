@@ -1,3 +1,5 @@
+"use client"
+
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { ACTIVITIES_CATEGORIES } from "@/constants/activities/categories";
@@ -23,6 +25,8 @@ const FilterActivityButtonsSection: React.FC = () => {
       <Button
         variant={currentCategory === null ? "secondarySelected" : "secondary"}
         onClick={() => handleCategoryChange(null)}
+        disabled={currentCategory as ExistingActivityCategories === null}
+        
       >
         All
       </Button>
@@ -30,12 +34,14 @@ const FilterActivityButtonsSection: React.FC = () => {
         <FilterActivityButton
           key={activity}
           activity={activity}
+          disabled={activity as ExistingActivityCategories | null === currentCategory}
           selected={currentCategory === activity}
           onClick={() =>
             handleCategoryChange(activity as ExistingActivityCategories | null)
           }
         />
       ))}
+
 
     </div>
   );
