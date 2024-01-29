@@ -24,6 +24,10 @@ module.exports = {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         mainGreen: "#00CAA7",
+        complement: "#30F07D",
+        mainBlack: "#1E1E1E",
+        lightGray: "#FAFAFA",
+        darkGray: "#818181",
         ring: "hsl(var(--ring))",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
@@ -78,5 +82,19 @@ module.exports = {
     },
     darkMode: "class",
   },
-  plugins: [require("tailwindcss-animate"), nextui()]
+  plugins: [
+    nextui({
+      themes: {
+        light: {
+          colors: {
+            primary: {
+              DEFAULT: "#fff",
+              foreground: "#fff",
+            },
+            focus: "#ffffff",
+          },
+        },
+      },
+    }),
+  ],
 }
