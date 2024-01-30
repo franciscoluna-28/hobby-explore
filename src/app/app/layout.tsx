@@ -1,6 +1,7 @@
 import { Header } from "@/components/layout/Header";
 import "../globals.css";
 import { getCurrentUser } from "@/services/auth";
+import { Toaster } from "sonner";
 
 export default async function AppLayout({
   children,
@@ -11,9 +12,8 @@ export default async function AppLayout({
 
   return (
     <>
-      <div className="max-h-min">
+        <Toaster/>
         <Header profilePictureUrl={user?.profile_picture_url} />
-      </div>
       <main className="p-8">{children}</main>
     </>
   );
