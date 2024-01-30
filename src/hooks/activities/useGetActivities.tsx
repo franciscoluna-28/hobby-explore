@@ -4,6 +4,7 @@ import {
   getTenRandomActivities,
 } from "@/services/activities/getActivities";
 import { useActivityStore } from "@/store/useCategoryStore";
+import { ExistingActivityCategories } from "@/constants/activities/categories";
 
 export function useGetActivities() {
   const activityCategory = useActivityStore((state) => state.currentCategory);
@@ -12,13 +13,11 @@ export function useGetActivities() {
 
   // Not a big fan of this useEffect but it works for now
   useEffect(() => {
-    async function fetchActivities(categoryId?: string | null) {
+    async function fetchActivities(categoryName?: ExistingActivityCategories | null) {
       setIsLoading(true);
       try {
 
-        console.log(categoryId)
-
-        const response = await getTenRandomActivities(categoryId);
+        const response = await getTenRandomActivities(categoryName);
 
         if (response === null) {
           return null;
@@ -40,9 +39,9 @@ export function useGetActivities() {
       }
     }
 
-    const categoryId = activityCategory ? activityCategory : null;
+    const categoryName = activityCategory ? activityCategory : null;
 
-    fetchActivities(categoryId);
+    fetchActivities(categoryName);
   }, [activityCategory]);
 
   return { activities, isLoading };
