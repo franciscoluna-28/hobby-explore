@@ -1,8 +1,5 @@
-import {
-  ActivityQueryResponse,
-  getTenRandomActivities,
-} from "@/services/activities/getActivities";
-import { toast } from "sonner";
+"use client"
+
 import {
   Card,
   CardContent,
@@ -14,46 +11,48 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
+import { useGetActivities } from "@/hooks/activities/useGetActivities";
 
-export async function ActivitiesFeed() {
-  const response = await getTenRandomActivities();
+export function ActivitiesFeed() {
+  const { activities, isLoading } = useGetActivities();
 
-  // First case: activities is null
-  if (response === null) {
+  // Manejo de carga
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+   // Si no hay actividades disponibles
+   if (!activities.length) {
     return <div>No activities available.</div>;
   }
 
-  // Second case: activities throws an error
-  if ("code" in response) {
-    toast.error("Failed to fetch activities.");
-    return <div>Error fetching activities.</div>;
-  }
-
-  // Now we're certain that response is of type ActivityQueryResponse[]
-  const activities = response as ActivityQueryResponse[];
 
   // Render the activities feed
   // TODO: Return list of tips in API response
   return (
-    <div className="space-y-6">
+    <div className="flex flex-wrap justify-center gap-6">
       {activities.map((activity) => (
-       
-          <Card
-            key={activity.activity_id}
-            className="rounded-2xl hover:shadow-md duration-200 max-w-[350px] max-h-[500px]"
-          >
-             <Link
-        className="w-min bg-red-500"
+        <Card
           key={activity.activity_id}
-          href={`activities/${activity.activity_id}`}
+          className="rounded-2xl hover:shadow-md duration-200 max-w-[350px] max-h-[500px]"
         >
+          <Link
+            className="w-min bg-red-500"
+            key={activity.activity_id}
+            href={`activities/${activity.activity_id}`}
+          >
             <div className="relative">
               <Badge className="absolute top-4 right-4 bg-mainBlack/60">
-                2 tips
+                {activity.tips.length}{" "}
+                {activity.tips.length > 1 ? "tips" : "tip"}
               </Badge>
               <img
                 className="object-cover rounded-t-2xl w-full max-h-[200px]"
-                src={activity.tips?.display_image_url ?? ""}
+                src={
+                  activity.tips.length
+                    ? activity.tips[0].display_image_url!
+                    : ""
+                }
               />
             </div>
             <CardHeader>
@@ -70,25 +69,22 @@ export async function ActivitiesFeed() {
                     {activity.users?.displayName ?? "User"}
                   </p>
                   <p className="text-slate-600 text-sm">
-                    {activity.activities?.created_at}
+                    {activity.created_at}
                   </p>
                 </div>
               </div>
               <CardTitle className="leading-normal text-mainBlack">
-                {activity.activities?.name}
+                {activity.name}
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <CardDescription>
-                {activity.activities?.participants}
-              </CardDescription>
+              <CardDescription>{activity.participants}</CardDescription>
             </CardContent>
             <CardFooter>
               <span>Created by: {activity.created_by_user_id}</span>
             </CardFooter>
-            </Link>
-          </Card>
-
+          </Link>
+        </Card>
       ))}
     </div>
   );
