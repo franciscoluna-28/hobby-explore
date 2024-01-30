@@ -13,8 +13,9 @@ export interface Database {
         Row: {
           accessibility: number | null
           activity_id: number
+          category_id: number | null
           created_at: string
-          display_image_url: string | null
+          created_by_user_id: string | null
           location: string | null
           name: string | null
           participants: number | null
@@ -22,8 +23,9 @@ export interface Database {
         Insert: {
           accessibility?: number | null
           activity_id?: number
+          category_id?: number | null
           created_at?: string
-          display_image_url?: string | null
+          created_by_user_id?: string | null
           location?: string | null
           name?: string | null
           participants?: number | null
@@ -31,47 +33,23 @@ export interface Database {
         Update: {
           accessibility?: number | null
           activity_id?: number
+          category_id?: number | null
           created_at?: string
-          display_image_url?: string | null
+          created_by_user_id?: string | null
           location?: string | null
           name?: string | null
           participants?: number | null
         }
-        Relationships: []
-      }
-      activities_relationships: {
-        Row: {
-          activity_id: number
-          category_id: number | null
-          created_by_user_id: string
-        }
-        Insert: {
-          activity_id: number
-          category_id?: number | null
-          created_by_user_id: string
-        }
-        Update: {
-          activity_id?: number
-          category_id?: number | null
-          created_by_user_id?: string
-        }
         Relationships: [
           {
-            foreignKeyName: "activities_relationships_activity_id_fkey"
-            columns: ["activity_id"]
-            isOneToOne: true
-            referencedRelation: "activities"
-            referencedColumns: ["activity_id"]
-          },
-          {
-            foreignKeyName: "activities_relationships_category_id_fkey"
+            foreignKeyName: "activities_category_id_fkey"
             columns: ["category_id"]
             isOneToOne: false
             referencedRelation: "categories"
             referencedColumns: ["category_id"]
           },
           {
-            foreignKeyName: "activities_relationships_created_by_user_id_fkey"
+            foreignKeyName: "activities_created_by_user_id_fkey"
             columns: ["created_by_user_id"]
             isOneToOne: false
             referencedRelation: "users"
@@ -96,62 +74,43 @@ export interface Database {
       }
       tips: {
         Row: {
+          activity_id: number | null
           created_at: string
+          created_by_user_id: string | null
           description: string | null
           display_image_url: string | null
           tip_id: number
         }
         Insert: {
+          activity_id?: number | null
           created_at?: string
+          created_by_user_id?: string | null
           description?: string | null
           display_image_url?: string | null
           tip_id?: number
         }
         Update: {
+          activity_id?: number | null
           created_at?: string
+          created_by_user_id?: string | null
           description?: string | null
           display_image_url?: string | null
-          tip_id?: number
-        }
-        Relationships: []
-      }
-      tips_relationships: {
-        Row: {
-          activity_id: number
-          created_by_user_id: string
-          tip_id: number
-        }
-        Insert: {
-          activity_id: number
-          created_by_user_id: string
-          tip_id: number
-        }
-        Update: {
-          activity_id?: number
-          created_by_user_id?: string
           tip_id?: number
         }
         Relationships: [
           {
-            foreignKeyName: "tips_relationships_activity_id_fkey"
+            foreignKeyName: "tips_activity_id_fkey"
             columns: ["activity_id"]
             isOneToOne: false
             referencedRelation: "activities"
             referencedColumns: ["activity_id"]
           },
           {
-            foreignKeyName: "tips_relationships_created_by_user_id_fkey"
+            foreignKeyName: "tips_created_by_user_id_fkey"
             columns: ["created_by_user_id"]
             isOneToOne: false
             referencedRelation: "users"
             referencedColumns: ["user_id"]
-          },
-          {
-            foreignKeyName: "tips_relationships_tip_id_fkey"
-            columns: ["tip_id"]
-            isOneToOne: true
-            referencedRelation: "tips"
-            referencedColumns: ["tip_id"]
           }
         ]
       }
@@ -207,7 +166,25 @@ export interface Database {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      delete_avatar: {
+        Args: {
+          avatar_url: string
+        }
+        Returns: Record<string, unknown>
+      }
+      delete_banner: {
+        Args: {
+          banner_url: string
+        }
+        Returns: Record<string, unknown>
+      }
+      delete_storage_object: {
+        Args: {
+          bucket: string
+          object: string
+        }
+        Returns: Record<string, unknown>
+      }
     }
     Enums: {
       [_ in never]: never

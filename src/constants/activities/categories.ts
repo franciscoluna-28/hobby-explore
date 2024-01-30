@@ -8,7 +8,8 @@ export type ExistingActivityCategories =
   | "Busywork"
   | "Coding"
   | "Recreational"
-  | "3D - Modelling";
+  | "3D - Modelling"
+  | "Drawing";
 
 export const ACTIVITIES_CATEGORIES: Record<ExistingActivityCategories, number> =
   {
@@ -22,4 +23,5 @@ export const ACTIVITIES_CATEGORIES: Record<ExistingActivityCategories, number> =
     Coding: 8,
     Recreational: 9,
     "3D - Modelling": 10,
+    Drawing: 11,
   };
