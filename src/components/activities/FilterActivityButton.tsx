@@ -6,7 +6,7 @@ interface FilterActivityButtonProps {
   activity: string;
   selected: boolean;
   disabled: boolean;
-  onClick: () => void;
+  onClick?: () => void;
 }
 
 export const FilterActivityButton: React.FC<FilterActivityButtonProps> = ({
