@@ -2,7 +2,6 @@
 
 import "./globals.css";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
-
 import { Database } from "@/lib/database";
 import { LoginWithGoogle } from "@/components/auth/LoginWithGoogle";
 import { Toaster } from "sonner";
@@ -14,7 +13,7 @@ export default function Home() {
   return (
     <>
       <Toaster />
-      <main className="flex relative bg-[url('/bg.svg')] bg-no-repeat w-full min-h-screen flex-col items-center justify-between">
+      <main className="flex relative w-full min-h-screen flex-col items-center justify-between">
         {/*  <h1 className="text-5xl px-16 font-extrabold leading-tight text-center text-mainBlack">
           Share Your Unique Hobbies
         </h1>
