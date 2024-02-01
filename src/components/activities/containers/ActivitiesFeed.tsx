@@ -12,23 +12,21 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
 import { useGetActivities } from "@/hooks/activities/useGetActivities";
+import { ActivityFeedSkeletons } from "@/components/skeletons/containers/ActivityFeedSkeleton";
 
 export function ActivitiesFeed() {
   const { activities, isLoading } = useGetActivities();
 
-  // Manejo de carga
-  if (isLoading) {
-    return <div>Loading...</div>;
+  if (!isLoading) {
+    return <ActivityFeedSkeletons/>
   }
 
-   // Si no hay actividades disponibles
+  // TODO: CREATE A PROPER COMPONENT TO DISPLAY THIS
    if (!activities.length) {
     return <div>No activities available.</div>;
   }
 
 
-  // Render the activities feed
-  // TODO: Return list of tips in API response
   return (
     <div className="flex flex-wrap justify-center gap-6">
       {activities.map((activity) => (
