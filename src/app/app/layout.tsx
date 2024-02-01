@@ -15,7 +15,7 @@ export default async function AppLayout({
     <>
       <Toaster />
       <Header profilePictureUrl={user?.profile_picture_url} />
-      <main className="p-8">{children}</main>
+      <main className="flex justify-center flex-col p-8 items-center">{children}</main>
     </>
   );
 }

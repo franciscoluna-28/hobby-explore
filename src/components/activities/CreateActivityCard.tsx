@@ -3,6 +3,8 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { getSupabaseFileUrlFromRelativePath } from "@/services/supabase/storage";
 import { getCurrentUser } from "@/services/auth";
+import { Plus } from "lucide-react";
+import Link from "next/link";
 
 const getRenderText = (displayName: string | null | undefined): string => {
   return `Hey  ${
@@ -14,7 +16,8 @@ export async function CreateActivityCard() {
   const user = await getCurrentUser();
 
   return (
-    <Card className="!border-none transition-all !w-full rounded-2xl border shadow-xl shadow-black/5">
+    <Link href="/app/create">
+    <Card className="!border-none transition-all !w-full rounded-2xl border shadow-sm hover:shadow-md duration-200 shadow-black/5">
       <CardContent className="flex items-center !p-4 gap-2">
         <Avatar key={user?.user_id}>
           <AvatarImage
@@ -27,7 +30,12 @@ export async function CreateActivityCard() {
           <AvatarFallback>User</AvatarFallback>
         </Avatar>
         <p className="text-textGray">{getRenderText(user?.displayName)}</p>
+      <div className="ml-auto bg-mainGreen p-1 rounded-full text-white">
+        <Plus className="text-white"/>
+      </div>
       </CardContent>
+      
     </Card>
+    </Link>
   );
 }
