@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import {
   Card,
@@ -18,14 +18,13 @@ export function ActivitiesFeed() {
   const { activities, isLoading } = useGetActivities();
 
   if (!isLoading) {
-    return <ActivityFeedSkeletons/>
+    return <ActivityFeedSkeletons />;
   }
 
   // TODO: CREATE A PROPER COMPONENT TO DISPLAY THIS
-   if (!activities.length) {
+  if (!activities.length) {
     return <div>No activities available.</div>;
   }
-
 
   return (
     <div className="flex flex-wrap justify-center gap-6">
