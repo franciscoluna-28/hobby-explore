@@ -1,9 +1,11 @@
+"use client";
+
 import React from "react";
 import { motion } from "framer-motion";
 
 type Props = {
   children: React.ReactElement | React.ReactElement[];
-};
+} & React.HTMLAttributes<HTMLDivElement>;
 
 // Existing animation variants for the component
 const containerVariants = {

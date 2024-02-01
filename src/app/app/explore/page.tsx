@@ -11,7 +11,7 @@ export default async function UserPage() {
   return (
     <>
       <FilterActivityButtonsSection />
-      <section className="flex justify-center my-6 min-w-full">
+      <section className="w-full my-6 max-w-[1000px] m-auto">
         <Suspense fallback={<CreateActivityCardSkeleton />}>
           <CreateActivityCard />
         </Suspense>

@@ -19,7 +19,7 @@ type Props = {
 export function ActivityCard({ activity }: Props) {
   return (
     <li>
-      <Card className="rounded-2xl hover:shadow-md duration-200 max-w-[350px] max-h-[500px]">
+      <Card className="rounded-2xl hover:shadow-md duration-200 max-w-[350px] h-[500px]">
         <Link
           className="w-min bg-red-500"
           key={activity.activity_id}

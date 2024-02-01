@@ -1,7 +1,11 @@
-import { Skeleton } from "../ui/skeleton"
+import { ActivityMotion } from "../motion/ActivityMotion";
+import { Skeleton } from "../ui/skeleton";
 
 export function CreateActivityCardSkeleton() {
-    return (
-<Skeleton className="min-w-[1080px] rounded-2xl max h-24"></Skeleton>
-    )
+  return (
+  
+    <ActivityMotion>
+  <Skeleton className="min-w-[1080px] rounded-2xl h-[75px]"></Skeleton>
+  </ActivityMotion>
+  )
 }
