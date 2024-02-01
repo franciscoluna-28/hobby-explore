@@ -11,9 +11,9 @@ export function ActivitiesFeed() {
 
   if (isLoading) {
     return (
-      <ActivityMotion>
+
         <ActivityFeedSkeletons />
-      </ActivityMotion>
+
     );
   }
 
@@ -22,10 +22,10 @@ export function ActivitiesFeed() {
   }
 
   return (
-    <ActivityMotion>
+<ul className="flex flex-wrap gap-6 justify-center">
       {activities.map((activity) => (
-        <ActivityCard activity={activity} />
+        <ActivityCard key={activity.activity_id} activity={activity} />
       ))}
-    </ActivityMotion>
+</ul>
   );
 }

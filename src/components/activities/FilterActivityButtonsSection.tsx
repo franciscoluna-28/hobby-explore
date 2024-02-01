@@ -18,6 +18,7 @@ const FilterActivityButtonsSection: React.FC = () => {
     <div className="flex gap-2 justify-center">
       <Link href={`explore`}>
         <Button
+          key="All"
           variant={
             selectedCategory === null ? "secondarySelected" : "secondary"
           }
@@ -27,10 +28,9 @@ const FilterActivityButtonsSection: React.FC = () => {
         </Button>
       </Link>
 
-      {Object.entries(ACTIVITIES_CATEGORIES).map(([activity]) => (
-        <Link href={`?category=${activity}`}>
+      {Object.entries(ACTIVITIES_CATEGORIES).map(([activity, index]) => (
+        <Link href={`?category=${activity}`} key={activity}>
           <FilterActivityButton
-            key={activity}
             activity={activity}
             disabled={
               (activity as ExistingActivityCategories | null) ===
