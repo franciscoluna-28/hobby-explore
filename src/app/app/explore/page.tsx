@@ -8,9 +8,6 @@ import { toast } from "sonner";
 import { ActivitiesFeed } from "@/components/activities/containers/ActivitiesFeed";
 
 export default async function UserPage() {
-
-
-
   return (
     <>
       <FilterActivityButtonsSection />
@@ -18,9 +15,8 @@ export default async function UserPage() {
         <Suspense fallback={<CreateActivityCardSkeleton />}>
           <CreateActivityCard />
         </Suspense>
-
       </section>
-      <ActivitiesFeed/>
+      <ActivitiesFeed />
     </>
   );
 }
