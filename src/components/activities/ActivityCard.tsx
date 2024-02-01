@@ -11,6 +11,7 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
+import { handleDateConversion } from "@/lib/dates/dateConversion";
 
 type Props = {
   activity: ActivityQueryResponse;
@@ -19,7 +20,7 @@ type Props = {
 export function ActivityCard({ activity }: Props) {
   return (
     <li>
-      <Card className="rounded-2xl hover:shadow-md duration-200 max-w-[350px] h-[500px]">
+      <Card className="rounded-2xl hover:shadow-md duration-200 w-[350px] h-[500px]">
         <Link
           className="w-min bg-red-500"
           key={activity.activity_id}
@@ -45,23 +46,21 @@ export function ActivityCard({ activity }: Props) {
                 />
                 <AvatarFallback>CN</AvatarFallback>
               </Avatar>
-              <div className="space-y-2">
+              <div className="">
                 <p className="text-darkGray font-medium text-sm">
                   {activity.users?.displayName ?? "User"}
                 </p>
-                <p className="text-slate-600 text-sm">{activity.created_at}</p>
+                <p className="text-slate-600 text-sm">
+                  {handleDateConversion(activity.created_at)}
+                </p>
               </div>
             </div>
-            <CardTitle className="leading-normal text-mainBlack">
+            <CardTitle className="leading-normal pt-2 text-mainBlack">
               {activity.name}
             </CardTitle>
           </CardHeader>
-          <CardContent>
-            <CardDescription>{activity.participants}</CardDescription>
-          </CardContent>
-          <CardFooter>
-            <span>Created by: {activity.created_by_user_id}</span>
-          </CardFooter>
+          <CardContent></CardContent>
+          <CardFooter></CardFooter>
         </Link>
       </Card>
     </li>
