@@ -17,7 +17,7 @@ import { ActivityFeedSkeletons } from "@/components/skeletons/containers/Activit
 export function ActivitiesFeed() {
   const { activities, isLoading } = useGetActivities();
 
-  if (!isLoading) {
+  if (isLoading) {
     return <ActivityFeedSkeletons />;
   }
 
