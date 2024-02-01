@@ -10,30 +10,20 @@ export function ActivitiesFeed() {
   const { activities, isLoading } = useGetActivities();
 
   if (isLoading) {
-    return (
-    <ActivityMotion>
-    <ActivityFeedSkeletons 
-    />
-    </ActivityMotion>);
+    return <ActivityFeedSkeletons />;
   }
 
   if (!activities.length) {
-    return (
-
-    <NotFoundActivities />
-
-    );
+    return <NotFoundActivities />;
   }
 
   return (
-
     <ul className="flex flex-wrap gap-6 justify-center">
       {activities.map((activity) => (
-            <ActivityMotion>
-        <ActivityCard key={activity.activity_id} activity={activity} />
+        <ActivityMotion>
+          <ActivityCard key={activity.activity_id} activity={activity} />
         </ActivityMotion>
       ))}
     </ul>
-
   );
 }

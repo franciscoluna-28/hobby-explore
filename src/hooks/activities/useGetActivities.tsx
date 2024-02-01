@@ -1,49 +1,35 @@
-import { useState, useEffect } from "react";
+import { useQuery } from "@tanstack/react-query";
 import {
   ActivityQueryResponse,
   getTenRandomActivities,
 } from "@/services/activities/getActivities";
-import { useActivityStore } from "@/store/useCategoryStore";
-import { ExistingActivityCategories } from "@/constants/activities/categories";
 import { useSearchParams } from "next/navigation";
+import { ExistingActivityCategories } from "@/constants/activities/categories";
 
 export function useGetActivities() {
   const searchParams = useSearchParams();
-  const activityCategory = searchParams.get("category") as ExistingActivityCategories | undefined;
-  const [activities, setActivities] = useState<ActivityQueryResponse[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const activityCategory = searchParams.get("category") as
+    | ExistingActivityCategories
+    | undefined;
 
-  // Not a big fan of this useEffect but it works for now
-  useEffect(() => {
-    async function fetchActivities(
-      categoryName?: ExistingActivityCategories | null
-    ) {
-      setIsLoading(true);
+  const {
+    data: activities = [],
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: ["activities", activityCategory],
+    queryFn: async () => {
       try {
-        const response = await getTenRandomActivities(categoryName);
-
-        if (response === null) {
-          return null;
+        const response = await getTenRandomActivities(activityCategory);
+        if (response === null || "code" in response) {
+          throw new Error("Error fetching activities");
         }
-
-        if ("code" in response) {
-          return null;
-        }
-
-        const activities = response as ActivityQueryResponse[];
-
-        setActivities(activities || []);
-        setIsLoading(false);
+        return response as ActivityQueryResponse[];
       } catch (error) {
-        console.error("Error fetching activities:", error);
-        setIsLoading(false);
+        throw new Error("Error fetching activities");
       }
-    }
+    },
+  });
 
-    const categoryName = activityCategory ? activityCategory : null;
-
-    fetchActivities(categoryName);
-  }, [activityCategory]);
-
-  return { activities, isLoading };
+  return { activities, isLoading, isError };
 }
