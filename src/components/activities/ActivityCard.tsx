@@ -35,6 +35,7 @@ export function ActivityCard({ activity }: Props) {
               src={
                 activity.tips.length ? activity.tips[0].display_image_url! : ""
               }
+              alt={activity.name ?? "Activity"}
             />
           </div>
           <CardHeader>

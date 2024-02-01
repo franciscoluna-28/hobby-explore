@@ -20,7 +20,7 @@ export function ActivitiesFeed() {
   return (
     <ul className="flex flex-wrap gap-6 justify-center">
       {activities.map((activity) => (
-        <ActivityMotion>
+        <ActivityMotion key={activity.activity_id}>
           <ActivityCard key={activity.activity_id} activity={activity} />
         </ActivityMotion>
       ))}

@@ -14,9 +14,9 @@ export function NotFoundActivities() {
         style={{ width: "20%", height: "auto" }}
         alt="Not found"
       />
-      <h4 className="font-bold text-mainBlack my-3 text-4xl">We're sorry...</h4>
+      <h4 className="font-bold text-mainBlack my-3 text-4xl">We&apos;re sorry...</h4>
       <span className="text-mainBlack">
-        We don't have activities within this category yet...
+        We don&apos;t have activities within this category yet...
       </span>
     </div>
     </ActivityMotion>
