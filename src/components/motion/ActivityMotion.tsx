@@ -16,10 +16,9 @@ const containerVariants = {
 export function ActivityMotion({ children }: Props) {
   return (
     <motion.div
-      className="flex flex-wrap justify-center gap-6"
       variants={containerVariants}
       initial="hidden"
-      animate="hidden"
+      animate="visible"
       exit="exit"
     >
       {children}

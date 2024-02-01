@@ -4,6 +4,7 @@ import NotFound from "../../../public/not-found.webp";
 
 export function NotFoundActivities() {
   return (
+    <ActivityMotion>
     <div className="m-auto flex justify-center flex-col items-center my-12 gap-3">
       <Image
         src={NotFound}
@@ -18,5 +19,6 @@ export function NotFoundActivities() {
         We don't have activities within this category yet...
       </span>
     </div>
+    </ActivityMotion>
   );
 }

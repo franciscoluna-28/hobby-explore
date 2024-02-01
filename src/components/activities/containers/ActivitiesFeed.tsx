@@ -11,21 +11,29 @@ export function ActivitiesFeed() {
 
   if (isLoading) {
     return (
+    <ActivityMotion>
+    <ActivityFeedSkeletons 
+    />
+    </ActivityMotion>);
+  }
 
-        <ActivityFeedSkeletons />
+  if (!activities.length) {
+    return (
+
+    <NotFoundActivities />
 
     );
   }
 
-  if (!activities.length) {
-    return <NotFoundActivities />;
-  }
-
   return (
-<ul className="flex flex-wrap gap-6 justify-center">
+
+    <ul className="flex flex-wrap gap-6 justify-center">
       {activities.map((activity) => (
+            <ActivityMotion>
         <ActivityCard key={activity.activity_id} activity={activity} />
+        </ActivityMotion>
       ))}
-</ul>
+    </ul>
+
   );
 }
