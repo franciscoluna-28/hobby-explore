@@ -15,7 +15,7 @@ export type ActivityQueryResponse = Tables<"activities"> & {
 };
 
 // Query to retrieve the activity as well as their tips information
-const RANDOM_ACTIVITY_WITH_TIPS_QUERY = "*, users(*), tips(*)";
+const RANDOM_ACTIVITY_WITH_TIPS_QUERY = "*, users!activities_created_by_user_id_fkey(*), tips(*)";
 
 // Response type
 type Response = PostgrestError | ActivityQueryResponse[] | null;
@@ -28,9 +28,13 @@ export async function getTenRandomActivities(
       .from("activities")
       .select(RANDOM_ACTIVITY_WITH_TIPS_QUERY);
 
+
+
     if (error) {
       return error;
     }
+
+    console.log("data is: ", data, error)
 
     return data;
   }
@@ -40,6 +44,8 @@ export async function getTenRandomActivities(
     .select(RANDOM_ACTIVITY_WITH_TIPS_QUERY)
     .match({ category_id: getCategoryIdByName(categoryName) });
 
+    console.log("data is: ", data, error)
+    
   if (error) {
     return error;
   }
