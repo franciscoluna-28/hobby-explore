@@ -40,8 +40,6 @@ export async function getTenRandomActivities(
     .select(RANDOM_ACTIVITY_WITH_TIPS_QUERY)
     .match({ category_id: getCategoryIdByName(categoryName) });
 
-  console.log(data, error);
-
   if (error) {
     return error;
   }
@@ -52,12 +50,33 @@ export async function getTenRandomActivities(
 /*
 Function to retrieve an activity based on its id
 @param - activityId: Refers to the activity's id to fetch
+@return - Response: Returns an array of activities, an empty array or an error
 */
 export async function getActivityById(activityId: string): Promise<Response> {
   const { data, error } = await supabase
     .from("activities")
     .select(RANDOM_ACTIVITY_WITH_TIPS_QUERY)
     .match({ activity_id: activityId });
+
+  if (error) {
+    return error;
+  }
+
+  return data;
+}
+
+/*
+Retrieves all the activities from a user
+@param - userId: Refers to the user id to get the activities from
+@return - Response: Returns an array of activities, an empty array or an error
+*/
+export async function getUserActivitiesByUserId(
+  userId: string | undefined
+): Promise<Response> {
+  const { data, error } = await supabase
+    .from("activities")
+    .select(RANDOM_ACTIVITY_WITH_TIPS_QUERY)
+    .match({ created_by_user_id: userId ?? "" });
 
   if (error) {
     return error;
