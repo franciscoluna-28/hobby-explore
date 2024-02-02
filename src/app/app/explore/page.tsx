@@ -8,6 +8,9 @@ import { ActivitiesFeed } from "@/components/activities/containers/ActivitiesFee
 export default async function UserPage() {
   return (
     <>
+    <div className="!text-left flex mb-6 mr-auto sm:hidden ">
+    <h3 className="font-semibold text-2xl mr-auto">Explore</h3>
+    </div>
       <FilterActivityButtonsSection />
       <section className="w-full my-6 m-auto max-w-[1000px]">
         <Suspense fallback={<CreateActivityCardSkeleton />}>

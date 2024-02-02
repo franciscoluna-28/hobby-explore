@@ -25,7 +25,10 @@ const FilterActivityButtonsSection: React.FC = () => {
   }
 
   return (
-    <div className="flex gap-2 justify-center">
+    <div
+      className="gap-2 
+     overflow-x-scroll w-screen flex px-8 scrollbar-hide sm:justify-center sm:w-full sm:px-0 overflow-auto"
+    >
       <Link href={`explore`}>
         <Button
           key="All"
