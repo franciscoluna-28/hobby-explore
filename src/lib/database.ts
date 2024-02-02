@@ -72,6 +72,39 @@ export interface Database {
         }
         Relationships: []
       }
+      "saved-activities": {
+        Row: {
+          activity_id: number
+          saved_at: string
+          user_id: string
+        }
+        Insert: {
+          activity_id?: number
+          saved_at?: string
+          user_id: string
+        }
+        Update: {
+          activity_id?: number
+          saved_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "saved-activities_activity_id_fkey"
+            columns: ["activity_id"]
+            isOneToOne: false
+            referencedRelation: "activities"
+            referencedColumns: ["activity_id"]
+          },
+          {
+            foreignKeyName: "saved-activities_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["user_id"]
+          }
+        ]
+      }
       tips: {
         Row: {
           activity_id: number | null

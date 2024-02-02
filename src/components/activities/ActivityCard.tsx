@@ -10,6 +10,8 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
 import { handleDateConversion } from "@/lib/dates/dateConversion";
+import { SaveActivityButton } from "./SaveActivityButton";
+import { getCurrentUser } from "@/services/auth";
 
 type Props = {
   activity: ActivityQueryResponse;
@@ -19,18 +21,24 @@ type Props = {
 // TODO: IF THE ACTIVITY IS FROM THE SAME USER, DISPLAY A MENU TO SEE DELETE AND READ OPERATIONS. FOR EXAMPLE, A USER CAN GO TO THE ACTIVITY FORM AND EDIT THE INFORMATION OR DELETE THE ACTIVITY
 // TODO: USERS AREN'T ABLE TO SAVE THEIR OWN ACTIVITIES. ONLY ACTIVITIES FROM OTHER USERS. THAT'S WHY THE ACTIVITIES THEY HAVE CREATED HAVE A SPECIFIC UI SECTION. ALSO, AVOID USERS FROM SAVING THEIR OWN ACTIVITIES SERVER SIDE
 export function ActivityCard({ activity }: Props) {
+
   return (
     <li>
       <Card className="rounded-2xl hover:shadow-md duration-200 w-[350px] h-[500px]">
-        <Link
+  {/*       <Link
           className="w-min bg-red-500"
           key={activity.activity_id}
           href={`activities/${activity.activity_id}`}
-        >
+        > */}
           <div className="relative">
             <Badge className="absolute top-4 right-4 bg-mainBlack/60">
               {activity.tips.length} {activity.tips.length > 1 ? "tips" : "tip"}
             </Badge>
+            <div className="absolute bottom-4 left-4">
+              <SaveActivityButton
+                activityId={activity.activity_id}
+              />
+            </div>
             <img
               className="object-cover rounded-t-2xl w-full max-h-[200px]"
               src={
@@ -63,7 +71,7 @@ export function ActivityCard({ activity }: Props) {
           </CardHeader>
           <CardContent></CardContent>
           <CardFooter></CardFooter>
-        </Link>
+{/*         </Link> */}
       </Card>
     </li>
   );
