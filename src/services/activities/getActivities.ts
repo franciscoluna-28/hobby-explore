@@ -9,32 +9,89 @@ import { ExistingActivityCategories } from "@/constants/activities/categories";
 
 const supabase = createServerComponentClient<Database>({ cookies });
 
+type PaginationSetup = {
+  from: number;
+  to: number;
+};
+
+export async function getExactActivitiesCount(
+  categoryName: ExistingActivityCategories | undefined
+) {
+  if (!categoryName) {
+    const { error, data, count } = await supabase
+      .from("activities")
+      .select("activity_id", { count: "exact" });
+
+    if (error) {
+      return 0;
+    }
+
+    if (data) {
+      return count;
+    }
+
+    return 0;
+  }
+  const { error, data, count } = await supabase
+    .from("activities")
+    .select("activity_id", { count: "exact" })
+    .match({ category_id: getCategoryIdByName(categoryName) });
+
+  if (error) {
+    return 0;
+  }
+
+  if (data) {
+    return count;
+  }
+
+  return 0;
+}
+
+function getFromAndTo(page: number, limit: number): PaginationSetup {
+  page = Math.max(page, 1);
+  limit = Math.max(limit, 1);
+  page = page - 1;
+
+  const from = page * limit;
+  const to = from + limit - 1;
+
+  return { from, to };
+}
+
 export type ActivityQueryResponse = Tables<"activities"> & {
   tips: Tables<"tips">[];
   users: Tables<"users"> | null;
 };
 
 // Query to retrieve the activity as well as their tips information
-const RANDOM_ACTIVITY_WITH_TIPS_QUERY = "*, users!activities_created_by_user_id_fkey(*), tips(*)";
+const RANDOM_ACTIVITY_WITH_TIPS_QUERY =
+  "*, users!activities_created_by_user_id_fkey(*), tips(*)";
 
 // Response type
 type Response = PostgrestError | ActivityQueryResponse[] | null;
 
+const ITEMS_PER_PAGE: number = 9;
+const FIRST_PAGE: number = 1;
+
 export async function getTenRandomActivities(
+  page: number,
   categoryName?: ExistingActivityCategories | null
 ): Promise<Response> {
+  const { from, to } = getFromAndTo(
+    page < FIRST_PAGE ? FIRST_PAGE : page,
+    ITEMS_PER_PAGE
+  );
+
   if (!categoryName) {
     const { data, error } = await supabase
       .from("activities")
-      .select(RANDOM_ACTIVITY_WITH_TIPS_QUERY);
-
-
+      .select(RANDOM_ACTIVITY_WITH_TIPS_QUERY)
+      .range(from, to);
 
     if (error) {
       return error;
     }
-
-    console.log("data is: ", data, error)
 
     return data;
   }
@@ -42,10 +99,11 @@ export async function getTenRandomActivities(
   const { data, error } = await supabase
     .from("activities")
     .select(RANDOM_ACTIVITY_WITH_TIPS_QUERY)
-    .match({ category_id: getCategoryIdByName(categoryName) });
+    .match({ category_id: getCategoryIdByName(categoryName) })
+    .range(from, to);
 
-    console.log("data is: ", data, error)
-    
+  console.log("data is: ", data, error);
+
   if (error) {
     return error;
   }

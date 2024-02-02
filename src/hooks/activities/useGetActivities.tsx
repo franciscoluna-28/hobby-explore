@@ -6,7 +6,11 @@ import {
 import { useSearchParams } from "next/navigation";
 import { ExistingActivityCategories } from "@/constants/activities/categories";
 
-export function useGetActivities() {
+type Props = {
+  page: number;
+};
+
+export function useGetActivities({ page }: Props) {
   const searchParams = useSearchParams();
   const activityCategory = searchParams.get("category") as
     | ExistingActivityCategories
@@ -18,9 +22,10 @@ export function useGetActivities() {
     isError,
   } = useQuery({
     queryKey: ["activities", activityCategory],
+
     queryFn: async () => {
       try {
-        const response = await getTenRandomActivities(activityCategory);
+        const response = await getTenRandomActivities(page, activityCategory);
         if (response === null || "code" in response) {
           throw new Error("Error fetching activities");
         }
