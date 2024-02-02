@@ -16,7 +16,7 @@ export function Header({profilePictureUrl}: Props) {
       <Logo />
       <HeaderLinksContainer />
 
-      <Link href="/profile">
+      <Link href="/app/profile">
         <Avatar>
           <AvatarImage src={getSupabaseFileUrlFromRelativePath(profilePictureUrl ?? "", "avatars")} />
           <AvatarFallback>User</AvatarFallback>
