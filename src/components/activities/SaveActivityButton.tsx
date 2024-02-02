@@ -20,9 +20,7 @@ async function handleSaveDeleteActivity(activityId: string) {
 
   const res = await handleAddActivity(activityId, userId ?? "");
 
-  if("sucess" in res && res.success) {
-    return toast.success(res.message);
-  }
+  toast.success(res.message);
 }
 
 // TODO: ADD STYLES TO BUTTON VARIANTS INSTEAD OF HARDCODING THE STYLES
