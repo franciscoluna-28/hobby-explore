@@ -21,7 +21,7 @@ export function useGetActivities({ page }: Props) {
     isLoading,
     isError,
   } = useQuery({
-    queryKey: ["activities", activityCategory],
+    queryKey: ["activities", activityCategory, page],
 
     queryFn: async () => {
       try {

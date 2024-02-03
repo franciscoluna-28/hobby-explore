@@ -54,6 +54,28 @@ export async function getCurrentUser(): Promise<User | null> {
   return null;
 }
 
+/**
+ * Gets a user by its user id
+ * @param userId - The user id to look for
+ * @returns - Promise<User | null> - The user data or null if not found or error occurred
+ */
+// TODO: MAKE SURE TO HANDLE CASES WHERE THE USER DOESN'T EXIST
+export async function getUserByUserId(userId: string) {
+  console.log(userId)
+
+  const { data, error } = await supabase
+    .from("users")
+    .select("*")
+    .match({ user_id: userId })
+    .single();
+
+  if (!error && data) {
+    return data;
+  }
+
+  return null;
+}
+
 // Default route to redirect the user to
 const LANDING_PAGE_ROUTE = "/";
 
