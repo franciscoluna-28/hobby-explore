@@ -11,8 +11,8 @@ import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
 import { handleDateConversion } from "@/lib/dates/dateConversion";
 import { SaveActivityButton } from "./SaveActivityButton";
-import { getCurrentUser } from "@/services/auth";
 import { getSupabaseFileUrlFromRelativePath } from "@/services/supabase/storage";
+import Sample from "../../../public/sample.jpg"
 
 type Props = {
   activity: ActivityQueryResponse;
@@ -39,7 +39,7 @@ export function ActivityCard({ activity }: Props) {
             <img
               className="object-cover rounded-t-2xl w-full max-h-[200px]"
               src={
-                activity.tips.length ? activity.tips[0].display_image_url! : ""
+                activity.tips.length ? activity.tips[0].display_image_url! : Sample.src
               }
               alt={activity.name ?? "Activity"}
             />
