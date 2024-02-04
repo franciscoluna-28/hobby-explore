@@ -12,6 +12,7 @@ import Link from "next/link";
 import { handleDateConversion } from "@/lib/dates/dateConversion";
 import { SaveActivityButton } from "./SaveActivityButton";
 import { getCurrentUser } from "@/services/auth";
+import { getSupabaseFileUrlFromRelativePath } from "@/services/supabase/storage";
 
 type Props = {
   activity: ActivityQueryResponse;
@@ -53,8 +54,8 @@ export function ActivityCard({ activity }: Props) {
             <div className="flex items-center gap-2">
               <Avatar>
                 <AvatarImage
-                  src="https://github.com/shadcn.png"
-                  alt="@shadcn"
+                  src={activity.users?.profile_picture_url ? getSupabaseFileUrlFromRelativePath(activity.users.profile_picture_url, "avatars") : "https://github.com/shadcn.png"}
+                  alt={activity.users?.username ?? "@shadn"}
                 />
                 <AvatarFallback>CN</AvatarFallback>
               </Avatar>
