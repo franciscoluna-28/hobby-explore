@@ -6,13 +6,11 @@ import { PostgrestError } from "@supabase/supabase-js";
 import { cookies } from "next/headers";
 import { getCategoryIdByName } from "./categories";
 import { ExistingActivityCategories } from "@/constants/activities/categories";
+import { handlePaginationGetFromAndTo } from "../pagination/paginationServices";
+import { GLOBAL_FIRST_PAGINATION_PAGE } from "@/constants/pagination/globals";
+import { GLOBAL_ACTIVITIES_PER_PAGE } from "@/constants/pagination/globals";
 
 const supabase = createServerComponentClient<Database>({ cookies });
-
-type PaginationSetup = {
-  from: number;
-  to: number;
-};
 
 export async function getExactActivitiesCount(
   categoryName: ExistingActivityCategories | undefined
@@ -48,17 +46,6 @@ export async function getExactActivitiesCount(
   return 0;
 }
 
-function getFromAndTo(page: number, limit: number): PaginationSetup {
-  page = Math.max(page, 1);
-  limit = Math.max(limit, 1);
-  page = page - 1;
-
-  const from = page * limit;
-  const to = from + limit - 1;
-
-  return { from, to };
-}
-
 export type ActivityQueryResponse = Tables<"activities"> & {
   tips: Tables<"tips">[];
   users: Tables<"users"> | null;
@@ -71,16 +58,13 @@ const RANDOM_ACTIVITY_WITH_TIPS_QUERY =
 // Response type
 type Response = PostgrestError | ActivityQueryResponse[] | null;
 
-const ITEMS_PER_PAGE: number = 9;
-const FIRST_PAGE: number = 1;
-
 export async function getTenRandomActivities(
   page: number,
   categoryName?: ExistingActivityCategories | null
 ): Promise<Response> {
-  const { from, to } = getFromAndTo(
-    page < FIRST_PAGE ? FIRST_PAGE : page,
-    ITEMS_PER_PAGE
+  const { from, to } = handlePaginationGetFromAndTo(
+    page < GLOBAL_FIRST_PAGINATION_PAGE ? GLOBAL_FIRST_PAGINATION_PAGE : page,
+    GLOBAL_ACTIVITIES_PER_PAGE
   );
 
   if (!categoryName) {

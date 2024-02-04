@@ -1,4 +1,4 @@
-import { getUserByUserId } from "@/services/auth";
+ import { getUserByUserId } from "@/services/auth";
 
 export default async function UserProfilePage({
   params,

@@ -65,7 +65,7 @@ export async function validateActivityExistence(
 /**
  * Handles adding or removing an activity for a user based on its existence in the database.
  * If the activity is already saved, it will be removed. If not, it will be saved.
- * 
+ *
  * @param activityId The ID of the activity to add or remove.
  * @param userId The ID of the user performing the action.
  * @returns A success or error result indicating the outcome of the operation.
@@ -77,7 +77,6 @@ export async function handleAddActivity(activityId: string, userId: string) {
       .select("*")
       .match({ activity_id: activityId, user_id: userId })
       .maybeSingle();
-
 
     if (error) {
       return generateErrorResult("Error retrieving saved activity", error);
@@ -111,7 +110,7 @@ async function saveActivityByUserAndActivityId(
       activity_id: Number(validatedActivityId),
     });
 
-    console.log(error)
+    console.log(error);
 
     if (error) {
       return generateErrorResult(
