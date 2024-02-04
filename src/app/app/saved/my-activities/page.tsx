@@ -15,7 +15,7 @@ export default async function MyActivities() {
 
   // TODO: ADD EMPTY ACTIVITIES COMPONENT HERE
   if (!currentUserActivities) {
-    return <div>You don't have activities right now</div>;
+    return <div>You don&apos;t have activities right now</div>;
   }
 
   // TODO: ADD ERROR COMPONENT
