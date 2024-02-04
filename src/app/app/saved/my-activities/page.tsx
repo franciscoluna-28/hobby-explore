@@ -13,21 +13,20 @@ export default async function MyActivities() {
     currentUser?.user_id
   );
 
+  // TODO: ADD EMPTY ACTIVITIES COMPONENT HERE
   if (!currentUserActivities) {
     return <div>You don't have activities right now</div>;
   }
 
+  // TODO: ADD ERROR COMPONENT 
   if ("error" in currentUserActivities) {
     return <div>Auth or system error...</div>;
   }
 
   const activities = currentUserActivities as ActivityQueryResponse[];
 
-  console.log(currentUserActivities);
-
   return (
     <div className="h-screen">
-      <h1>My Activities</h1>
       <ul className="flex flex-wrap gap-6 justify-center">
         {activities.map((activity) => (
           <ActivityMotion key={activity.activity_id}>
