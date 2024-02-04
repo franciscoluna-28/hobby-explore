@@ -11,6 +11,8 @@ export function HeaderLinksContainer() {
           ActiveLinkIcon={FaBookmark}
           InactiveLinkIcon={FaRegBookmark}
           href="/app/explore"
+          stringToInclude="/explore"
+          shouldUseInclude
         >
           Explore
         </HeaderLink>
@@ -19,9 +21,11 @@ export function HeaderLinksContainer() {
         <HeaderLink
           ActiveLinkIcon={FaBookmark}
           InactiveLinkIcon={FaRegBookmark}
-          href="/app/my-activities"
+          shouldUseInclude
+          stringToInclude="/saved"
+          href="/app/saved/my-activities"
         >
-          ShortList
+          Saved
         </HeaderLink>
       </li>
     </ul>

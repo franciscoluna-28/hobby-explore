@@ -29,9 +29,12 @@ type HeaderLinkProps = {
   ActiveLinkIcon: IconType;
   InactiveLinkIcon: IconType;
   children: React.ReactNode;
+  shouldUseInclude?: boolean;
+  stringToInclude?: string;
 } & LinkProps &
   VariantProps<typeof headerLinkVariants>;
 
+  // TODO: CHECK FOR EMPTY STRINGS AS WELL
 export function HeaderLink({
   ActiveLinkIcon,
   InactiveLinkIcon,
@@ -39,11 +42,15 @@ export function HeaderLink({
   variant,
   size,
   children,
+  shouldUseInclude,
+  stringToInclude = "",
   ...rest
 }: HeaderLinkProps) {
   const pathName = usePathname();
 
-  const isActiveLink = pathName === href;
+  const isActiveLink = shouldUseInclude
+    ? pathName.includes(stringToInclude)
+    : pathName === href;
 
   const linkClassNames = cn(
     headerLinkVariants({
