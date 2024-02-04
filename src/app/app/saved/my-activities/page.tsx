@@ -18,7 +18,7 @@ export default async function MyActivities() {
     return <div>You don't have activities right now</div>;
   }
 
-  // TODO: ADD ERROR COMPONENT 
+  // TODO: ADD ERROR COMPONENT
   if ("error" in currentUserActivities) {
     return <div>Auth or system error...</div>;
   }
