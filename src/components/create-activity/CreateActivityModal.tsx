@@ -33,10 +33,10 @@ import { ACTIVITIES_CATEGORIES } from "@/constants/activities/categories";
 import { CheckIcon, ChevronDown } from "lucide-react";
 
 // Modal requirements:
-// Description: Refers to a brief activity description (50 - 100 characters)
-// Name: Refers to the activity name to be displayed (50 - 120 characters)
+// Description: Refers to a brief activity description (50 - 100 characters) ✅
+// Name: Refers to the activity name to be displayed (50 - 120 characters) ✅
 // Accessibility: Refers to how accessible an activity is economically (Numeric value from 0 to 100). The shortest the value, the cheaper the activity
-// Category: Refers to the category of the activity that is displayed in a list. Select the most appropriate one for your activity
+// Category: Refers to the category of the activity that is displayed in a list. Select the most appropriate one for your activity ✅
 // Tips: Refers to small short cards with images about your activity. Tips are meant to be short in description (50 - 100).
 // Tips - Images: Refers to the image of one tip. A tip can only have one image and you can have a maximum of 4 tips and a minimum of 3 tips.
 // Participants: Refers to the number of participants in one activity. (Min. 1 - Max. 100)
@@ -45,7 +45,7 @@ import { CheckIcon, ChevronDown } from "lucide-react";
 // Tip Card - Starts as an empty dropzone. Once you put an image, you actually start to edit one tip
 // Name input - Just a normal input to write text lol ✅
 // Category Selector - A selector to select categories ✅
-// Description - Textarea stuff 
+// Description - Textarea thing ✅
 // Two slider selection - Slider elector to select the min. accessibility value and the max. one.
 // Normal slider - Normal slider to select the amount of participants
 
@@ -53,7 +53,6 @@ import { CheckIcon, ChevronDown } from "lucide-react";
 
 // TODO: ADD DEFAULT VALUES FROM API WHEN EDITING
 export function CreateActivityModal() {
-
   const categories = Object.entries(ACTIVITIES_CATEGORIES).map(
     ([label, value]) => ({ label, value })
   );
@@ -108,7 +107,7 @@ export function CreateActivityModal() {
             </FormItem>
           )}
         />
-       <FormField
+        <FormField
           control={form.control}
           name="category"
           render={({ field }) => (
@@ -147,7 +146,7 @@ export function CreateActivityModal() {
                           value={language.label}
                           key={language.value}
                           onSelect={() => {
-                            form.setValue("category", String(language.value))
+                            form.setValue("category", String(language.value));
                           }}
                         >
                           {language.label}
@@ -166,7 +165,8 @@ export function CreateActivityModal() {
                 </PopoverContent>
               </Popover>
               <FormDescription>
-                This is your activity category. Use a proper one according to what you're posting.
+                This is your activity category. Use a proper one according to
+                what you're posting.
               </FormDescription>
               <FormMessage />
             </FormItem>
