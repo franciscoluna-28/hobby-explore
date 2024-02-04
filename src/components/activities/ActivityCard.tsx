@@ -20,25 +20,21 @@ type Props = {
 // TODO: ASK FOR THE CURRENT AUTHENTICATED USER TO SEE IF THE ACTIVITY IS FROM THE CURRENT USER AND DISPLAY (YOU) (OPTIONAL)
 // TODO: IF THE ACTIVITY IS FROM THE SAME USER, DISPLAY A MENU TO SEE DELETE AND READ OPERATIONS. FOR EXAMPLE, A USER CAN GO TO THE ACTIVITY FORM AND EDIT THE INFORMATION OR DELETE THE ACTIVITY
 // TODO: USERS AREN'T ABLE TO SAVE THEIR OWN ACTIVITIES. ONLY ACTIVITIES FROM OTHER USERS. THAT'S WHY THE ACTIVITIES THEY HAVE CREATED HAVE A SPECIFIC UI SECTION. ALSO, AVOID USERS FROM SAVING THEIR OWN ACTIVITIES SERVER SIDE
+// TODO: ADD BLUR EFFECT TO IMAGES WHEN THEY'RE LOADING
+// TODO: FIX GLOBAL OVERFLOW-X ISSUE ON MOBILE DEVICES
 export function ActivityCard({ activity }: Props) {
-
   return (
     <li>
-      <Card className="rounded-2xl hover:shadow-md duration-200 w-[350px] h-[500px]">
-  {/*       <Link
-          className="w-min bg-red-500"
-          key={activity.activity_id}
-          href={`activities/${activity.activity_id}`}
-        > */}
+        <Card className="rounded-2xl hover:shadow-md duration-200 w-[350px] h-[500px]">
           <div className="relative">
             <Badge className="absolute top-4 right-4 bg-mainBlack/60">
               {activity.tips.length} {activity.tips.length > 1 ? "tips" : "tip"}
             </Badge>
-            <div className="absolute bottom-4 left-4">
-              <SaveActivityButton
-                activityId={activity.activity_id}
-              />
+
+            <div className="absolute bottom-4 left-4 z-50">
+              <SaveActivityButton activityId={activity.activity_id} />
             </div>
+           
             <img
               className="object-cover rounded-t-2xl w-full max-h-[200px]"
               src={
@@ -46,7 +42,13 @@ export function ActivityCard({ activity }: Props) {
               }
               alt={activity.name ?? "Activity"}
             />
+                
           </div>
+          <Link
+        className="w-min bg-red-500"
+        key={activity.activity_id}
+        href={`activities/${activity.activity_id}`}
+      >
           <CardHeader>
             <div className="flex items-center gap-2">
               <Avatar>
@@ -69,10 +71,11 @@ export function ActivityCard({ activity }: Props) {
               {activity.name}
             </CardTitle>
           </CardHeader>
+          </Link>
           <CardContent></CardContent>
           <CardFooter></CardFooter>
-{/*         </Link> */}
-      </Card>
+        </Card>
+
     </li>
   );
 }
