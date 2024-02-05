@@ -12,7 +12,7 @@ import Link from "next/link";
 import { handleDateConversion } from "@/lib/dates/dateConversion";
 import { SaveActivityButton } from "./SaveActivityButton";
 import { getSupabaseFileUrlFromRelativePath } from "@/services/supabase/storage";
-import Sample from "../../../public/sample.jpg"
+import Sample from "../../../public/sample.jpg";
 
 type Props = {
   activity: ActivityQueryResponse;
@@ -26,35 +26,43 @@ type Props = {
 export function ActivityCard({ activity }: Props) {
   return (
     <li>
-        <Card className="rounded-2xl hover:shadow-md duration-200 w-[350px] h-[500px]">
-          <div className="relative">
-            <Badge className="absolute top-4 right-4 bg-mainBlack/60">
-              {activity.tips.length} {activity.tips.length > 1 ? "tips" : "tip"}
-            </Badge>
+      <Card className="rounded-2xl hover:shadow-md duration-200 w-[350px] h-[500px]">
+        <div className="relative">
+          <Badge className="absolute top-4 right-4 bg-mainBlack/60">
+            {activity.tips.length} {activity.tips.length > 1 ? "tips" : "tip"}
+          </Badge>
 
-            <div className="absolute bottom-4 left-4 z-50">
-              <SaveActivityButton activityId={activity.activity_id} />
-            </div>
-           
-            <img
-              className="object-cover rounded-t-2xl w-full max-h-[200px]"
-              src={
-                activity.tips.length ? activity.tips[0].display_image_url! : Sample.src
-              }
-              alt={activity.name ?? "Activity"}
-            />
-                
+          <div className="absolute bottom-4 left-4 z-50">
+            <SaveActivityButton activityId={activity.activity_id} />
           </div>
-          <Link
-        className="w-min bg-red-500"
-        key={activity.activity_id}
-        href={`activities/${activity.activity_id}`}
-      >
+
+          <img
+            className="object-cover rounded-t-2xl w-full max-h-[200px]"
+            src={
+              activity.tips.length
+                ? activity.tips[0].display_image_url!
+                : Sample.src
+            }
+            alt={activity.name ?? "Activity"}
+          />
+        </div>
+        <Link
+          className="w-min bg-red-500"
+          key={activity.activity_id}
+          href={`activities/${activity.activity_id}`}
+        >
           <CardHeader>
             <div className="flex items-center gap-2">
               <Avatar>
                 <AvatarImage
-                  src={activity.users?.profile_picture_url ? getSupabaseFileUrlFromRelativePath(activity.users.profile_picture_url, "avatars") : "https://github.com/shadcn.png"}
+                  src={
+                    activity.users?.profile_picture_url
+                      ? getSupabaseFileUrlFromRelativePath(
+                          activity.users.profile_picture_url,
+                          "avatars"
+                        )
+                      : "https://github.com/shadcn.png"
+                  }
                   alt={activity.users?.username ?? "@shadn"}
                 />
                 <AvatarFallback>CN</AvatarFallback>
@@ -72,11 +80,8 @@ export function ActivityCard({ activity }: Props) {
               {activity.name}
             </CardTitle>
           </CardHeader>
-          </Link>
-          <CardContent></CardContent>
-          <CardFooter></CardFooter>
-        </Card>
-
+        </Link>
+      </Card>
     </li>
   );
 }
