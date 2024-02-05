@@ -73,4 +73,11 @@
   body {
     @apply bg-background text-foreground;
   }
+
+  h2 {
+    @apply font-semibold text-mainBlack text-2xl    
+  }
+  h3 {
+    @apply font-semibold text-mainBlack text-2xl
+  }
 }
