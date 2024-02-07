@@ -26,9 +26,17 @@ const MAXIMUM_TIP_DESCRIPTION_MESSAGE: string = `Your tip can have at most ${MAX
 const MINIMUM_PARTICIPANTS_MESSAGE: string = `Your activity needs to have at least ${MINIMUM_PARTICIPANTS_VALUE} participants`;
 const MAXIMUM_PARTICIPANTS_MESSAGE: string = `Your activity needs to have at most ${MAXIMUM_PARTICIPANTS_VALUE} participants`;
 const DEFAULT_PARTICIPANTS_ARRAY_VALUE: number = 1;
+const ACCESIBILITY_ARRAY_LENGTH: number = 2;
+const DEFAULT_STRING_VALUE = "";
+const DEFAULT_PARTICIPANTS_VALUE: number = 1;
+
+
 const INVALID_PARTICIPANTS_VALUE_TYPE_MESSAGE: string =
   "Type is invalid, make sure you're using a number as a value";
 
+/**
+ * Refers to the tip when you're processing the activity
+ */
 export const TipSchema = z
   .object({
     description: z
@@ -50,7 +58,7 @@ export const TipSchema = z
     // Hence, validate the description for the tip
     if (
       (val.imageFile !== undefined && val.description === undefined) ||
-      val.description === ""
+      val.description === DEFAULT_STRING_VALUE
     ) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
@@ -69,7 +77,7 @@ const ActivitySchema = z.object({
     .max(MAXIMUM_ACTIVITY_NAME_VALUE, {
       message: MAXIMUM_ACTIVITY_NAME_VALUE_MESSAGE,
     })
-    .default(""),
+    .default(DEFAULT_STRING_VALUE),
   description: z
     .string()
     .min(MINIMUM_DESCRIPTION_VALUE, {
@@ -78,7 +86,7 @@ const ActivitySchema = z.object({
     .max(MAXIMUM_DESCRIPTION_VALUE, {
       message: MAXIMUM_DESCRIPTION_VALUE_MESSAGE,
     })
-    .default(""),
+    .default(DEFAULT_STRING_VALUE),
   accessibility: z
     .array(
       z
@@ -86,7 +94,7 @@ const ActivitySchema = z.object({
         .min(MINIMUM_ACCESSIBILITY_VALUE)
         .max(MAXIMUM_ACCESSIBILITY_VALUE)
     )
-    .length(2),
+    .length(ACCESIBILITY_ARRAY_LENGTH),
   activityId: z.string().optional(),
   participants: z
     .number()
@@ -123,7 +131,7 @@ const ActivitySchema = z.object({
         });
       }
     })
-    .default([1]),
+    .default([DEFAULT_PARTICIPANTS_VALUE]),
   category: z
     .string()
     .refine(

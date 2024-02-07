@@ -1,16 +1,22 @@
 "use server";
 
 import ActivitySchema, { TipSchema } from "@/schemas/activities/ActivitySchema";
-import { z } from "zod";
+import { ZodError, z } from "zod";
 import { uploadPictureToSupabase } from "../supabase/storage";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
 import { Database, Tables } from "@/lib/database";
 import { redirect } from "next/navigation";
+import { generateErrorResult } from "../errors/generateErrors";
+import { ImageFileSchema } from "@/schemas/files/ImageFileSchema";
+import { generateSuccessResult } from "../sucess/generateSuccess";
 
 const supabase = createServerComponentClient<Database>({ cookies });
 
-type Tips = z.infer<typeof TipSchema>
+type ProcessedTip = {
+  description: string;
+  imageFile: undefined[] | string[] | File[];
+};
 
 async function getCurrentUserId(): Promise<string | undefined> {
   return (await supabase.auth.getUser()).data.user?.id;
@@ -22,46 +28,51 @@ async function getCurrentUserId(): Promise<string | undefined> {
  * @returns Promise<string | undefined> - A promise with the string path or undefined if the image wasn't uploaded successfully
  */
 async function generateImageUrl(
-  file: File | undefined
+  file: File[] | undefined
 ): Promise<string | undefined> {
-  console.log(file);
+  try {
+    // Don't generate urls for undefined images
+    if (!file) return;
 
-  if (!file) return;
+    // Verify image format
+    const parsedImage = ImageFileSchema.shape.document.parse(file);
 
-  const userId = await getCurrentUserId();
+    const userId = await getCurrentUserId();
 
-  // TODO: Verify image format
-  const imageToUploadUrl = await uploadPictureToSupabase(
-    file,
-    userId ?? "",
-    supabase,
-    "tips"
-  );
+    const imageToUploadUrl = await uploadPictureToSupabase(
+      parsedImage[0],
+      userId ?? "",
+      supabase,
+      "tips"
+    );
 
-  return imageToUploadUrl;
+    return imageToUploadUrl;
+  } catch (error) {
+    if (error instanceof ZodError) {
+      generateErrorResult(error.message);
+    }
+
+    console.error(error);
+  }
 }
 
-type ProcessedTips = {
-  description: string | undefined;
-  imageFile: File | undefined;
-};
-
+/**
+ *
+ * @param tips - The tips to be uploaded to the database. They come from the activity you're creating.
+ * @param activityId - Refers to the created activity ID. This way, you can link tips to a specific activity
+ */
 async function uploadActivityTips(
-  tips: ProcessedTips[],
+  tips: ProcessedTip[],
   activityId: Tables<"activities">["activity_id"]
-) {
+): Promise<void> {
   // Avoid sending empty tips to the server
   const filteredTips = tips.filter(
-    (tip) => tip.imageFile !== undefined || tip.imageFile !== ""
+    (tip) => tip.imageFile[0] !== undefined || tip.imageFile[0] !== ""
   );
-
-  console.log(filteredTips);
 
   const uploadPromises = filteredTips.map(async (tip) => {
     try {
-      const imageUrl = await generateImageUrl(
-        tip.imageFile ? tip.imageFile : undefined
-      );
+      const imageUrl = await generateImageUrl(tip.imageFile as File[]);
 
       // Don't process tips without images
       if (!imageUrl) {
@@ -77,11 +88,14 @@ async function uploadActivityTips(
         created_by_user_id: userId,
       });
 
-      if (!error) {
-        console.log("Tip image uploaded successfully:", imageUrl);
+      if (error) {
+        return generateErrorResult(
+          "There was an error while uploading your tips...",
+          error
+        );
       }
     } catch (error) {
-      console.error("Error uploading tip image");
+      console.error("Error uploading tip image...");
     }
   });
 
@@ -89,18 +103,23 @@ async function uploadActivityTips(
   await Promise.all(uploadPromises);
 }
 
+// Formdata values
 type ProcessedActivityData = {
-  name: string,
-  description: string,
-  accessibilityFirstValue: string | number,
-  accessibilityLastValue: string | number,
-  category: string | number,
-  participants: string | number,
-  tips: 
-}
+  name: string;
+  description: string;
+  accessibilityFirstValue: string;
+  accessibilityLastValue: string;
+  category: string;
+  participants: string;
+  tips: ProcessedTip[];
+};
 
-
-function extractFormData(formData: FormData) {
+/**
+ *
+ * @param formData - The activity data obtained from the client
+ * @returns - The processed activity data ready to be uploaded to the database
+ */
+function extractFormData(formData: FormData): ProcessedActivityData {
   const name = formData.get("name") as string;
   const description = formData.get("description") as string;
   const accessibilityFirstValue = formData.get(
@@ -110,7 +129,7 @@ function extractFormData(formData: FormData) {
     "accessibilityLastValue"
   ) as string;
   const category = formData.get("category") as string;
-  const participants = Number(formData.get("participants") as string);
+  const participants = formData.get("participants") as string;
   const tips = extractTips(formData);
 
   return {
@@ -124,11 +143,17 @@ function extractFormData(formData: FormData) {
   };
 }
 
-function extractTips(formData: FormData) {
+/**
+ *
+ * @param formData - The form data obtained from the activity. We look for this on this one
+ * @returns - The tips from the activity
+ */
+function extractTips(formData: FormData): ProcessedTip[] {
   const TIP_PREFIX: string = "tip-";
   const IMAGE_TYPE: string = "image";
   const DESCRIPTION_TYPE: string = "description";
-  const tips: { imageFile: File | string; description: string }[] = [];
+  const tips: { imageFile: ProcessedTip["imageFile"]; description: string }[] =
+    [];
 
   formData.forEach((value, key) => {
     if (key.startsWith(TIP_PREFIX)) {
@@ -139,7 +164,13 @@ function extractTips(formData: FormData) {
         const description = formData.get(
           `${TIP_PREFIX}${index}-${DESCRIPTION_TYPE}`
         ) as string;
-        tips[tipIndex] = { imageFile: value as File | undefined, description };
+        tips[tipIndex] = {
+          imageFile: [value as File | undefined | string] as
+            | File[]
+            | string[]
+            | undefined[],
+          description,
+        };
       }
     }
   });
@@ -147,6 +178,17 @@ function extractTips(formData: FormData) {
   return tips;
 }
 
+/**
+ *
+ * @param name - The activity name
+ * @param description - The activity description
+ * @param accessibilityFirstValue - The shortest value of accessibility
+ * @param accessibilityLastValue - The largest value of accessibility
+ * @param category - The activity category id
+ * @param participants - The number of participants from the activity
+ * @param userId - The user ID who's uploading the activity
+ * @returns
+ */
 async function insertActivityIntoDatabase(
   name: string,
   description: string,
@@ -154,8 +196,12 @@ async function insertActivityIntoDatabase(
   accessibilityLastValue: string,
   category: string,
   participants: string,
-  userId: string
+  userId?: string
 ) {
+  if (!userId) {
+    return;
+  }
+
   const { data, error } = await supabase
     .from("activities")
     .insert({
@@ -173,7 +219,15 @@ async function insertActivityIntoDatabase(
   if (!error && data) {
     return data.activity_id;
   }
+
+  const CREATE_ACTIVITY_ERROR = "There was an error creating your activity...";
+
+  if (error) {
+    return generateErrorResult(CREATE_ACTIVITY_ERROR, error);
+  }
 }
+
+
 
 export async function createNewActivity(formData: FormData) {
   const {
@@ -199,6 +253,11 @@ export async function createNewActivity(formData: FormData) {
 
   if (activityId) {
     await uploadActivityTips(tips, activityId);
+
     redirect(`/app/activities/${activityId}`);
+
+    return generateSuccessResult(
+      "Your activity has been created successfully!"
+    );
   }
 }
