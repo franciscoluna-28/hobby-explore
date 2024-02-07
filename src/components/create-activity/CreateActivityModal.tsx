@@ -34,7 +34,7 @@ import { CheckIcon, ChevronDown } from "lucide-react";
 import { Slider } from "../ui/slider";
 import Dropzone from "react-dropzone";
 import Image from "next/image";
-import { X} from "lucide-react"
+import { X } from "lucide-react";
 import {
   Card,
   CardContent,
@@ -42,30 +42,31 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { Slider as DualSlider } from "@nextui-org/react";
+import { createNewActivity } from "@/services/activities/createActiviy";
 
 // Modal requirements:
 // Description: Refers to a brief activity description (50 - 100 characters) ✅
 // Name: Refers to the activity name to be displayed (50 - 120 characters) ✅
-// Accessibility: Refers to how accessible an activity is economically (Numeric value from 0 to 100). The shorten the value, the cheaper the activity
+// Accessibility: Refers to how accessible an activity is economically (Numeric value from 0 to 100). The shorten the value, the cheaper the activity ✅
 // Category: Refers to the category of the activity that is displayed in a list. Select the most appropriate one for your activity ✅
-// Tips: Refers to small short cards with images about your activity. Tips are meant to be short in description (50 - 100).
-// Tips - Images: Refers to the image of one tip. A tip can only have one image and you can have a maximum of 4 tips and a minimum of 3 tips.
-// Participants: Refers to the number of participants in one activity. (Min. 1 - Max. 100)
+// Tips: Refers to small short cards with images about your activity. Tips are meant to be short in description (50 - 100). ✅
+// Tips - Images: Refers to the image of one tip. A tip can only have one image and you can have a maximum of 4 tips and a minimum of 3 tips. ✅
+// Participants: Refers to the number of participants in one activity. (Min. 1 - Max. 100) ✅
 
 // Possible components:
-// Tip Card - Starts as an empty dropzone. Once you put an image, you actually start to edit one tip
+// Tip Card - Starts as an empty dropzone. Once you put an image, you actually start to edit one tip ✅
 // Name input - Just a normal input to write text lol ✅
 // Category Selector - A selector to select categories ✅
 // Description - Textarea thing ✅
-// Two slider selection - Slider elector to select the min. accessibility value and the max. one.
+// Two slider selection - Slider elector to select the min. accessibility value and the max. one. ✅
 // Normal slider - Normal slider to select the amount of participants ✅
 
 // First step, create the Zod Schema
 
-// TODO: ADD DEFAULT VALUES FROM API WHEN EDITING
 export function CreateActivityModal() {
   const TIPS_ARRAY = Array.from({ length: 4 }, () => ({
-    description: "",
+    description: undefined,
     imageFile: undefined,
   }));
   const categories = Object.entries(ACTIVITIES_CATEGORIES).map(
@@ -76,11 +77,14 @@ export function CreateActivityModal() {
     resolver: zodResolver(ActivitySchema),
     defaultValues: {
       tips: TIPS_ARRAY,
+      accessibility: [0, 50],
     },
   });
 
   const { control } = form;
   const { register } = form;
+
+  console.log(form.formState.errors);
 
   const { fields, append, prepend, remove, swap, move, insert } = useFieldArray(
     {
@@ -89,15 +93,33 @@ export function CreateActivityModal() {
     }
   );
 
-  function onSubmit(values: z.infer<typeof ActivitySchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
-  }
+  const onSubmit = async (values: z.infer<typeof ActivitySchema>) => {
+    const formData = new FormData();
+
+    formData.append("name", values.name);
+    formData.append("description", values.description);
+    formData.append("participants", String(values.participants));
+    formData.append("accessibilityFirstValue", String(values.accessibility[0]));
+    formData.append("accessibilityLastValue", String(values.accessibility[1]));
+    formData.append("category", String(values.category));
+
+    values.tips.forEach((tip, index) => {
+      formData.append(
+        `tip-${index}-image`,
+        tip.imageFile ? tip.imageFile[0] : ("" as unknown as File | string)
+      );
+      formData.append(`tip-${index}-description`, tip.description ?? "");
+    });
+
+    await createNewActivity(formData);
+  };
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+      <form
+        onSubmit={form.handleSubmit((values) => onSubmit(values))}
+        className="space-y-6"
+      >
         <FormField
           control={form.control}
           name="name"
@@ -152,6 +174,28 @@ export function CreateActivityModal() {
               <FormDescription>
                 {`Number of participants: ${value ? value[0] : 1}`}
               </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="accessibility"
+          render={({ field: { onChange, value } }) => (
+            <FormItem>
+              <FormLabel>Accessibility</FormLabel>
+              <FormControl>
+                <DualSlider
+                  label="Price Range"
+                  step={1}
+                  minValue={0}
+                  maxValue={100}
+                  defaultValue={value ? value : [0, 50]}
+                  formatOptions={{ style: "currency", currency: "USD" }}
+                  className="max-w-md"
+                />
+              </FormControl>
+              <FormDescription></FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -223,8 +267,17 @@ export function CreateActivityModal() {
         />
 
         <h3>Tips</h3>
-        <FormDescription>Get started uploading tips and images for your hobby. Tips are pretty much your explanations or thoughts about your activity.</FormDescription>
-        <ul className="flex flex-col gap-4">
+        <FormDescription>
+          Get started uploading tips and images for your hobby. Tips are pretty
+          much your explanations or thoughts about your activity.
+        </FormDescription>
+        <p className="text-red-500 font-medium text-sm w-[350px] my-2 h-8">
+          {form.formState?.errors &&
+            form.formState.errors?.tips &&
+            form.formState.errors.tips.root?.message}
+        </p>
+
+        <ul className="flex flex-row flex-wrap justify-center gap-4">
           {fields.map((item, index) => (
             <li key={item.id}>
               {form.watch(`tips.${index}.imageFile`) === undefined ? (
@@ -258,7 +311,7 @@ export function CreateActivityModal() {
                         acceptedFiles,
                       }) => (
                         <Card
-                          className={`border-2 border-dashed bg-muted hover:cursor-pointer duration-200 hover:border-muted-foreground/50`}
+                          className={`border-2 border-dashed bg-muted hover:cursor-pointer duration-200 hover:border-muted-foreground/50 w-[350px] h-[380px]`}
                         >
                           <CardContent
                             className="flex flex-col items-center justify-center space-y-2 px-2 py-4 text-xs"
@@ -269,6 +322,7 @@ export function CreateActivityModal() {
                                 Drag Files to Upload or
                               </span>
                               <Button
+                                type="button"
                                 variant="ghost"
                                 size="sm"
                                 className="ml-auto flex h-8 space-x-2 px-0 pl-1 text-xs"
@@ -298,7 +352,7 @@ export function CreateActivityModal() {
                 />
               ) : (
                 <li>
-                  <Card className="rounded-2xl hover:shadow-sm hover:border-mainGreen relative duration-200 w-[350px] h-[380px]">
+                  <Card className="rounded-2xl hover:shadow-sm hover:border-mainGreen relative duration-200 w-[350px] h-[420px]">
                     <div className="relative">
                       <Image
                         width={0}
@@ -309,9 +363,16 @@ export function CreateActivityModal() {
                         )}
                         alt={`Tip #${index + 1}`}
                       />
-                      <Button type="button" onClick={() => form.setValue(
-                          `tips.${index}.imageFile`,
-                          undefined as any)} className="bg-white p-1 rounded-full absolute top-4 right-4 w-8 h-8 hover:bg-white/90">
+                      <Button
+                        type="button"
+                        onClick={() =>
+                          form.setValue(
+                            `tips.${index}.imageFile`,
+                            undefined as any
+                          )
+                        }
+                        className="bg-white p-1 rounded-full absolute top-4 right-4 w-8 h-8 hover:bg-white/90"
+                      >
                         <X className="text-mainBlack text-sm" />
                       </Button>
                     </div>
@@ -330,11 +391,15 @@ export function CreateActivityModal() {
                               {...field}
                             />
                           </FormControl>
-        
                         </FormItem>
                       )}
                     />
                   </Card>
+                  <p className="text-red-500 font-medium text-sm w-[350px] my-2 h-8">
+                    {form.formState?.errors &&
+                      form.formState.errors?.tips &&
+                      form.formState.errors.tips[index]?.root?.message}
+                  </p>
                 </li>
               )}
             </li>

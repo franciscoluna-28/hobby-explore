@@ -101,3 +101,7 @@ export async function handleProtectedRoute(): Promise<void | null> {
     handleRedirect();
   }
 }
+
+export async function getCurrentUserId(): Promise<string | undefined> {
+  return (await supabase.auth.getUser()).data.user?.id;
+}
