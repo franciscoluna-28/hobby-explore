@@ -2,15 +2,15 @@ import { z } from "zod";
 import { ImageFileSchema } from "../files/ImageFileSchema";
 import { ACTIVITIES_CATEGORIES } from "@/constants/activities/categories";
 
-const MINIMUM_ALLOWED_TIPS: number = 1;
-const MAXIMUM_ALLOWED_TIPS: number = 5;
+const MINIMUM_ALLOWED_TIPS: number = 3;
+const MAXIMUM_ALLOWED_TIPS: number = 4;
 const MINIMUM_TIP_DESCRIPTION_VALUE: number = 1;
-const MAXIMUM_TIP_DESCRIPTION_VALUE: number = 100;
+const MAXIMUM_TIP_DESCRIPTION_VALUE: number = 150;
 const MINIMUM_ACTIVITY_NAME_VALUE: number = 10;
 const MAXIMUM_ACTIVITY_NAME_VALUE: number = 100;
-const MAXIMUM_DESCRIPTION_VALUE: number = 100;
+const MAXIMUM_DESCRIPTION_VALUE: number = 150;
 const MINIMUM_DESCRIPTION_VALUE: number = 50;
-const MINIMUM_ACCESSIBILITY_VALUE: number = 1;
+const MINIMUM_ACCESSIBILITY_VALUE: number = 0;
 const MAXIMUM_ACCESSIBILITY_VALUE: number = 100;
 const MINIMUM_PARTICIPANTS_VALUE: number = 1;
 const MAXIMUM_PARTICIPANTS_VALUE: number = 100;
@@ -29,18 +29,36 @@ const DEFAULT_PARTICIPANTS_ARRAY_VALUE: number = 1;
 const INVALID_PARTICIPANTS_VALUE_TYPE_MESSAGE: string =
   "Type is invalid, make sure you're using a number as a value";
 
-const TipSchema = z.object({
-  description: z
-    .string()
-    .min(MINIMUM_TIP_DESCRIPTION_VALUE, {
-      message: MINIMUM_TIP_DESCRIPTION_MESSAGE,
-    })
-    .max(MAXIMUM_TIP_DESCRIPTION_VALUE, {
-      message: MAXIMUM_TIP_DESCRIPTION_MESSAGE,
-    }),
-  imageFile: ImageFileSchema.shape.document,
-  tipId: z.string().optional(),
-});
+const TipSchema = z
+  .object({
+    description: z
+      .string()
+      .min(MINIMUM_TIP_DESCRIPTION_VALUE, {
+        message: MINIMUM_TIP_DESCRIPTION_MESSAGE,
+      })
+      .max(MAXIMUM_TIP_DESCRIPTION_VALUE, {
+        message: MAXIMUM_TIP_DESCRIPTION_MESSAGE,
+      })
+      .optional(),
+
+    imageFile: ImageFileSchema.shape.document.optional(),
+    tipId: z.string().optional(),
+  })
+
+  .superRefine((val, ctx) => {
+    // If we have an image, then we must need a description.
+    // Hence, validate the description for the tip
+    if (
+      (val.imageFile !== undefined && val.description === undefined) ||
+      val.description === ""
+    ) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message:
+          "You must provide a description for the tip when you create the image",
+      });
+    }
+  });
 
 const ActivitySchema = z.object({
   name: z
@@ -52,10 +70,6 @@ const ActivitySchema = z.object({
       message: MAXIMUM_ACTIVITY_NAME_VALUE_MESSAGE,
     })
     .default(""),
-  accessibility: z.coerce
-    .number()
-    .min(MINIMUM_ACCESSIBILITY_VALUE)
-    .max(MAXIMUM_ACCESSIBILITY_VALUE),
   description: z
     .string()
     .min(MINIMUM_DESCRIPTION_VALUE, {
@@ -65,6 +79,14 @@ const ActivitySchema = z.object({
       message: MAXIMUM_DESCRIPTION_VALUE_MESSAGE,
     })
     .default(""),
+  accessibility: z
+    .array(
+      z
+        .number()
+        .min(MINIMUM_ACCESSIBILITY_VALUE)
+        .max(MAXIMUM_ACCESSIBILITY_VALUE)
+    )
+    .length(2),
   activityId: z.string().optional(),
   participants: z
     .number()
@@ -100,21 +122,41 @@ const ActivitySchema = z.object({
           path: ["participants"],
         });
       }
-    }),
-
-  category: z.string().refine(
-    (value) => {
-      const categoryIds = Object.values(ACTIVITIES_CATEGORIES);
-      return categoryIds.includes(Number(value));
-    },
-    {
-      message: "Invalid category",
-    }
-  ),
+    })
+    .default([1]),
+  category: z
+    .string()
+    .refine(
+      (value) => {
+        const categoryIds = Object.values(ACTIVITIES_CATEGORIES);
+        return categoryIds.includes(Number(value));
+      },
+      {
+        message: "Invalid category",
+      }
+    )
+    .default(""),
   tips: z
     .array(TipSchema)
     .min(MINIMUM_ALLOWED_TIPS, { message: MINIMUM_ALLOWED_TIPS_MESSAGE })
-    .max(MAXIMUM_ALLOWED_TIPS, { message: MAXIMUM_ALLOWED_TIPS_MESSAGE }),
-});
+    .max(MAXIMUM_ALLOWED_TIPS, { message: MAXIMUM_ALLOWED_TIPS_MESSAGE })
+    .refine(
+      (val) => {
+        const INITIAL_COUNTER_VALUE = 0;
 
+        let imageCount = INITIAL_COUNTER_VALUE;
+
+        val.forEach((tip) => {
+          if (tip.imageFile !== undefined) {
+            imageCount++;
+          }
+        });
+
+        return imageCount >= MINIMUM_ALLOWED_TIPS;
+      },
+      {
+        message: "At least three tips must have an associated image",
+      }
+    ),
+});
 export default ActivitySchema;

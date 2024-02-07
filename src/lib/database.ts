@@ -6,36 +6,42 @@ export type Json =
   | { [key: string]: Json | undefined }
   | Json[]
 
-export interface Database {
+export type Database = {
   public: {
     Tables: {
       activities: {
         Row: {
-          accessibility: number | null
+          accessibilityMaxValue: number | null
+          accessibilityMinValue: number
           activity_id: number
           category_id: number | null
           created_at: string
           created_by_user_id: string | null
+          description: string | null
           location: string | null
           name: string | null
           participants: number | null
         }
         Insert: {
-          accessibility?: number | null
+          accessibilityMaxValue?: number | null
+          accessibilityMinValue: number
           activity_id?: number
           category_id?: number | null
           created_at?: string
           created_by_user_id?: string | null
+          description?: string | null
           location?: string | null
           name?: string | null
           participants?: number | null
         }
         Update: {
-          accessibility?: number | null
+          accessibilityMaxValue?: number | null
+          accessibilityMinValue?: number
           activity_id?: number
           category_id?: number | null
           created_at?: string
           created_by_user_id?: string | null
+          description?: string | null
           location?: string | null
           name?: string | null
           participants?: number | null

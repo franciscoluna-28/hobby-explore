@@ -9,6 +9,8 @@ import { getCategoryNameById } from "@/services/activities/categories";
 import { handleDateConversion } from "@/lib/dates/dateConversion";
 import { TipCarouselCard } from "@/components/tips/TipCarouselCard";
 
+
+
 export default async function ActivityPage({
   params,
 }: {
@@ -33,6 +35,8 @@ export default async function ActivityPage({
   // Now we're certain that response is of type ActivityQueryResponse[]
   const activity = activityData as ActivityQueryResponse[];
 
+  console.log(activity);
+
   return (
     <section>
       <div className="flex items-center gap-2">
@@ -55,8 +59,12 @@ export default async function ActivityPage({
       <Badge variant="secondary">
         {getCategoryNameById(activity[0].category_id)}
       </Badge>
-      <section className="my-6">
-      <TipCarouselCard tip={activity[0].tips[0]} />
+      <section className="my-6 flex gap-4">
+    {activity[0].tips.map((tip) => {
+      return (
+        <TipCarouselCard tip={tip}/>
+      )
+    })}
       </section>
     </section>
   );

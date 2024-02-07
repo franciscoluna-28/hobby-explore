@@ -37,10 +37,10 @@ export function ActivityCard({ activity }: Props) {
           </div>
 
           <img
-            className="object-cover rounded-t-2xl w-full max-h-[200px]"
+            className="object-cover rounded-t-2xl w-full h-[200px]"
             src={
               activity.tips.length
-                ? activity.tips[0].display_image_url!
+                ? getSupabaseFileUrlFromRelativePath(activity.tips[0].display_image_url, "tips")!
                 : Sample.src
             }
             alt={activity.name ?? "Activity"}
@@ -51,7 +51,7 @@ export function ActivityCard({ activity }: Props) {
           key={activity.activity_id}
           href={`activities/${activity.activity_id}`}
         >
-          <CardHeader>
+          <CardHeader className="max-w-[350px] flex flex-wrap overflow-hidden flex-col">
             <div className="flex items-center gap-2">
               <Avatar>
                 <AvatarImage
@@ -76,7 +76,7 @@ export function ActivityCard({ activity }: Props) {
                 </p>
               </div>
             </div>
-            <CardTitle className="leading-normal pt-2 text-mainBlack">
+            <CardTitle className="leading-normal pt-2 text-mainBlack ">
               {activity.name}
             </CardTitle>
           </CardHeader>
