@@ -29,7 +29,7 @@ const DEFAULT_PARTICIPANTS_ARRAY_VALUE: number = 1;
 const INVALID_PARTICIPANTS_VALUE_TYPE_MESSAGE: string =
   "Type is invalid, make sure you're using a number as a value";
 
-const TipSchema = z
+export const TipSchema = z
   .object({
     description: z
       .string()

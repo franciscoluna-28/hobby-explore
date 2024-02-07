@@ -1,6 +1,6 @@
 "use server";
 
-import ActivitySchema from "@/schemas/activities/ActivitySchema";
+import ActivitySchema, { TipSchema } from "@/schemas/activities/ActivitySchema";
 import { z } from "zod";
 import { uploadPictureToSupabase } from "../supabase/storage";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
@@ -10,12 +10,17 @@ import { redirect } from "next/navigation";
 
 const supabase = createServerComponentClient<Database>({ cookies });
 
-type Activity = z.infer<typeof ActivitySchema>;
+type Tips = z.infer<typeof TipSchema>
 
 async function getCurrentUserId(): Promise<string | undefined> {
   return (await supabase.auth.getUser()).data.user?.id;
 }
 
+/**
+ * Generates the relative path url of an image uploaded to Supabase
+ * @param file - The image file to be uploaded
+ * @returns Promise<string | undefined> - A promise with the string path or undefined if the image wasn't uploaded successfully
+ */
 async function generateImageUrl(
   file: File | undefined
 ): Promise<string | undefined> {
@@ -32,8 +37,6 @@ async function generateImageUrl(
     supabase,
     "tips"
   );
-
-  console.log(imageToUploadUrl);
 
   return imageToUploadUrl;
 }
@@ -54,14 +57,13 @@ async function uploadActivityTips(
 
   console.log(filteredTips);
 
-  const uploadPromises = filteredTips.map(async (tip, index) => {
+  const uploadPromises = filteredTips.map(async (tip) => {
     try {
       const imageUrl = await generateImageUrl(
         tip.imageFile ? tip.imageFile : undefined
       );
 
-      console.log(imageUrl);
-
+      // Don't process tips without images
       if (!imageUrl) {
         return;
       }
@@ -75,8 +77,6 @@ async function uploadActivityTips(
         created_by_user_id: userId,
       });
 
-      console.log(error);
-
       if (!error) {
         console.log("Tip image uploaded successfully:", imageUrl);
       }
@@ -89,9 +89,18 @@ async function uploadActivityTips(
   await Promise.all(uploadPromises);
 }
 
-export async function createNewActivity(formData: FormData) {
-  console.log(formData);
+type ProcessedActivityData = {
+  name: string,
+  description: string,
+  accessibilityFirstValue: string | number,
+  accessibilityLastValue: string | number,
+  category: string | number,
+  participants: string | number,
+  tips: 
+}
 
+
+function extractFormData(formData: FormData) {
   const name = formData.get("name") as string;
   const description = formData.get("description") as string;
   const accessibilityFirstValue = formData.get(
@@ -101,12 +110,24 @@ export async function createNewActivity(formData: FormData) {
     "accessibilityLastValue"
   ) as string;
   const category = formData.get("category") as string;
-  const participants = formData.get("participants") as string;
+  const participants = Number(formData.get("participants") as string);
+  const tips = extractTips(formData);
 
+  return {
+    name,
+    description,
+    accessibilityFirstValue,
+    accessibilityLastValue,
+    category,
+    participants,
+    tips,
+  };
+}
+
+function extractTips(formData: FormData) {
   const TIP_PREFIX: string = "tip-";
   const IMAGE_TYPE: string = "image";
   const DESCRIPTION_TYPE: string = "description";
-
   const tips: { imageFile: File | string; description: string }[] = [];
 
   formData.forEach((value, key) => {
@@ -118,39 +139,66 @@ export async function createNewActivity(formData: FormData) {
         const description = formData.get(
           `${TIP_PREFIX}${index}-${DESCRIPTION_TYPE}`
         ) as string;
-        tips[tipIndex] = {
-          imageFile: value as File | undefined | string,
-          description,
-        };
+        tips[tipIndex] = { imageFile: value as File | undefined, description };
       }
     }
   });
 
-  const userId = await getCurrentUserId();
+  return tips;
+}
 
+async function insertActivityIntoDatabase(
+  name: string,
+  description: string,
+  accessibilityFirstValue: string,
+  accessibilityLastValue: string,
+  category: string,
+  participants: string,
+  userId: string
+) {
   const { data, error } = await supabase
     .from("activities")
     .insert({
-      name: name,
+      name,
       created_by_user_id: userId,
       accessibility_max_value: Number(accessibilityLastValue),
       accessibility_min_value: Number(accessibilityFirstValue),
-      description: description,
+      description,
       participants: Number(participants),
       category_id: Number(category),
     })
     .select("activity_id")
     .maybeSingle();
 
-  console.log(data);
-
   if (!error && data) {
-    // TODO: Handle null or undefined id
-    const activityId = data.activity_id;
+    return data.activity_id;
+  }
+}
 
-    // TODO: Handle errors
+export async function createNewActivity(formData: FormData) {
+  const {
+    name,
+    description,
+    accessibilityFirstValue,
+    accessibilityLastValue,
+    category,
+    participants,
+    tips,
+  } = extractFormData(formData);
+
+  const userId = await getCurrentUserId();
+  const activityId = await insertActivityIntoDatabase(
+    name,
+    description,
+    accessibilityFirstValue,
+    accessibilityLastValue,
+    category,
+    participants,
+    userId
+  );
+
+  if (activityId) {
     await uploadActivityTips(tips, activityId);
-
     redirect(`/app/activities/${activityId}`);
   }
 }
