@@ -6,7 +6,7 @@ import { cookies } from "next/headers";
 import { z } from "zod";
 import { generateError, generateErrorResult } from "../errors/generateErrors";
 import { SAVE_ACTIVITY_ERRORS_CONSTANTS } from "@/constants/errors/activities";
-import { generateSuccessResult } from "../sucess/generateSuccess";
+import { generateSuccessResult } from "../success/generateSuccess";
 
 const supabase = createServerComponentClient<Database>({ cookies });
 /**

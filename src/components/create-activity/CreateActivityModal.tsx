@@ -115,16 +115,16 @@ export function CreateActivityModal() {
     });
 
     const res = await createNewActivity(formData);
+    console.log(res);
 
-    if(res && "activityId" in res) {
+    if (res && "activityId" in res) {
       toast.success(res.message);
       router.push(`/app/activities/${res.activityId}`);
     }
 
-    if(res && "error" in res) {
-      toast.error(res.message);
-      }
-
+    if (res?.success === false && !res.message) {
+      toast.error("There was an unknown error while creating your activity...");
+    }
   };
 
   return (

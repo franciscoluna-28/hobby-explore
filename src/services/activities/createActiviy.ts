@@ -5,42 +5,15 @@ import { uploadPictureToSupabase } from "../supabase/storage";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
 import { Database, Tables } from "@/lib/database";
-import { generateErrorResult } from "../errors/generateErrors";
-import { generateSuccessResult } from "../sucess/generateSuccess";
+import { ErrorResult, generateErrorResult } from "../errors/generateErrors";
+import { generateSuccessResult } from "../success/generateSuccess";
+import { ServerImageFileSchema } from "@/schemas/files/ImageFileSchema";
+import { ActivityServerSideSchemaValidation } from "@/schemas/activities/ActivitySchema";
+import { TipServerSideSchema } from "@/schemas/tips/TipSchema";
 
 const supabase = createServerComponentClient<Database>({ cookies });
 
-const ACCEPTED_IMAGE_TYPES = [
-  "image/png",
-  "image/jpg",
-  "image/jpeg",
-  "image/*",
-];
-const MAX_IMAGE_SIZE = 2; //In MegaBytes
-
-const sizeInMB = (sizeInBytes: number, decimalsNum = 2) => {
-  const result = sizeInBytes / (1024 * 1024);
-  return +result.toFixed(decimalsNum);
-};
-
-const UserGeneralInfoSchema = z.object({
-  profileImage: z
-    .custom<FileList>()
-    .refine((files) => {
-      return Array.from(files ?? []).length !== 0;
-    }, "Image is required")
-    .refine((files) => {
-      return Array.from(files ?? []).every(
-        (file) => sizeInMB(file.size) <= MAX_IMAGE_SIZE
-      );
-    }, `The maximum image size is ${MAX_IMAGE_SIZE}MB`)
-    .refine((files) => {
-      return Array.from(files ?? []).every((file) =>
-        ACCEPTED_IMAGE_TYPES.includes(file.type)
-      );
-    }, "File type is not supported"),
-});
-
+// Tips obtained from the form data and processed afterwards
 type ProcessedTip = {
   description: string;
   imageFile: undefined[] | string[] | File[];
@@ -63,7 +36,7 @@ async function generateImageUrl(
     if (!file) return;
 
     // Verify image format
-    const parsedImage = UserGeneralInfoSchema.shape.profileImage.parse(file);
+    const parsedImage = ServerImageFileSchema.shape.profileImage.parse(file);
 
     const userId = await getCurrentUserId();
 
@@ -77,9 +50,11 @@ async function generateImageUrl(
     return imageToUploadUrl;
   } catch (error) {
     if (error instanceof ZodError) {
+      console.log(error);
       return generateErrorResult(error.message);
     }
 
+    console.log(error);
     return generateErrorResult("There was an error uploading the tip image...");
   }
 }
@@ -98,7 +73,7 @@ async function uploadActivityTips(
     (tip) => tip.imageFile.length > 0 && tip.imageFile[0] !== ""
   );
 
-  const uploadPromises = filteredTips.map(async (tip) => {
+  const uploadPromises = filteredTips.map(async (tip, index) => {
     try {
       const imageUrl = await generateImageUrl(tip.imageFile as File[]);
 
@@ -107,22 +82,31 @@ async function uploadActivityTips(
         return;
       }
 
+      const parsedTips = TipServerSideSchema.parse(filteredTips);
+
       const userId = await getCurrentUserId();
 
       const { error } = await supabase.from("tips").insert({
-        description: tip.description,
+        description: parsedTips[index].description,
         display_image_url: imageUrl,
         activity_id: activityId,
         created_by_user_id: userId,
       });
 
       if (error) {
+        console.log(error);
         return generateErrorResult(
           "There was an error while uploading your tips...",
           error
         );
       }
     } catch (error) {
+      if (error instanceof ZodError) {
+        console.log(error.message);
+        return generateErrorResult(error.message);
+      }
+
+      console.log(error);
       return generateErrorResult(
         "There was an error while uploading your tips..."
       );
@@ -135,14 +119,14 @@ async function uploadActivityTips(
   return generateSuccessResult("Tips uploaded successfully");
 }
 
-// Formdata values
+// Form data values
 type ProcessedActivityData = {
   name: string;
   description: string;
-  accessibilityFirstValue: string;
-  accessibilityLastValue: string;
-  category: string;
-  participants: string;
+  accessibilityMinValue: number;
+  accessibilityMaxValue: number;
+  category: number;
+  participants: number;
   tips: ProcessedTip[];
 };
 
@@ -151,28 +135,49 @@ type ProcessedActivityData = {
  * @param formData - The activity data obtained from the client
  * @returns - The processed activity data ready to be uploaded to the database
  */
-function extractFormData(formData: FormData): ProcessedActivityData {
-  const name = formData.get("name") as string;
-  const description = formData.get("description") as string;
-  const accessibilityFirstValue = formData.get(
-    "accessibilityFirstValue"
-  ) as string;
-  const accessibilityLastValue = formData.get(
-    "accessibilityLastValue"
-  ) as string;
-  const category = formData.get("category") as string;
-  const participants = formData.get("participants") as string;
-  const tips = extractTips(formData);
+function extractFormData(
+  formData: FormData
+): ProcessedActivityData | ErrorResult {
+  try {
+    const name = formData.get("name") as string;
+    const description = formData.get("description") as string;
+    const accessibilityMinValue = Number(
+      formData.get("accessibilityMinValue") as string
+    );
+    const accessibilityMaxValue = Number(
+      formData.get("accessibilityMaxValue") as string
+    );
+    const category = Number(formData.get("category") as string) as number;
+    const participants = Number(
+      formData.get("participants") as string
+    ) as number;
+    const tips = extractTips(formData);
 
-  return {
-    name,
-    description,
-    accessibilityFirstValue,
-    accessibilityLastValue,
-    category,
-    participants,
-    tips,
-  };
+    const parsedActivity = ActivityServerSideSchemaValidation.parse({
+      name,
+      description,
+      accessibilityMinValue,
+      accessibilityMaxValue,
+      category,
+      participants,
+      tips,
+    });
+
+    console.log(parsedActivity);
+
+    return { ...parsedActivity };
+  } catch (error) {
+    if (error instanceof ZodError) {
+      console.log(error.message);
+      return generateErrorResult(error.message);
+    }
+
+    console.log(error);
+
+    return generateErrorResult(
+      "There was an unknown error while extracting form data..."
+    );
+  }
 }
 
 /**
@@ -215,8 +220,8 @@ function extractTips(formData: FormData): ProcessedTip[] {
  *
  * @param name - The activity name
  * @param description - The activity description
- * @param accessibilityFirstValue - The shortest value of accessibility
- * @param accessibilityLastValue - The largest value of accessibility
+ * @param accessibilityMinValue - The shortest value of accessibility
+ * @param accessibilityMaxValue - The largest value of accessibility
  * @param category - The activity category id
  * @param participants - The number of participants from the activity
  * @param userId - The user ID who's uploading the activity
@@ -225,26 +230,25 @@ function extractTips(formData: FormData): ProcessedTip[] {
 async function insertActivityIntoDatabase(
   name: string,
   description: string,
-  accessibilityFirstValue: string,
-  accessibilityLastValue: string,
-  category: string,
-  participants: string,
+  accessibilityMinValue: number,
+  accessibilityMaxValue: number,
+  category: number,
+  participants: number,
   userId?: string
 ) {
   if (!userId) {
     return;
   }
-
   const { data, error } = await supabase
     .from("activities")
     .insert({
       name,
       created_by_user_id: userId,
-      accessibility_max_value: Number(accessibilityLastValue),
-      accessibility_min_value: Number(accessibilityFirstValue),
+      accessibility_max_value: accessibilityMaxValue,
+      accessibility_min_value: accessibilityMinValue,
       description,
-      participants: Number(participants),
-      category_id: Number(category),
+      participants: participants,
+      category_id: category,
     })
     .select("activity_id")
     .maybeSingle();
@@ -261,38 +265,36 @@ async function insertActivityIntoDatabase(
 }
 
 export async function createNewActivity(formData: FormData) {
-  const {
-    name,
-    description,
-    accessibilityFirstValue,
-    accessibilityLastValue,
-    category,
-    participants,
-    tips,
-  } = extractFormData(formData);
+  const data = extractFormData(formData);
 
-  const userId = await getCurrentUserId();
-  const activityId = await insertActivityIntoDatabase(
-    name,
-    description,
-    accessibilityFirstValue,
-    accessibilityLastValue,
-    category,
-    participants,
-    userId
-  );
+  console.log(data);
 
-  if (typeof activityId === "number") {
-    const tipsResponse = await uploadActivityTips(tips, activityId);
+  if ("tips" in data) {
+    const userId = await getCurrentUserId();
+    const activityId = await insertActivityIntoDatabase(
+      data.name,
+      data.description,
+      data.accessibilityMinValue,
+      data.accessibilityMaxValue,
+      data.category,
+      data.participants,
+      userId
+    );
 
-    if ("error" in tipsResponse) {
-      return generateErrorResult(tipsResponse.error);
+    if (typeof activityId === "number") {
+      const tipsResponse = await uploadActivityTips(data.tips, activityId);
+
+      console.log(tipsResponse);
+
+      if ("message" in tipsResponse && tipsResponse.success !== true) {
+        return generateErrorResult(tipsResponse.error);
+      }
+
+      return {
+        success: true,
+        activityId: activityId,
+        message: "Activity uploaded successfully!",
+      };
     }
-
-    return {
-      success: true,
-      activityId: activityId,
-      message: "Activity uploaded successfully!",
-    };
   }
 }

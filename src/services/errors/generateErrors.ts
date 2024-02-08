@@ -9,7 +9,7 @@ export function generateError(message: string): never {
 }
 
 // Custom error type support type with support for errors from Supabase
-type ErrorResult = {
+export type ErrorResult = {
   message: string;
   success: boolean;
 } & Partial<AuthError | PostgrestError>;
