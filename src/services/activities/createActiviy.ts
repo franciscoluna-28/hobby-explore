@@ -1,17 +1,45 @@
 "use server";
 
-import ActivitySchema, { TipSchema } from "@/schemas/activities/ActivitySchema";
 import { ZodError, z } from "zod";
 import { uploadPictureToSupabase } from "../supabase/storage";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
 import { Database, Tables } from "@/lib/database";
-import { redirect } from "next/navigation";
 import { generateErrorResult } from "../errors/generateErrors";
-import { ImageFileSchema } from "@/schemas/files/ImageFileSchema";
 import { generateSuccessResult } from "../sucess/generateSuccess";
 
 const supabase = createServerComponentClient<Database>({ cookies });
+
+const ACCEPTED_IMAGE_TYPES = [
+  "image/png",
+  "image/jpg",
+  "image/jpeg",
+  "image/*",
+];
+const MAX_IMAGE_SIZE = 2; //In MegaBytes
+
+const sizeInMB = (sizeInBytes: number, decimalsNum = 2) => {
+  const result = sizeInBytes / (1024 * 1024);
+  return +result.toFixed(decimalsNum);
+};
+
+const UserGeneralInfoSchema = z.object({
+  profileImage: z
+    .custom<FileList>()
+    .refine((files) => {
+      return Array.from(files ?? []).length !== 0;
+    }, "Image is required")
+    .refine((files) => {
+      return Array.from(files ?? []).every(
+        (file) => sizeInMB(file.size) <= MAX_IMAGE_SIZE
+      );
+    }, `The maximum image size is ${MAX_IMAGE_SIZE}MB`)
+    .refine((files) => {
+      return Array.from(files ?? []).every((file) =>
+        ACCEPTED_IMAGE_TYPES.includes(file.type)
+      );
+    }, "File type is not supported"),
+});
 
 type ProcessedTip = {
   description: string;
@@ -29,13 +57,13 @@ async function getCurrentUserId(): Promise<string | undefined> {
  */
 async function generateImageUrl(
   file: File[] | undefined
-): Promise<string | undefined> {
+): Promise<string | undefined | any> {
   try {
     // Don't generate urls for undefined images
     if (!file) return;
 
     // Verify image format
-    const parsedImage = ImageFileSchema.shape.document.parse(file);
+    const parsedImage = UserGeneralInfoSchema.shape.profileImage.parse(file);
 
     const userId = await getCurrentUserId();
 
@@ -49,10 +77,10 @@ async function generateImageUrl(
     return imageToUploadUrl;
   } catch (error) {
     if (error instanceof ZodError) {
-      generateErrorResult(error.message);
+      return generateErrorResult(error.message);
     }
 
-    console.error(error);
+    return generateErrorResult("There was an error uploading the tip image...");
   }
 }
 
@@ -64,10 +92,10 @@ async function generateImageUrl(
 async function uploadActivityTips(
   tips: ProcessedTip[],
   activityId: Tables<"activities">["activity_id"]
-): Promise<void> {
+): Promise<any> {
   // Avoid sending empty tips to the server
   const filteredTips = tips.filter(
-    (tip) => tip.imageFile[0] !== undefined || tip.imageFile[0] !== ""
+    (tip) => tip.imageFile.length > 0 && tip.imageFile[0] !== ""
   );
 
   const uploadPromises = filteredTips.map(async (tip) => {
@@ -95,12 +123,16 @@ async function uploadActivityTips(
         );
       }
     } catch (error) {
-      console.error("Error uploading tip image...");
+      return generateErrorResult(
+        "There was an error while uploading your tips..."
+      );
     }
   });
 
   // Upload the tips images at once
   await Promise.all(uploadPromises);
+
+  return generateSuccessResult("Tips uploaded successfully");
 }
 
 // Formdata values
@@ -165,10 +197,11 @@ function extractTips(formData: FormData): ProcessedTip[] {
           `${TIP_PREFIX}${index}-${DESCRIPTION_TYPE}`
         ) as string;
         tips[tipIndex] = {
-          imageFile: [value as File | undefined | string] as
-            | File[]
-            | string[]
-            | undefined[],
+          imageFile: [
+            typeof value !== "string" || typeof value !== "undefined"
+              ? value
+              : (undefined as File | undefined | string),
+          ] as File[] | string[] | undefined[],
           description,
         };
       }
@@ -227,8 +260,6 @@ async function insertActivityIntoDatabase(
   }
 }
 
-
-
 export async function createNewActivity(formData: FormData) {
   const {
     name,
@@ -251,13 +282,17 @@ export async function createNewActivity(formData: FormData) {
     userId
   );
 
-  if (activityId) {
-    await uploadActivityTips(tips, activityId);
+  if (typeof activityId === "number") {
+    const tipsResponse = await uploadActivityTips(tips, activityId);
 
-    redirect(`/app/activities/${activityId}`);
+    if ("error" in tipsResponse) {
+      return generateErrorResult(tipsResponse.error);
+    }
 
-    return generateSuccessResult(
-      "Your activity has been created successfully!"
-    );
+    return {
+      success: true,
+      activityId: activityId,
+      message: "Activity uploaded successfully!",
+    };
   }
 }

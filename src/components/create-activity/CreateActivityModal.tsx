@@ -44,6 +44,8 @@ import {
 } from "@/components/ui/card";
 import { Slider as DualSlider } from "@nextui-org/react";
 import { createNewActivity } from "@/services/activities/createActiviy";
+import { redirect, useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 // Modal requirements:
 // Description: Refers to a brief activity description (50 - 100 characters) ✅
@@ -65,6 +67,7 @@ import { createNewActivity } from "@/services/activities/createActiviy";
 // First step, create the Zod Schema
 
 export function CreateActivityModal() {
+  const router = useRouter();
   const TIPS_ARRAY = Array.from({ length: 4 }, () => ({
     description: undefined,
     imageFile: undefined,
@@ -111,7 +114,17 @@ export function CreateActivityModal() {
       formData.append(`tip-${index}-description`, tip.description ?? "");
     });
 
-    await createNewActivity(formData);
+    const res = await createNewActivity(formData);
+
+    if(res && "activityId" in res) {
+      toast.success(res.message);
+      router.push(`/app/activities/${res.activityId}`);
+    }
+
+    if(res && "error" in res) {
+      toast.error(res.message);
+      }
+
   };
 
   return (

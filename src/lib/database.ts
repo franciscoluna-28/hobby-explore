@@ -11,8 +11,8 @@ export type Database = {
     Tables: {
       activities: {
         Row: {
-          accessibilityMaxValue: number | null
-          accessibilityMinValue: number
+          accessibility_max_value: number | null
+          accessibility_min_value: number
           activity_id: number
           category_id: number | null
           created_at: string
@@ -23,8 +23,8 @@ export type Database = {
           participants: number | null
         }
         Insert: {
-          accessibilityMaxValue?: number | null
-          accessibilityMinValue: number
+          accessibility_max_value?: number | null
+          accessibility_min_value: number
           activity_id?: number
           category_id?: number | null
           created_at?: string
@@ -35,8 +35,8 @@ export type Database = {
           participants?: number | null
         }
         Update: {
-          accessibilityMaxValue?: number | null
-          accessibilityMinValue?: number
+          accessibility_max_value?: number | null
+          accessibility_min_value?: number
           activity_id?: number
           category_id?: number | null
           created_at?: string
