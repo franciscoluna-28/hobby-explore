@@ -81,18 +81,18 @@ export type Database = {
       "saved-activities": {
         Row: {
           activity_id: number
+          created_by_user_id: string
           saved_at: string
-          user_id: string
         }
         Insert: {
           activity_id?: number
+          created_by_user_id: string
           saved_at?: string
-          user_id: string
         }
         Update: {
           activity_id?: number
+          created_by_user_id?: string
           saved_at?: string
-          user_id?: string
         }
         Relationships: [
           {
@@ -103,8 +103,8 @@ export type Database = {
             referencedColumns: ["activity_id"]
           },
           {
-            foreignKeyName: "saved-activities_user_id_fkey"
-            columns: ["user_id"]
+            foreignKeyName: "saved-activities_created_by_user_id_fkey"
+            columns: ["created_by_user_id"]
             isOneToOne: false
             referencedRelation: "users"
             referencedColumns: ["user_id"]
