@@ -8,11 +8,9 @@ import { Badge } from "@/components/ui/badge";
 import { getCategoryNameById } from "@/services/activities/categories";
 import { handleDateConversion } from "@/lib/dates/dateConversion";
 import { TipCarouselCard } from "@/components/tips/TipCarouselCard";
-
 import Link from "next/link";
 import { ChevronRight } from "lucide-react";
 
-// TODO: BUILD AN ACTUAL BREADCRUMB COMPONENT FOR THE ACTIVITY PAGE
 function Component({ activityName }: { activityName?: string }) {
   return (
     <nav aria-label="Breadcrumb" className="p-4 mr-auto flex items-center">
