@@ -10,6 +10,7 @@ import { generateSuccessResult } from "../success/generateSuccess";
 import { ServerImageFileSchema } from "@/schemas/files/ImageFileSchema";
 import { ActivityServerSideSchemaValidation } from "@/schemas/activities/ActivitySchema";
 import { TipServerSideSchema } from "@/schemas/tips/TipSchema";
+import { getCurrentUserId } from "../auth";
 
 const supabase = createServerComponentClient<Database>({ cookies });
 
@@ -18,10 +19,6 @@ type ProcessedTip = {
   description: string;
   imageFile: undefined[] | string[] | File[];
 };
-
-async function getCurrentUserId(): Promise<string | undefined> {
-  return (await supabase.auth.getUser()).data.user?.id;
-}
 
 /**
  * Generates the relative path url of an image uploaded to Supabase

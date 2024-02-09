@@ -1,12 +1,14 @@
 "use server";
 
-import { Database } from "@/lib/database";
+import { Database, Tables } from "@/lib/database";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
 import { z } from "zod";
 import { generateError, generateErrorResult } from "../errors/generateErrors";
 import { SAVE_ACTIVITY_ERRORS_CONSTANTS } from "@/constants/errors/activities";
 import { generateSuccessResult } from "../success/generateSuccess";
+import { getCurrentUserId } from "../auth";
+import { revalidatePath } from "next/cache";
 
 const supabase = createServerComponentClient<Database>({ cookies });
 /**
@@ -14,7 +16,7 @@ const supabase = createServerComponentClient<Database>({ cookies });
  * @param activityId
  * @returns Promise<boolean>
  */
-async function doesActivityExist(activityId: string): Promise<boolean> {
+async function doesActivityExist(activityId: Tables<"activities">["activity_id"]): Promise<boolean> {
   const { data, error } = await supabase
     .from("activities")
     .select("activity_id")
@@ -25,7 +27,7 @@ async function doesActivityExist(activityId: string): Promise<boolean> {
 }
 
 const ActivityIdSchema = z
-  .string()
+  .number()
   .min(1, { message: "An activity ID must be provided" });
 const UserIdSchema = z
   .string()
@@ -39,9 +41,9 @@ const UserIdSchema = z
  */
 
 export async function validateActivityExistence(
-  activityId?: string,
+  activityId?: Tables<"activities">["activity_id"],
   userId?: string
-): Promise<{ validatedActivityId: string; validatedUserId: string }> {
+): Promise<{ validatedActivityId: number; validatedUserId: string }> {
   const activityIdResult = ActivityIdSchema.safeParse(activityId);
   if (!activityIdResult.success) {
     generateError(SAVE_ACTIVITY_ERRORS_CONSTANTS.InvalidActivityId);
@@ -70,13 +72,17 @@ export async function validateActivityExistence(
  * @param userId The ID of the user performing the action.
  * @returns A success or error result indicating the outcome of the operation.
  */
-export async function handleAddActivity(activityId: string, userId: string) {
+export async function handleAddActivity(activityId: Tables<"saved-activities">["activity_id"]) {
   try {
+    const userId = await getCurrentUserId();
+
     const { data: savedActivity, error } = await supabase
       .from("saved-activities")
       .select("*")
-      .match({ activity_id: activityId, user_id: userId })
+      .match({ activity_id: activityId, created_by_user_id: userId })
       .maybeSingle();
+
+      console.log(error)
 
     if (error) {
       return generateErrorResult("Error retrieving saved activity", error);
@@ -85,6 +91,7 @@ export async function handleAddActivity(activityId: string, userId: string) {
     // If the activity isn't saved, save it
     if (!savedActivity) {
       const res = await saveActivityByUserAndActivityId(activityId, userId);
+      revalidatePath("/app/explore")
       return res;
     }
 
@@ -98,7 +105,7 @@ export async function handleAddActivity(activityId: string, userId: string) {
 }
 
 async function saveActivityByUserAndActivityId(
-  activityId?: string,
+  activityId?: Tables<"saved-activities">["activity_id"],
   userId?: string
 ) {
   try {
@@ -106,11 +113,11 @@ async function saveActivityByUserAndActivityId(
       await validateActivityExistence(activityId, userId);
 
     const { error } = await supabase.from("saved-activities").insert({
-      user_id: validatedUserId,
+      created_by_user_id: validatedUserId,
       activity_id: Number(validatedActivityId),
     });
 
-    console.log(error);
+
 
     if (error) {
       return generateErrorResult(
@@ -118,6 +125,8 @@ async function saveActivityByUserAndActivityId(
         error
       );
     }
+
+  
 
     if (!error) {
       return generateSuccessResult("Activity has successfully been saved!");
@@ -135,7 +144,7 @@ async function saveActivityByUserAndActivityId(
 }
 
 export async function deleteSavedActivityByUserAndActivityId(
-  activityId?: string,
+  activityId?: Tables<"activities">["activity_id"],
   userId?: string
 ) {
   try {
@@ -145,9 +154,7 @@ export async function deleteSavedActivityByUserAndActivityId(
     const { error } = await supabase
       .from("saved-activities")
       .delete()
-      .match({ user_id: validatedUserId, activity_id: validatedActivityId });
-
-    console.log(error);
+      .match({ created_by_user_id: validatedUserId, activity_id: validatedActivityId });
 
     if (error) {
       return generateErrorResult(
@@ -169,4 +176,30 @@ export async function deleteSavedActivityByUserAndActivityId(
       SAVE_ACTIVITY_ERRORS_CONSTANTS.DeleteActivityError
     );
   }
+}
+
+export async function getActivitySavedStatusAction(
+  activityId: Tables<"saved-activities">["activity_id"]
+): Promise<boolean> {
+  const userId = await getCurrentUserId();
+
+
+  const { data, error } = await supabase
+    .from("saved-activities")
+    .select("activity_id")
+    .match({
+      activity_id: activityId,
+      created_by_user_id: userId,
+    })
+    .maybeSingle();
+
+  if (data && !error) {
+    return true;
+  }
+
+  if (error) {
+    return false;
+  }
+
+  return false;
 }

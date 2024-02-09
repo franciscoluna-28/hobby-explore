@@ -1,36 +1,56 @@
 "use client";
 
 import { useGetActivities } from "@/hooks/activities/useGetActivities";
-import { ActivityFeedSkeletons } from "@/components/skeletons/containers/ActivityFeedSkeleton";
 import { ActivityMotion } from "@/components/motion/ActivityMotion";
-import { NotFoundActivities } from "../NotFoundActivities";
 import { ActivityCard } from "../ActivityCard";
 import { useSearchParams } from "next/navigation";
+import { Tables } from "@/lib/database";
+import { ActivityFeedSkeletons } from "@/components/skeletons/containers/ActivityFeedSkeleton";
+import { NotFoundActivities } from "../NotFoundActivities";
+import { ActivitiesLayout } from "./ActivitiesLayout";
+import { GLOBAL_FIRST_PAGINATION_PAGE } from "@/constants/pagination/globals";
 
-export function ActivitiesFeed() {
+type ActivitiesFeedProps = {
+  userId: Tables<"users">["user_id"];
+};
+
+export function ActivitiesFeed({ userId }: ActivitiesFeedProps) {
   const searchParams = useSearchParams();
-  const currentPage = searchParams.get("page");
-  const { activities, isLoading } = useGetActivities({
-    page: Number(currentPage),
+  const page = searchParams.get("page") ?? GLOBAL_FIRST_PAGINATION_PAGE;
+
+  const { activities, isLoading, isError } = useGetActivities({
+    page: Number(page),
   });
 
   if (isLoading) {
-    return <ActivityFeedSkeletons />;
+    return (
+      <ActivityMotion>
+        <ActivityFeedSkeletons />
+      </ActivityMotion>
+    );
   }
 
-  if (!activities.length) {
-    return <NotFoundActivities />;
+  if (activities.length === 0) {
+    return (
+      <ActivityMotion>
+        <NotFoundActivities />
+      </ActivityMotion>
+    );
   }
 
   return (
     <>
-      <ul className="flex flex-wrap gap-6 justify-center">
+      <ActivitiesLayout>
         {activities.map((activity) => (
           <ActivityMotion key={activity.activity_id}>
-            <ActivityCard key={activity.activity_id} activity={activity} />
+            <ActivityCard
+              key={activity.activity_id}
+              activity={activity}
+              userId={userId}
+            />
           </ActivityMotion>
         ))}
-      </ul>
+      </ActivitiesLayout>
     </>
   );
 }

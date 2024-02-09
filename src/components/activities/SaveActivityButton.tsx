@@ -2,10 +2,11 @@
 
 import { Tables } from "@/lib/database";
 import { Button } from "../ui/button";
-import { FaBookmark } from "react-icons/fa";
-import { handleAddActivity } from "@/services/activities/activitiesServices";
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
-import { toast } from "sonner";
+import { useSaveActivity } from "@/hooks/activities/useSaveActivity";
+import { FaBookmark } from "react-icons/fa6";
+import { Bookmark } from "lucide-react";
+import React from "react";
+import { ActivityMotion } from "../motion/ActivityMotion";
 
 type Props = {
   isSaved?: boolean;
@@ -14,28 +15,34 @@ type Props = {
   activityId?: Tables<"activities">["activity_id"];
 };
 
-async function handleSaveDeleteActivity(activityId: string) {
-  const supabase = createClientComponentClient();
-  const userId = (await supabase.auth.getUser()).data.user?.id;
-
-  const res = await handleAddActivity(activityId, userId ?? "");
-
-  toast.success(res.message);
+function SavedIcon(): React.JSX.Element {
+  return (
+    <ActivityMotion>
+      <FaBookmark className="h-5 w-5 text-mainGreen text-xl"></FaBookmark>
+    </ActivityMotion>
+  );
 }
 
-// TODO: ADD STYLES TO BUTTON VARIANTS INSTEAD OF HARDCODING THE STYLES
-export function SaveActivityButton({
-  isSaved,
-  isSaving,
-  activityId,
-  userId,
-}: Props) {
+function NotSavedIcon(): React.JSX.Element {
+  return (
+    <ActivityMotion>
+      <Bookmark className="h-6 w-6 text-slate-300"></Bookmark>
+    </ActivityMotion>
+  );
+}
+
+export function SaveActivityButton({ activityId }: Props) {
+  const { mutation, initialData } = useSaveActivity({
+    activityId: activityId!,
+  });
+
   return (
     <Button
-      onClick={() => handleSaveDeleteActivity(String(activityId ?? ""))}
-      className="bg-white p-2 w-12 h-12 transition-all  hover:shadow-lg hover:border-mainGreen  hover:bg-white duration-200 rounded-full shadow-sm"
+      disabled={mutation.isPending}
+      onClick={() => mutation.mutate(activityId!)}
+      className="bg-white disabled:opacity-100 p-2 w-12 h-12 transition-all  hover:shadow-lg hover:border-mainGreen  hover:bg-white duration-200 rounded-full shadow-sm"
     >
-      <FaBookmark className="text-mainGreen text-xl" />
+      {initialData ? <SavedIcon /> : <NotSavedIcon />}
     </Button>
   );
 }

@@ -9,6 +9,7 @@ import { ExistingActivityCategories } from "@/constants/activities/categories";
 import { handlePaginationGetFromAndTo } from "../pagination/paginationServices";
 import { GLOBAL_FIRST_PAGINATION_PAGE } from "@/constants/pagination/globals";
 import { GLOBAL_ACTIVITIES_PER_PAGE } from "@/constants/pagination/globals";
+import { getCurrentUserId } from "../auth";
 
 const supabase = createServerComponentClient<Database>({ cookies });
 
@@ -51,12 +52,36 @@ export type ActivityQueryResponse = Tables<"activities"> & {
   users: Tables<"users"> | null;
 };
 
+export type SavedActivitiesFromOtherUsersQueryResponse = {
+  activity_id: Tables<"activities">["activity_id"];
+  activities: {
+    name: Tables<"activities">["name"];
+    tips: Tables<"tips">[];
+    users: Tables<"users">[] | null;
+    location: Tables<"activities">["location"];
+    created_at: Tables<"activities">["created_at"];
+    activity_id: Tables<"activities">["activity_id"];
+    category_id: Tables<"activities">["category_id"];
+    description: Tables<"activities">["description"];
+    accessibility_max_value: Tables<"activities">["accessibility_max_value"];
+    accessibility_min_value: Tables<"activities">["accessibility_min_value"];
+  };
+};
+
 // Query to retrieve the activity as well as their tips information
 const RANDOM_ACTIVITY_WITH_TIPS_QUERY =
   "*, users!activities_created_by_user_id_fkey(*), tips(*)";
 
+// Query to retrieve activities saved by other users
+const ACTIVITIES_WITH_TIPS_AND_USER_FROM_OTHER_USERS_QUERY =
+  "activity_id, activities!inner(tips(*), *, users!activities_created_by_user_id_fkey(*)) ";
+
 // Response type
-type Response = PostgrestError | ActivityQueryResponse[] | null;
+type Response =
+  | PostgrestError
+  | ActivityQueryResponse[]
+  | null
+  | SavedActivitiesFromOtherUsersQueryResponse[];
 
 export async function getTenRandomActivities(
   page: number,
@@ -74,6 +99,7 @@ export async function getTenRandomActivities(
       .range(from, to);
 
     if (error) {
+      console.log(error);
       return error;
     }
 
@@ -114,7 +140,7 @@ export async function getActivityById(activityId: string): Promise<Response> {
 }
 
 /*
-Retrieves all the activities from a user
+Retrieves all the activities created from a user
 @param - userId: Refers to the user id to get the activities from
 @return - Response: Returns an array of activities, an empty array or an error
 */
@@ -131,4 +157,20 @@ export async function getUserActivitiesByUserId(
   }
 
   return data;
+}
+
+export async function getCurrentUserSavedActivities(): Promise<Response> {
+  const currentUserId = await getCurrentUserId();
+
+  const { data, error } = await supabase
+    .from("saved-activities")
+    .select(ACTIVITIES_WITH_TIPS_AND_USER_FROM_OTHER_USERS_QUERY)
+    .match({ created_by_user_id: currentUserId });
+
+
+  if (error) {
+    return error;
+  }
+
+  return data as SavedActivitiesFromOtherUsersQueryResponse[];
 }

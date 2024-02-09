@@ -13,17 +13,38 @@ import { handleDateConversion } from "@/lib/dates/dateConversion";
 import { SaveActivityButton } from "./SaveActivityButton";
 import { getSupabaseFileUrlFromRelativePath } from "@/services/supabase/storage";
 import Sample from "../../../public/sample.jpg";
+import { Tables } from "@/lib/database";
 
 type Props = {
   activity: ActivityQueryResponse;
+  userId?: Tables<"users">["user_id"];
 };
 
-// TODO: ASK FOR THE CURRENT AUTHENTICATED USER TO SEE IF THE ACTIVITY IS FROM THE CURRENT USER AND DISPLAY (YOU) (OPTIONAL)
+const isCreatedByCurrentUser = (
+  activityUserId: Tables<"users">["user_id"],
+  userId?: Tables<"users">["user_id"]
+): boolean => {
+  if (userId && userId === activityUserId) return true;
+  return false;
+};
+
+const renderCurrentUserString = (
+  activityUserId: string,
+  activityUserDisplayName: string | null,
+  userId?: string
+) => {
+  if (isCreatedByCurrentUser(activityUserId, userId)) {
+    return `${activityUserDisplayName} (you)`;
+  }
+
+  return activityUserDisplayName;
+};
+
 // TODO: IF THE ACTIVITY IS FROM THE SAME USER, DISPLAY A MENU TO SEE DELETE AND READ OPERATIONS. FOR EXAMPLE, A USER CAN GO TO THE ACTIVITY FORM AND EDIT THE INFORMATION OR DELETE THE ACTIVITY
 // TODO: USERS AREN'T ABLE TO SAVE THEIR OWN ACTIVITIES. ONLY ACTIVITIES FROM OTHER USERS. THAT'S WHY THE ACTIVITIES THEY HAVE CREATED HAVE A SPECIFIC UI SECTION. ALSO, AVOID USERS FROM SAVING THEIR OWN ACTIVITIES SERVER SIDE
 // TODO: ADD BLUR EFFECT TO IMAGES WHEN THEY'RE LOADING
 // TODO: FIX GLOBAL OVERFLOW-X ISSUE ON MOBILE DEVICES
-export function ActivityCard({ activity }: Props) {
+export function ActivityCard({ activity, userId }: Props) {
   return (
     <li>
       <Card className="rounded-2xl hover:shadow-md duration-200 w-[350px] h-[500px]">
@@ -40,7 +61,10 @@ export function ActivityCard({ activity }: Props) {
             className="object-cover rounded-t-2xl w-full h-[200px]"
             src={
               activity.tips.length
-                ? getSupabaseFileUrlFromRelativePath(activity.tips[0].display_image_url, "tips")!
+                ? getSupabaseFileUrlFromRelativePath(
+                    activity.tips[0].display_image_url ?? "",
+                    "tips"
+                  )!
                 : Sample.src
             }
             alt={activity.name ?? "Activity"}
@@ -69,7 +93,11 @@ export function ActivityCard({ activity }: Props) {
               </Avatar>
               <div className="">
                 <p className="text-darkGray font-medium text-sm">
-                  {activity.users?.displayName ?? "User"}
+                  {renderCurrentUserString(
+                    activity.users?.user_id!,
+                    activity.users?.displayName!,
+                    userId
+                  )}
                 </p>
                 <p className="text-slate-600 text-sm">
                   {handleDateConversion(activity.created_at)}
