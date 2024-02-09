@@ -87,7 +87,7 @@ export default async function ActivityPage({
         </Badge>
         <section className="my-6 flex gap-4">
           {activity[0].tips.map((tip) => {
-            return <TipCarouselCard tip={tip} />;
+            return <TipCarouselCard key={tip.tip_id} tip={tip} />;
           })}
         </section>
       </section>

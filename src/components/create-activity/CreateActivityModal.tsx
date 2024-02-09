@@ -161,7 +161,7 @@ export function CreateActivityModal() {
                 />
               </FormControl>
               <FormDescription>
-                Explain briefly what's your activity about. Let the tips do the
+                Explain briefly what&apos;s your activity about. Let the tips do the
                 rest of the work.
               </FormDescription>
               <FormMessage />
@@ -272,7 +272,7 @@ export function CreateActivityModal() {
               </Popover>
               <FormDescription>
                 This is your activity category. Use a proper one according to
-                what you're posting.
+                what you&apos;re posting.
               </FormDescription>
               <FormMessage className="min-h-4" />
             </FormItem>

@@ -19,7 +19,7 @@ export function NoExistingSavedActivities() {
         <h4 className="font-bold text-mainBlack my-3 text-4xl">Oops...</h4>
         <div className="flex flex-col">
         <span className="text-slate-500 block">
-          It seems you don't have saved activities yet...
+          It seems you don&apos;t have saved activities yet...
           
         </span>
         <Button variant="ghost" className="my-2" asChild>
