@@ -3,6 +3,7 @@
 import { Database, Tables } from "@/lib/database";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { PostgrestError } from "@supabase/supabase-js";
+import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 
 type ActionResponse = {
@@ -16,7 +17,7 @@ const supabase = createServerComponentClient<Database>({ cookies });
 
 export async function updateUserDescription(
   description: string,
-  userId: Tables<"users">["description"]
+  userId: Tables<"users">["user_id"]
 ) {
   const { error } = await supabase
     .from("users")
@@ -61,7 +62,7 @@ export async function updateDisplayName(displayName: string, userId: string) {
     .update({ displayName })
     .match({ user_id: userId });
 
-    console.log(error)
+  console.log(error);
 
   if (error) {
     return {
@@ -73,5 +74,33 @@ export async function updateDisplayName(displayName: string, userId: string) {
   return {
     success: true,
     message: "Display name updated successfully",
+  };
+}
+
+export async function updateUserLocation(
+  location: Tables<"users">["location"],
+  userId: Tables<"users">["user_id"]
+) {
+  const { error } = await supabase
+    .from("users")
+    .update({
+      location,
+    })
+    .match({
+      user_id: userId,
+    });
+
+  if (error) {
+    return {
+      ...error,
+      success: false,
+    };
+  }
+
+  revalidatePath("/app/my-profile");
+
+  return {
+    success: true,
+    message: "Location updated successfully!",
   };
 }

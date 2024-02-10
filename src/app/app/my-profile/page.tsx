@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/hover-card";
 import Link from "next/link";
 import React from "react";
+import { ChangeHomeModal } from "@/components/profile/ChangeHomeModal";
 
 export default async function Profile() {
   const user = await getCurrentUser();
@@ -34,9 +35,14 @@ export default async function Profile() {
           defaultDescription={user?.description ?? ""}
         />
 
+        <ChangeHomeModal
+          defaultDisplayName={user?.location ?? ""}
+          userId={user?.user_id ?? ""}
+        />
+
         <section className="flex flex-wrap min-w-full justify-center gap-4 mt-8">
           <EmailCard email={user?.email ?? ""} />
-          <HomeCard />
+          <HomeCard location={user?.location} />
           <JoinedCard createdAt={user?.created_at} />
         </section>
 
@@ -46,7 +52,7 @@ export default async function Profile() {
               {" "}
               <Button className="flex gap-2 rounded-[36px]" variant="secondary">
                 <IoSettingsOutline />{" "}
-                <Link href="/profile/settings">Settings</Link>
+                <Link href="/app/my-profile/settings">Settings</Link>
               </Button>
             </HoverCardTrigger>
             <HoverCardContent className="text-sm">
