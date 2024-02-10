@@ -9,9 +9,9 @@ const nextConfig = {
       },
     ],
   },
-  experimental: {
+/*   experimental: {
     typedRoutes: true,
-  },
+  }, */
 };
 
 module.exports = nextConfig;
