@@ -85,7 +85,7 @@ export default async function ActivityPage({
         <Badge variant="secondary">
           {getCategoryNameById(activity[0].category_id)}
         </Badge>
-        <section className="my-6 flex gap-4">
+        <section className="my-6 flex gap-4" data-testid="tips-section">
           {activity[0].tips.map((tip) => {
             return <TipCarouselCard key={tip.tip_id} tip={tip} />;
           })}

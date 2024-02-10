@@ -5,6 +5,7 @@ import { Providers } from "./providers";
 import ReactQueryProvider from "@/providers/ReactQueryProvider";
 import ErrorBoundary from "@/components/layout/ErrorBoundary";
 
+
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -20,10 +21,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-      <ErrorBoundary>
-        <ReactQueryProvider>
-          <Providers>{children}</Providers>
-        </ReactQueryProvider>
+        <ErrorBoundary>
+          <ReactQueryProvider>
+            <Providers>{children}</Providers>
+          </ReactQueryProvider>
         </ErrorBoundary>
       </body>
     </html>

@@ -17,25 +17,24 @@ export async function CreateActivityCard() {
 
   return (
     <Link href="/app/create">
-    <Card className="!border-none transition-all !w-full rounded-2xl border shadow-sm hover:shadow-md duration-200 shadow-black/5">
-      <CardContent className="flex items-center !p-4 gap-2">
-        <Avatar key={user?.user_id}>
-          <AvatarImage
-            src={getSupabaseFileUrlFromRelativePath(
-              user?.profile_picture_url ?? "",
-              "avatars"
-            )}
-            alt="user"
-          />
-          <AvatarFallback>User</AvatarFallback>
-        </Avatar>
-        <p className="text-textGray">{getRenderText(user?.displayName)}</p>
-      <div className="ml-auto bg-mainGreen p-1 rounded-full text-white">
-        <Plus className="text-white"/>
-      </div>
-      </CardContent>
-      
-    </Card>
+      <Card className="!border-none transition-all !w-full rounded-2xl border shadow-sm hover:shadow-md duration-200 shadow-black/5">
+        <CardContent className="flex items-center !p-4 gap-2">
+          <Avatar key={user?.user_id}>
+            <AvatarImage
+              src={getSupabaseFileUrlFromRelativePath(
+                user?.profile_picture_url ?? "",
+                "avatars"
+              )}
+              alt="user"
+            />
+            <AvatarFallback>User</AvatarFallback>
+          </Avatar>
+          <p className="text-textGray">{getRenderText(user?.displayName)}</p>
+          <div className="ml-auto bg-mainGreen p-1 rounded-full text-white">
+            <Plus className="text-white" />
+          </div>
+        </CardContent>
+      </Card>
     </Link>
   );
 }

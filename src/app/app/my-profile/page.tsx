@@ -13,6 +13,7 @@ import {
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
 import Link from "next/link";
+import React from "react";
 
 export default async function Profile() {
   const user = await getCurrentUser();

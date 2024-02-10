@@ -15,7 +15,7 @@ export default async function UserProfileSettings() {
       <Separator className="mt-4" />
       <div className="flex w-min flex-col gap-4 mt-4">
         <Button asChild className="w-min rounded-[36px]">
-          <Link href="/profile">Go Back</Link>
+          <Link href="/app/my-profile">Go Back</Link>
         </Button>
         <ChangeUserNameModal
           userId={user?.user_id ?? ""}

@@ -22,6 +22,7 @@ export default function Home() {
         </p>
  */}
         <div className="space-y-6 flex flex-col !min-w-full items-center p-8">
+          <p className="text-slate-500 text-sm">Hey! I'm really sorry for this WIP screen. I'll be working on the landing page soon. For now, feel free to use your google account. :)</p>
           <LoginWithGoogle supabase={supabase} />
         </div>
       </main>
