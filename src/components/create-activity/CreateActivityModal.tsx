@@ -133,6 +133,8 @@ export function CreateActivityModal() {
         onSubmit={form.handleSubmit((values) => onSubmit(values))}
         className="space-y-6"
       >
+        <section className="flex">
+        <div className="w-1/3">
         <FormField
           control={form.control}
           name="name"
@@ -161,8 +163,8 @@ export function CreateActivityModal() {
                 />
               </FormControl>
               <FormDescription>
-                Explain briefly what&apos;s your activity about. Let the tips do the
-                rest of the work.
+                Explain briefly what&apos;s your activity about. Let the tips do
+                the rest of the work.
               </FormDescription>
               <FormMessage />
             </FormItem>
@@ -172,7 +174,7 @@ export function CreateActivityModal() {
           control={form.control}
           name="participants"
           render={({ field: { onChange, value } }) => (
-            <FormItem>
+            <FormItem className="border rounded-md p-4">
               <FormLabel>Participants</FormLabel>
               <FormControl>
                 <Slider
@@ -181,13 +183,13 @@ export function CreateActivityModal() {
                   min={1}
                   max={100}
                   step={1}
-                  className={cn("w-[60%]")}
+                  color="bg-mainGreen"
+                  className={cn("w-[100%] !accent-mainGreen ")}
                 />
               </FormControl>
               <FormDescription>
                 {`Number of participants: ${value ? value[0] : 1}`}
               </FormDescription>
-              <FormMessage />
             </FormItem>
           )}
         />
@@ -195,10 +197,11 @@ export function CreateActivityModal() {
           control={form.control}
           name="accessibility"
           render={({ field: { onChange, value } }) => (
-            <FormItem>
+            <FormItem className="border rounded-md p-4">
               <FormLabel>Accessibility</FormLabel>
               <FormControl>
                 <DualSlider
+                  
                   label="Price Range"
                   step={1}
                   minValue={0}
@@ -208,8 +211,6 @@ export function CreateActivityModal() {
                   className="max-w-md"
                 />
               </FormControl>
-              <FormDescription></FormDescription>
-              <FormMessage />
             </FormItem>
           )}
         />
@@ -278,19 +279,19 @@ export function CreateActivityModal() {
             </FormItem>
           )}
         />
-
-        <h3>Tips</h3>
-        <FormDescription>
-          Get started uploading tips and images for your hobby. Tips are pretty
-          much your explanations or thoughts about your activity.
-        </FormDescription>
-        <p className="text-red-500 font-medium text-sm w-[350px] my-2 h-8">
+        </div>
+        <div className="w-full m-auto flex-1">
+ 
+        <p className="text-red-500 font-medium h-6 text-sm w-[350px]">
           {form.formState?.errors &&
             form.formState.errors?.tips &&
             form.formState.errors.tips.root?.message}
         </p>
-
-        <ul className="flex flex-row flex-wrap justify-center gap-4">
+        <FormDescription className="px-16 mb-4">
+          Get started uploading tips and images for your hobby. Tips are pretty
+          much your explanations or thoughts about your activity.
+        </FormDescription>
+        <ul className="flex flex-wrap justify-center gap-4 ">
           {fields.map((item, index) => (
             <li key={item.id}>
               {form.watch(`tips.${index}.imageFile`) === undefined ? (
@@ -418,9 +419,13 @@ export function CreateActivityModal() {
             </li>
           ))}
         </ul>
+        </div>
 
+       
+        </section>
         <Button type="submit">Submit</Button>
       </form>
+
     </Form>
   );
 }
