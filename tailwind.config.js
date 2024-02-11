@@ -27,6 +27,7 @@ module.exports = {
         complement: "#30F07D",
         mainBlack: "#1E1E1E",
         lightGray: "#FAFAFA",
+        extraDarkBlack: "#0B0C10",
         gray: "#D9D9D9",
         darkGray: "#818181",
         textGray: "#7E7E7E",

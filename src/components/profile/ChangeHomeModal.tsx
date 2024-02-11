@@ -22,6 +22,15 @@ import { useAuth } from "@/store/useAuthStore";
 import { revalidatePath } from "next/cache";
 import { useState } from "react";
 import { toast } from "sonner";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
+import { Home, SunMoon } from "lucide-react";
 
 type Props = {
   defaultDisplayName: string;
@@ -30,7 +39,7 @@ type Props = {
 
 export function ChangeHomeModal({ defaultDisplayName, userId }: Props) {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const [isChangingDisplayName, setIsChangingDisplayName] =
+  const [isChangingHome, setIsChangingHome] =
     useState<boolean>(false);
   const [newDisplayName, setNewDisplayName] =
     useState<string>(defaultDisplayName);
@@ -40,25 +49,36 @@ export function ChangeHomeModal({ defaultDisplayName, userId }: Props) {
   };
 
   const handleUploading = async () => {
-    setIsChangingDisplayName(true);
+    setIsChangingHome(true);
     const result = await updateUserLocation(newDisplayName, userId);
 
     if (!result.success) {
       toast.error(result.message);
-      setIsChangingDisplayName(false);
+      setIsChangingHome(false);
       handleClose();
       return;
     }
 
     toast.success(result.message);
 
-    setIsChangingDisplayName(false);
+    setIsChangingHome(false);
     handleClose();
 
   };
 
   return (
-    <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
+    <Card className=" flex items-center space-x-4 rounded-md border p-4">
+    <Home className="w-6 h-6" />
+    <div className="flex-1 space-y-1">
+      <p className="text-sm font-medium leading-none">
+        Edit Home
+      </p>
+      <p className="text-sm text-muted-foreground">
+        Change your profile location.
+      </p>
+    </div>
+
+      <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
       <DialogTrigger asChild>
         <Button className="rounded-[36px]" variant="outline">
           Change Home
@@ -66,9 +86,9 @@ export function ChangeHomeModal({ defaultDisplayName, userId }: Props) {
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Edit profile</DialogTitle>
+          <DialogTitle>Edit Location</DialogTitle>
           <DialogDescription>
-            Change your display name here. Click save when you&apos;re done.
+            Change your location here. This will be visible for all users. Click save when you&apos;re done.
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">
@@ -88,7 +108,7 @@ export function ChangeHomeModal({ defaultDisplayName, userId }: Props) {
             <p>{defaultDisplayName}</p>
           <ButtonLoading
             onClick={handleUploading}
-            isLoading={isChangingDisplayName}
+            isLoading={isChangingHome}
             type="submit"
           >
             Save changes
@@ -96,5 +116,7 @@ export function ChangeHomeModal({ defaultDisplayName, userId }: Props) {
         </DialogFooter>
       </DialogContent>
     </Dialog>
+  </Card>
+    
   );
 }

@@ -5,21 +5,29 @@ import { Separator } from "@/components/ui/separator";
 import { getCurrentUser } from "@/services/auth";
 import Link from "next/link";
 import { ChangeDisplayNameModal } from "@/components/profile/ChangeDisplayNameModal";
-import { Label } from "@/components/ui/label";
-import { Switch } from "@/components/ui/switch";
 import ThemeSwitch from "@/components/ui/theme-switcher";
+import { ChangeHomeModal } from "@/components/profile/ChangeHomeModal";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { ChevronLeft } from "lucide-react";
 
 export default async function UserProfileSettings() {
   const user = await getCurrentUser();
 
   return (
-    <div>
-      <h2 className="text-2xl font-semibold">User Profile Settings</h2>
+    <div className="w-full">
+      <h2 className="text-xl font-semibold">Settings</h2>
       <Separator className="mt-4" />
-      <div className="flex w-min flex-col gap-4 mt-4">
-        <Button asChild className="w-min rounded-[36px]">
-          <Link href="/app/my-profile">Go Back</Link>
-        </Button>
+      <div className="flex w-full flex-col gap-4 mt-4">
+        <Link className="flex" href="/app/my-profile">
+          <ChevronLeft className="h-6 w-6" /> <span className="font-medium text-sm items-center flex">Go Back</span>
+        </Link>
         <ChangeUserNameModal
           userId={user?.user_id ?? ""}
           defaultUserUserName={user?.username ?? ""}
@@ -29,10 +37,12 @@ export default async function UserProfileSettings() {
           defaultDisplayName={user?.displayName ?? ""}
         />
 
+        <ChangeHomeModal
+          defaultDisplayName={user?.location ?? ""}
+          userId={user?.user_id ?? ""}
+        />
+
         <ThemeSwitch />
-        <div className="dark:bg-mainBlack bg-mainGreen">
-          This random thing should change
-        </div>
 
         <LogoutModal />
       </div>

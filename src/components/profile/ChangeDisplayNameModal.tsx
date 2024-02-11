@@ -17,6 +17,8 @@ import { updateDisplayName, updateUserUsername } from "@/services/userServices";
 import { useAuth } from "@/store/useAuthStore";
 import { useState } from "react";
 import { toast } from "sonner";
+import { Card } from "../ui/card";
+import { User} from "lucide-react"
 
 type Props = {
   defaultDisplayName: string;
@@ -54,11 +56,22 @@ export function ChangeDisplayNameModal({ defaultDisplayName, userId }: Props) {
     handleClose();
   };
 
+  // TODO: CREATE COMMON CARD ELEMENT
   return (
+    <Card className=" flex items-center space-x-4 rounded-md border p-4">
+    <User className="w-6 h-6" />
+    <div className="flex-1 space-y-1">
+      <p className="text-sm font-medium leading-none">
+        Edit Display Name
+      </p>
+      <p className="text-sm text-muted-foreground">
+        Change your display name.
+      </p>
+    </div>
     <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
       <DialogTrigger asChild>
         <Button className="rounded-[36px]" variant="outline">
-          Edit Display Name
+          Edit Name
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
@@ -93,5 +106,6 @@ export function ChangeDisplayNameModal({ defaultDisplayName, userId }: Props) {
         </DialogFooter>
       </DialogContent>
     </Dialog>
+    </Card>
   );
 }

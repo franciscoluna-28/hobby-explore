@@ -8,10 +8,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { useState } from "react";
 import Cropper, { Area } from "react-easy-crop";
 import { cropImage } from "@/lib/cropper/cropperLib";
@@ -48,9 +45,6 @@ export function ImageCropperDialog({
 
   return (
     <Dialog open={open}>
-      <DialogTrigger asChild>
-        <Button variant="outline">Edit Profile</Button>
-      </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>Edit profile</DialogTitle>

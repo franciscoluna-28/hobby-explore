@@ -12,7 +12,7 @@ type Props = {
 
 export function Header({ profilePictureUrl }: Props) {
   return (
-    <header className="bg-mainGreen relative w-full justify-around px-4 py-2.5 md:flex items-center hidden ">
+    <header className="bg-mainGreen relative w-full justify-around px-4 py-2.5 md:flex items-center hidden dark:bg-extraDarkBlack transition-all duration-200 dark:border-b dark:border-black ">
       <Logo />
       <HeaderLinksContainer />
 
