@@ -31,6 +31,8 @@ export async function updateUserDescription(
     };
   }
 
+  revalidatePath("/app/my-profile");
+
   return {
     success: true,
     message: "User description updated successfully",
@@ -49,6 +51,8 @@ export async function updateUserUsername(username: string, userId: string) {
       success: false,
     };
   }
+
+  revalidatePath("/app/my-profile");
 
   return {
     success: true,
@@ -97,6 +101,7 @@ export async function updateUserLocation(
     };
   }
 
+  // This is the equivalent of setting a new global state
   revalidatePath("/app/my-profile");
 
   return {

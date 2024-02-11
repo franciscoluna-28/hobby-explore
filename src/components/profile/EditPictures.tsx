@@ -13,6 +13,8 @@ import {
 import { ChangeEvent, useRef, useState } from "react";
 import { usePictureUpload } from "@/hooks/useProfilePicturesUpload";
 import { ButtonLoading } from "../ui/button-loading";
+import { ImageCropperDialog } from "../cropper/ImageCropperDialog";
+import { dataURLtoFile } from "@/lib/blob";
 
 type Props = {
   userId: string;
@@ -28,6 +30,9 @@ export function EditPictures({ userId }: Props) {
 
   // State and refs
   const [openModal, setOpenModal] = useState<boolean>(false);
+  const [cropperModalOpen, setCropperModalOpen] = useState<boolean>(false);
+  const [image, setImage] = useState<File | null>(null);
+  const [croppedImage, setCroppedImage] = useState<File | null>(null);
 
   // Controls the profile picture input
   const profilePictureInputFile = useRef<HTMLInputElement | null>(null);
@@ -39,23 +44,35 @@ export function EditPictures({ userId }: Props) {
     setOpenModal((state) => !state);
   };
 
-  const handleFileUpload = (event: ChangeEvent<HTMLInputElement>) => {
+  function handleFileChange(event: ChangeEvent<HTMLInputElement>) {
     if (!event.target.files) return;
-    const file = event.target.files[0];
+    setImage(event.target.files[0]);
+    setCropperModalOpen(true);
+  }
+
+  const handleFileUpload = (croppedImage: File) => {
+    closeModal();
+    setCropperModalOpen(true);
+
     try {
-      uploadProfilePicture(file);
+      uploadProfilePicture(croppedImage);
     } catch (error) {
       console.error("Error handling file upload:", error);
     } finally {
       closeModal();
+      setCropperModalOpen(false);
     }
   };
 
+  function handleCropImage(croppedImage: File) {
+    handleFileUpload(croppedImage);
+  }
+
   const handleBannerUpload = (event: ChangeEvent<HTMLInputElement>) => {
     if (!event.target.files) return;
-    const file = event.target.files[0];
+    setImage(event.target.files[0]);
     try {
-      uploadBannerPicture(file);
+      uploadBannerPicture(image!);
     } catch (error) {
       console.error("Error handling file upload:", error);
     } finally {
@@ -77,54 +94,71 @@ export function EditPictures({ userId }: Props) {
   };
 
   return (
-    <Dialog open={openModal} onOpenChange={setOpenModal}>
-      <DialogTrigger asChild>
-        <Button variant="icon">
-          <MdOutlineCameraAlt /> Change Pictures
-        </Button>
-      </DialogTrigger>
-      <DialogContent className="sm:max-w-md">
-        <DialogHeader>
-          <DialogTitle>Upload Pictures</DialogTitle>
-          <DialogDescription>
-            Change your banner or profile picture here.
-          </DialogDescription>
-        </DialogHeader>
-        <div className="flex flex-col w-full gap-4">
-          <ButtonLoading
-            variant="outline"
-            isLoading={isUploadingProfile}
-            disabled={isUploadingBanner || isUploadingProfile}
-            onClick={onProfileButtonClick}
-          >
-            Profile picture
-            <input
-              type="file"
-              id="file"
+    <>
+      <Dialog open={openModal} onOpenChange={setOpenModal}>
+        <DialogTrigger asChild>
+          <Button variant="icon">
+            <MdOutlineCameraAlt /> Change Pictures
+          </Button>
+        </DialogTrigger>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Upload Pictures</DialogTitle>
+            <DialogDescription>
+              Change your banner or profile picture here.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="flex flex-col w-full gap-4">
+            <ButtonLoading
+              variant="outline"
+              isLoading={isUploadingProfile}
               disabled={isUploadingBanner || isUploadingProfile}
-              ref={profilePictureInputFile}
-              className="hidden"
-              onChange={handleFileUpload}
-            />
-          </ButtonLoading>
-          <ButtonLoading
-            variant="outline"
-            isLoading={isUploadingBanner}
-            disabled={isUploadingBanner || isUploadingProfile}
-            onClick={onBannerButtonClick}
-          >
-            Cover picture
-            <input
-              type="file"
-              id="file2"
+              onClick={onProfileButtonClick}
+            >
+              Profile picture
+              <input
+                type="file"
+                id="file"
+                disabled={isUploadingBanner || isUploadingProfile}
+                ref={profilePictureInputFile}
+                className="hidden"
+                onChange={handleFileChange}
+              />
+            </ButtonLoading>
+            <ButtonLoading
+              variant="outline"
+              isLoading={isUploadingBanner}
               disabled={isUploadingBanner || isUploadingProfile}
-              ref={bannerPictureInputFile}
-              className="hidden"
-              onChange={handleBannerUpload}
-            />
-          </ButtonLoading>
-        </div>
-      </DialogContent>
-    </Dialog>
+              onClick={onBannerButtonClick}
+            >
+              Cover picture
+              <input
+                type="file"
+                id="file2"
+                disabled={isUploadingBanner || isUploadingProfile}
+                ref={bannerPictureInputFile}
+                className="hidden"
+                onChange={handleBannerUpload}
+              />
+            </ButtonLoading>
+          </div>
+        </DialogContent>
+      </Dialog>
+      <ImageCropperDialog
+        containerStyle={{
+          position: "relative",
+          width: "100%",
+          height: 300,
+          background: "#333",
+        }}
+        open={cropperModalOpen}
+        image={image ? URL.createObjectURL(image) : null}
+        onComplete={(imagePromise: Promise<string>) => {
+          imagePromise.then((image: string) => {
+            handleFileUpload(dataURLtoFile(image, "Blob"));
+          });
+        }}
+      />
+    </>
   );
 }

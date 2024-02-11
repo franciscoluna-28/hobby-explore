@@ -14,7 +14,7 @@ function checkPictureIsNotEmpty(url: string) {
   return getSupabaseFileUrlFromRelativePath(url, "banners");
 }
 
-export function ProfileBanner({ bannerPictureUrl, isUploadingBanner }: Props) {
+export function ProfileBanner({ bannerPictureUrl }: Props) {
   return (
     <div className="min-w-full flex">
       <img
