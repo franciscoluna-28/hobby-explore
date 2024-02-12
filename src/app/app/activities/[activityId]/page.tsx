@@ -10,7 +10,9 @@ import { handleDateConversion } from "@/lib/dates/dateConversion";
 import { TipCarouselCard } from "@/components/tips/TipCarouselCard";
 import Link from "next/link";
 import { ChevronRight } from "lucide-react";
+import { getSupabaseFileUrlFromRelativePath } from "@/services/supabase/storage";
 
+// TODO: ISOLATE THE BREADCRUMB AND CREATE ITS OWN COMPONENT
 function Component({ activityName }: { activityName?: string }) {
   return (
     <nav aria-label="Breadcrumb" className="p-4 mr-auto flex items-center">
@@ -44,14 +46,15 @@ export default async function ActivityPage({
     activityId: string;
   };
 }) {
-  // Dude three hours here just to get all the goddamn tips LOL
   const activityData = await getActivityById(params.activityId);
 
+  // TODO: CREATE CUSTOM COMPONENT
   // First case: activities is null
   if (activityData === null) {
     return <div>No activities available.</div>;
   }
 
+  // TODO: CREATE CUSTOM COMPONENT
   // Second case: activities throws an error
   if ("code" in activityData) {
     toast.error("Failed to fetch activities.");
@@ -61,13 +64,15 @@ export default async function ActivityPage({
   // Now we're certain that response is of type ActivityQueryResponse[]
   const activity = activityData as ActivityQueryResponse[];
 
+  // TODO: CREATE A COMMON AVATAR COMPONENT FOR THE USER INSTEAD OF CODING IT EVERY SINGLE TIME LOL
+  // TODO: WRITE UNIT TEST WITHOUT USING THE API TO TEST DIFFERENT BEHAVIORS
   return (
     <>
       <section>
         <Component activityName={activity[0].name ?? ""} />
         <div className="flex items-center gap-2">
           <Avatar>
-            <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
+            <AvatarImage src={getSupabaseFileUrlFromRelativePath(activity[0].users?.profile_picture_url ??  "", "avatars")} alt="@shadcn" />
             <AvatarFallback>CN</AvatarFallback>
           </Avatar>
           <div className="">
