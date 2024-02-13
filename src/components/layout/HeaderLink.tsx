@@ -12,10 +12,11 @@ const headerLinkVariants = cva(
     variants: {
       variant: {
         selected: "before:bg-white",
-        noSelected: "text-mainBlack/50 before:bg-transparent",
-      },
+          noSelected: "text-mainBlack/50 before:bg-transparent",
+        },
       size: {
         default: "h-12 w-24",
+        medium: "h-16 w-32"
       },
     },
     defaultVariants: {
@@ -28,7 +29,7 @@ const headerLinkVariants = cva(
 type HeaderLinkProps = {
   ActiveLinkIcon: IconType;
   InactiveLinkIcon: IconType;
-  children: React.ReactNode;
+  children?: React.ReactNode;
   shouldUseInclude?: boolean;
   stringToInclude?: string;
 } & LinkProps &
@@ -61,7 +62,7 @@ export function HeaderLink({
 
   return (
     <Link href={href} className={linkClassNames} {...rest}>
-      {isActiveLink ? <ActiveLinkIcon /> : <InactiveLinkIcon />}
+      {isActiveLink ? <ActiveLinkIcon className="w-5 h-5" /> : <InactiveLinkIcon className="w-4 h-4" />}
       {children}
     </Link>
   );
