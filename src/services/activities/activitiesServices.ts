@@ -129,6 +129,7 @@ async function saveActivityByUserAndActivityId(
   
 
     if (!error) {
+      revalidatePath("/app/saved/my-activities")
       return generateSuccessResult("Activity has successfully been saved!");
     }
 
@@ -164,6 +165,7 @@ export async function deleteSavedActivityByUserAndActivityId(
     }
 
     if (!error) {
+      revalidatePath("/app/saved/my-activities")
       return generateSuccessResult("Activity has successfully been deleted!");
     }
 

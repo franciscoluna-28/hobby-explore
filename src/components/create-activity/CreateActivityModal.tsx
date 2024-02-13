@@ -46,6 +46,7 @@ import { Slider as DualSlider } from "@nextui-org/react";
 import { createNewActivity } from "@/services/activities/createActiviy";
 import { redirect, useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { useState } from "react";
 
 // Modal requirements:
 // Description: Refers to a brief activity description (50 - 100 characters) ✅
@@ -66,7 +67,10 @@ import { toast } from "sonner";
 
 // First step, create the Zod Schema
 
+
+
 export function CreateActivityModal() {
+   const [isLoading, setIsLoading] = useState<boolean>(false)
   const router = useRouter();
   const TIPS_ARRAY = Array.from({ length: 4 }, () => ({
     description: undefined,
@@ -97,7 +101,10 @@ export function CreateActivityModal() {
   );
 
   const onSubmit = async (values: z.infer<typeof ActivitySchema>) => {
+    setIsLoading(true);
     const formData = new FormData();
+
+    
 
     formData.append("name", values.name);
     formData.append("description", values.description);
@@ -118,13 +125,17 @@ export function CreateActivityModal() {
     console.log(res);
 
     if (res && "activityId" in res) {
+      setIsLoading(false)
       toast.success(res.message);
       router.push(`/app/activities/${res.activityId}`);
     }
 
     if (res?.success === false && !res.message) {
+      setIsLoading(false);
       toast.error("There was an unknown error while creating your activity...");
     }
+
+    setIsLoading(false);
   };
 
   return (
@@ -174,6 +185,7 @@ export function CreateActivityModal() {
               control={form.control}
               name="participants"
               render={({ field: { onChange, value } }) => (
+                <>
                 <FormItem className="border rounded-md p-4">
                   <FormLabel>Participants</FormLabel>
                   <FormControl>
@@ -187,30 +199,37 @@ export function CreateActivityModal() {
                       className={cn("w-[100%] !accent-mainGreen ")}
                     />
                   </FormControl>
-                  <FormDescription>
+                  <p className="text-sm text-slate-500">
                     {`Number of participants: ${value ? value[0] : 1}`}
-                  </FormDescription>
+                  </p>
                 </FormItem>
+                <FormDescription className="my-3">Refers to the amount of participants that'll be in the activity.</FormDescription>
+                </>
               )}
+              
             />
             <FormField
               control={form.control}
               name="accessibility"
               render={({ field: { onChange, value } }) => (
-                <FormItem className="border rounded-md p-4">
+                <>
+                <FormItem className="border rounded-md p-4 my-6">
                   <FormLabel>Accessibility</FormLabel>
                   <FormControl>
                     <DualSlider
+                    onChange={onChange}
                       label="Price Range"
                       step={1}
                       minValue={0}
                       maxValue={100}
                       defaultValue={value ? value : [0, 50]}
                       formatOptions={{ style: "currency", currency: "USD" }}
-                      className="max-w-md"
+                      className="max-w-full text-slate-500 text-sm "
                     />
                   </FormControl>
                 </FormItem>
+                 <FormDescription className="my-3">How accessible is your activity to others in economic terms.</FormDescription>
+                 </>
               )}
             />
             <FormField
@@ -423,7 +442,7 @@ export function CreateActivityModal() {
             </ul>
           </div>
         </section>
-        <Button type="submit">Submit</Button>
+        <Button className="bg-mainGreen hover:bg-mainGreen" disabled={isLoading} type="submit">{isLoading ? "Uploading Activity..." : "Create Activity"}</Button>
       </form>
     </Form>
   );
