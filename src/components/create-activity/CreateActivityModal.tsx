@@ -341,7 +341,7 @@ export function CreateActivityModal() {
             </FormDescription>
 
             <ul className="flex flex-wrap gap-4">
-              <AnimatePresence mode="wait">
+              <AnimatePresence mode="wait" initial={false}>
                 {fields.map((item, index) => (
                   <motion.li
                     key={item.id}
@@ -447,13 +447,7 @@ export function CreateActivityModal() {
                                       />
                                     </div>
 
-                                    <span
-                                      className="block m-auto text-center font-medium text-red-500"
-                                      role="alert"
-                                    >
-                                      {fieldState.error &&
-                                        fieldState.error.message}
-                                    </span>
+                            
                                   </CardContent>
                                 </Card>
                               )}
@@ -517,11 +511,6 @@ export function CreateActivityModal() {
                             )}
                           />
                         </Card>
-                        <p className="text-red-500 font-medium text-sm w-[350px] my-2 h-8">
-                          {form.formState?.errors &&
-                            form.formState.errors?.tips &&
-                            form.formState.errors.tips[index]?.root?.message}
-                        </p>
                       </motion.div>
                     )}
                   </motion.li>
