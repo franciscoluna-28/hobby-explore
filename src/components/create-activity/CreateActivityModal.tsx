@@ -53,8 +53,12 @@ import {
   MAXIMUM_ACTIVITY_NAME_VALUE,
   MAXIMUM_DESCRIPTION_VALUE,
 } from "@/constants/activities/form";
-import { MAXIMUM_TIP_DESCRIPTION_VALUE } from "@/constants/tips/globals";
-import { TipSchema } from "@/schemas/tips/TipSchema";
+import {
+  MAXIMUM_ALLOWED_TIPS,
+  MAXIMUM_TIP_DESCRIPTION_VALUE,
+} from "@/constants/tips/globals";
+import { motion } from "framer-motion";
+import { AnimatePresence } from "framer-motion";
 
 // Modal requirements:
 // Description: Refers to a brief activity description (50 - 100 characters) ✅
@@ -78,7 +82,9 @@ import { TipSchema } from "@/schemas/tips/TipSchema";
 export function CreateActivityModal() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const router = useRouter();
-  const TIPS_ARRAY = Array.from({ length: 4 }, () => ({
+
+  // Initialize empty tips
+  const TIPS_ARRAY = Array.from({ length: MAXIMUM_ALLOWED_TIPS }, () => ({
     description: undefined,
     imageFile: undefined,
   }));
@@ -99,14 +105,10 @@ export function CreateActivityModal() {
 
   console.log(form.formState.errors);
 
-  const { fields, append, prepend, remove, swap, move, insert } = useFieldArray(
-    {
-      control,
-      name: "tips",
-    }
-  );
-
-
+  const { fields } = useFieldArray({
+    control,
+    name: "tips",
+  });
 
   const onSubmit = async (values: z.infer<typeof ActivitySchema>) => {
     setIsLoading(true);
@@ -200,13 +202,19 @@ export function CreateActivityModal() {
                     <FormControl>
                       <Slider
                         label="Number of Participants"
+                        classNames={{
+                          track: "bg-slate-200"
+                        }}
                         onChange={onChange}
                         step={1}
                         maxValue={100}
+                        color="primary"
                         minValue={1}
-                        showOutline={true}
+                        showOutline
+                        disableThumbScale={true}
                         defaultValue={[value ? value[0] : 1]}
-                        className="w-full text-slate-500 text-sm bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
+                        className="min-w-full text-slate-500 text-sm bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
+                      
                       />
                     </FormControl>
                   </FormItem>
@@ -234,6 +242,15 @@ export function CreateActivityModal() {
                         defaultValue={value ? value : [0, 50]}
                         formatOptions={{ style: "currency", currency: "USD" }}
                         className="max-w-full text-slate-500 text-sm"
+                        classNames={{
+                          filler: "bg-mainGreen",
+                          thumb: [
+                            "bg-mainGreen",
+                            "data-[dragging=true]:shadow-lg data-[dragging=true]:shadow-black/10",
+                            "data-[dragging=true]:w-7 data-[dragging=true]:h-7 data-[dragging=true]:after:h-6 data-[dragging=true]:after:w-6",
+                          ],
+                          track: "bg-slate-200"
+                        }}
                       />
                     </FormControl>
                   </FormItem>
@@ -322,164 +339,194 @@ export function CreateActivityModal() {
               Get started uploading tips and images for your hobby. Tips are
               pretty much your explanations or thoughts about your activity.
             </FormDescription>
+
             <ul className="flex flex-wrap gap-4">
-              {fields.map((item, index) => (
-                <li key={item.id}>
-                  {form.watch(`tips.${index}.imageFile`) === undefined ? (
-                    <Controller
-                      control={form.control}
-                      name={`tips.${index}.imageFile`}
-                      rules={{
-                        required: {
-                          value: true,
-                          message: "This field is required",
-                        },
-                      }}
-                      render={({ field: { onChange, onBlur }, fieldState }) => (
-                        <Dropzone
-                          noClick
-                    accept={{
-                      'image/*': ['image/png', 'image/jpeg', 'image/jpg'],
-                    }}
-                    onDropRejected={() => {
-                      form.setValue(
-                        `tips.${index}.imageFile`,
-                        undefined as any
-                      )
-                    }}
-                          onDrop={(acceptedFiles) => {
-                            form.setValue(
-                              `tips.${index}.imageFile`,
-                              acceptedFiles as unknown as File[],
-                              {
-                                shouldValidate: true,
-                              }
-                            );
-                          }}
-                        >
-                          {({
-                            getRootProps,
-                            getInputProps,
-                            open,
-                            isDragActive,
-                            acceptedFiles,
-                          }) => (
-                            <Card
-                              className={`relative hover:cursor-pointer duration-200 border-2 border-dashed z-10 w-[350px] h-[380px]`}
-                            >
-                              <CardContent
-                                className="flex border-none flex-col items-center justify-center rounded-lg space-y-2 px-2 py-4 text-xs h-full bg-white"
-                                {...getRootProps()}
-                              >
-
-                                <div className="text-muted-foreground m-auto">
-                                  <span className="font-medium">
-                                    Drag Files to Upload or
-                                  </span>
-                      
-                                  <Button
-                                    type="button"
-                                    variant="ghost"
-                                    size="lg"
-                                    className="block text-center m-auto text-xs"
-                                  >
-                                    Click Here
-                                  </Button>
-                                  <div className="ml-auto block bg-mainGreen p-1 rounded-full text-white w-fit m-auto">
-                                    <Plus className="text-white" />
-                                  </div>
-
-                                  <label
-                                    onClick={() => {
-                                      open();
-                                    }}
-                                    className="h-full w-full top-0 left-0 absolute opacity-0"
-                                  >
-                                    Upload Tip
-                                  </label>
-
-                                  <input
-                                    className="bg-red-500 h-full"
-                                    {...getInputProps({
-                                      id: "spreadsheet",
-                                      onChange,
-                                      onBlur,
-                                    })}
-                                  />
-                                </div>
-
-                                <span
-                                  className="block m-auto text-center font-medium text-red-500"
-                                  role="alert"
-                                >
-                                  {fieldState.error && fieldState.error.message}
-                                </span>
-                              </CardContent>
-                            </Card>
-                          )}
-                        </Dropzone>
-                      )}
-                    />
-                  ) : (
-                    <li>
-                      <Card className="rounded-2xl hover:shadow-sm hover:border-mainGreen relative duration-200  w-[350px] h-[380px]">
-                        <div className="relative">
-                          <Image
-                            width={0}
-                            height={0}
-                            className="object-cover rounded-t-2xl w-full max-h-[210px] h-[250px]"
-                            src={URL.createObjectURL(
-                              form.getValues(`tips.${index}.imageFile.${0}`)
-                            )}
-                            alt={`Tip #${index + 1}`}
-                          />
-                          <Button
-                            type="button"
-                            onClick={() =>
-                              form.setValue(
-                                `tips.${index}.imageFile`,
-                                undefined as any
-                              )
-                            }
-                            className="bg-white p-1 rounded-full absolute top-4 right-4 w-8 h-8 hover:bg-white/90"
-                          >
-                            <X className="text-mainBlack text-sm" />
-                          </Button>
-                        </div>
-                        <FormField
+              <AnimatePresence mode="wait">
+                {fields.map((item, index) => (
+                  <motion.li
+                    key={item.id}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                  >
+                    {form.watch(`tips.${index}.imageFile`) === undefined ? (
+                      <motion.div
+                        key={item.id}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                      >
+                        <Controller
                           control={form.control}
-                          name={`tips.${index}.description`}
-                          render={({ field }) => (
-                            <FormItem className="p-4">
-                              <FormLabel className=" text-gray text-sm">
-                                Tip #{index + 1}
-                              </FormLabel>
-                              <FormControl>
-                                <Textarea
-                                  className="!outline-none resize-none !p-0 !focus-visible:ring-transparent !focus-visible:ring-offset-transparent !border-none rounded-none max-h-[50px]"
-                                  placeholder="Share some tips or your thoughts..."
-                                  {...field}
-                                />
-                              </FormControl>
-                              <CharacterCounter
-                                field={field}
-                                maxCharacterCount={
-                                  MAXIMUM_TIP_DESCRIPTION_VALUE
-                                }
-                              />
-                            </FormItem>
+                          name={`tips.${index}.imageFile`}
+                          rules={{
+                            required: {
+                              value: true,
+                              message: "This field is required",
+                            },
+                          }}
+                          render={({
+                            field: { onChange, onBlur },
+                            fieldState,
+                          }) => (
+                            <Dropzone
+                              noClick
+                              accept={{
+                                "image/*": [
+                                  "image/png",
+                                  "image/jpeg",
+                                  "image/jpg",
+                                ],
+                              }}
+                              onDropRejected={() => {
+                                toast.error(
+                                  "We only support images. Please, make sure you're uploading a valid image."
+                                );
+                                form.setValue(
+                                  `tips.${index}.imageFile`,
+                                  undefined as any
+                                );
+                              }}
+                              onDrop={(acceptedFiles) => {
+                                form.setValue(
+                                  `tips.${index}.imageFile`,
+                                  acceptedFiles as unknown as File[],
+                                  {
+                                    shouldValidate: true,
+                                  }
+                                );
+                              }}
+                            >
+                              {({
+                                getRootProps,
+                                getInputProps,
+                                open,
+                                isDragActive,
+                                acceptedFiles,
+                              }) => (
+                                <Card
+                                  className={`relative hover:cursor-pointer duration-200 border-2 border-dashed z-10 w-[350px] h-[380px]`}
+                                >
+                                  <CardContent
+                                    className="flex border-none flex-col items-center justify-center rounded-lg space-y-2 px-2 py-4 text-xs h-full bg-white"
+                                    {...getRootProps()}
+                                  >
+                                    <div className="text-muted-foreground m-auto">
+                                      <span className="font-medium">
+                                        Drag Files to Upload or
+                                      </span>
+
+                                      <Button
+                                        type="button"
+                                        variant="ghost"
+                                        size="lg"
+                                        className="block text-center m-auto text-xs"
+                                      >
+                                        Click Here
+                                      </Button>
+                                      <div className="ml-auto block bg-mainGreen p-1 rounded-full text-white w-fit m-auto">
+                                        <Plus className="text-white" />
+                                      </div>
+
+                                      <label
+                                        onClick={() => {
+                                          open();
+                                        }}
+                                        className="h-full w-full top-0 left-0 absolute opacity-0"
+                                      >
+                                        Upload Tip
+                                      </label>
+
+                                      <input
+                                        className="bg-red-500 h-full"
+                                        {...getInputProps({
+                                          id: "spreadsheet",
+                                          onChange,
+                                          onBlur,
+                                        })}
+                                      />
+                                    </div>
+
+                                    <span
+                                      className="block m-auto text-center font-medium text-red-500"
+                                      role="alert"
+                                    >
+                                      {fieldState.error &&
+                                        fieldState.error.message}
+                                    </span>
+                                  </CardContent>
+                                </Card>
+                              )}
+                            </Dropzone>
                           )}
                         />
-                      </Card>
-                      <p className="text-red-500 font-medium text-sm w-[350px] my-2 h-8">
-                        {form.formState?.errors &&
-                          form.formState.errors?.tips &&
-                          form.formState.errors.tips[index]?.root?.message}
-                      </p>
-                    </li>
-                  )}
-                </li>
-              ))}
+                      </motion.div>
+                    ) : (
+                      
+                      <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                      >
+                        <Card className="rounded-2xl hover:shadow-sm hover:border-mainGreen relative duration-200  w-[350px] h-[380px]">
+                          <div className="relative">
+                            <Image
+                              width={0}
+                              height={0}
+                              className="object-cover rounded-t-2xl w-full max-h-[210px] h-[250px]"
+                              src={URL.createObjectURL(
+                                form.getValues(`tips.${index}.imageFile.${0}`)
+                              )}
+                              alt={`Tip #${index + 1}`}
+                            />
+                            <Button
+                              type="button"
+                              onClick={() =>
+                                form.setValue(
+                                  `tips.${index}.imageFile`,
+                                  undefined as any
+                                )
+                              }
+                              className="bg-white p-1 rounded-full absolute top-4 right-4 w-8 h-8 hover:bg-white/90"
+                            >
+                              <X className="text-mainBlack text-sm" />
+                            </Button>
+                          </div>
+                          <FormField
+                            control={form.control}
+                            name={`tips.${index}.description`}
+                            render={({ field }) => (
+                              <FormItem className="p-4">
+                                <FormLabel className=" text-gray text-sm">
+                                  Tip #{index + 1}
+                                </FormLabel>
+                                <FormControl>
+                                  <Textarea
+                                    className="!outline-none resize-none !p-0 !focus-visible:ring-transparent !focus-visible:ring-offset-transparent !border-none rounded-none max-h-[50px]"
+                                    placeholder="Share some tips or your thoughts..."
+                                    {...field}
+                                  />
+                                </FormControl>
+                                <CharacterCounter
+                                  field={field}
+                                  maxCharacterCount={
+                                    MAXIMUM_TIP_DESCRIPTION_VALUE
+                                  }
+                                />
+                              </FormItem>
+                            )}
+                          />
+                        </Card>
+                        <p className="text-red-500 font-medium text-sm w-[350px] my-2 h-8">
+                          {form.formState?.errors &&
+                            form.formState.errors?.tips &&
+                            form.formState.errors.tips[index]?.root?.message}
+                        </p>
+                      </motion.div>
+                    )}
+                  </motion.li>
+                ))}
+              </AnimatePresence>
             </ul>
           </div>
         </section>

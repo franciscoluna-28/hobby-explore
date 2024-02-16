@@ -13,7 +13,7 @@
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
 
-    --primary: 222.2 47.4% 11.2%;
+    --primary: 170, 100%, 40%;
     --primary-foreground: 210 40% 98%;
 
     --secondary: 210 40% 96.1%;
@@ -88,5 +88,5 @@ body {
 
 /* Changes the slider input background color. I should find a better way to achieve this */
 .bg-default-300\/50 {
-  background-color: hsl(var(--primary) / 0.1);
+  background-color: hsl(var(--primary) / 0.1) !important;
 }
