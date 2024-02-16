@@ -2,7 +2,7 @@
 
 import ActivitySchema from "@/schemas/activities/ActivitySchema";
 import { Controller, useFieldArray, useForm } from "react-hook-form";
-import { z } from "zod";
+import { ZodError, z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import {
@@ -30,8 +30,8 @@ import {
 } from "@/components/ui/command";
 import { cn } from "@/lib/utils";
 import { ACTIVITIES_CATEGORIES } from "@/constants/activities/categories";
-import { CheckIcon, ChevronDown } from "lucide-react";
-import { Slider } from "../ui/slider";
+import { CheckIcon, ChevronDown, Plus } from "lucide-react";
+import { Slider } from "@nextui-org/react";
 import Dropzone from "react-dropzone";
 import Image from "next/image";
 import { X } from "lucide-react";
@@ -47,6 +47,14 @@ import { createNewActivity } from "@/services/activities/createActiviy";
 import { redirect, useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { useState } from "react";
+import { ButtonLoading } from "../ui/button-loading";
+import { CharacterCounter } from "../form/CharacterCounter";
+import {
+  MAXIMUM_ACTIVITY_NAME_VALUE,
+  MAXIMUM_DESCRIPTION_VALUE,
+} from "@/constants/activities/form";
+import { MAXIMUM_TIP_DESCRIPTION_VALUE } from "@/constants/tips/globals";
+import { TipSchema } from "@/schemas/tips/TipSchema";
 
 // Modal requirements:
 // Description: Refers to a brief activity description (50 - 100 characters) ✅
@@ -67,10 +75,8 @@ import { useState } from "react";
 
 // First step, create the Zod Schema
 
-
-
 export function CreateActivityModal() {
-   const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const router = useRouter();
   const TIPS_ARRAY = Array.from({ length: 4 }, () => ({
     description: undefined,
@@ -100,11 +106,11 @@ export function CreateActivityModal() {
     }
   );
 
+
+
   const onSubmit = async (values: z.infer<typeof ActivitySchema>) => {
     setIsLoading(true);
     const formData = new FormData();
-
-    
 
     formData.append("name", values.name);
     formData.append("description", values.description);
@@ -125,7 +131,7 @@ export function CreateActivityModal() {
     console.log(res);
 
     if (res && "activityId" in res) {
-      setIsLoading(false)
+      setIsLoading(false);
       toast.success(res.message);
       router.push(`/app/activities/${res.activityId}`);
     }
@@ -146,6 +152,7 @@ export function CreateActivityModal() {
       >
         <section className="flex">
           <div className="w-1/3">
+            <h2 className="mb-6">Create Activity 🎹</h2>
             <FormField
               control={form.control}
               name="name"
@@ -155,29 +162,31 @@ export function CreateActivityModal() {
                   <FormControl>
                     <Input placeholder="My Activity" {...field} />
                   </FormControl>
-                  <FormDescription>The name of your activity.</FormDescription>
-                  <FormMessage />
+                  <CharacterCounter
+                    maxCharacterCount={MAXIMUM_ACTIVITY_NAME_VALUE}
+                    field={field}
+                  />
                 </FormItem>
               )}
             />
+
             <FormField
               control={form.control}
               name="description"
               render={({ field }) => (
-                <FormItem>
+                <FormItem className="my-3">
                   <FormLabel>Description</FormLabel>
                   <FormControl>
                     <Textarea
-                      placeholder="Tell us a bit about your activity"
+                      placeholder="Explain briefly what's your activity about. Let the tips do the rest of the work."
                       className="resize-none"
                       {...field}
                     />
                   </FormControl>
-                  <FormDescription>
-                    Explain briefly what&apos;s your activity about. Let the
-                    tips do the rest of the work.
-                  </FormDescription>
-                  <FormMessage />
+                  <CharacterCounter
+                    maxCharacterCount={MAXIMUM_DESCRIPTION_VALUE}
+                    field={field}
+                  />
                 </FormItem>
               )}
             />
@@ -186,50 +195,52 @@ export function CreateActivityModal() {
               name="participants"
               render={({ field: { onChange, value } }) => (
                 <>
-                <FormItem className="border rounded-md p-4">
                   <FormLabel>Participants</FormLabel>
-                  <FormControl>
-                    <Slider
-                      onValueChange={onChange}
-                      defaultValue={[value ? value[0] : 1]}
-                      min={1}
-                      max={100}
-                      step={1}
-                      color="bg-mainGreen"
-                      className={cn("w-[100%] !accent-mainGreen ")}
-                    />
-                  </FormControl>
-                  <p className="text-sm text-slate-500">
-                    {`Number of participants: ${value ? value[0] : 1}`}
-                  </p>
-                </FormItem>
-                <FormDescription className="my-3">Refers to the amount of participants that'll be in the activity.</FormDescription>
+                  <FormItem className="border rounded-md  flex items-center gap-4 p-4 mt-3">
+                    <FormControl>
+                      <Slider
+                        label="Number of Participants"
+                        onChange={onChange}
+                        step={1}
+                        maxValue={100}
+                        minValue={1}
+                        showOutline={true}
+                        defaultValue={[value ? value[0] : 1]}
+                        className="w-full text-slate-500 text-sm bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
+                      />
+                    </FormControl>
+                  </FormItem>
+                  <FormDescription className="my-3">
+                    Share how many enthusiasts will be joining your activity.
+                  </FormDescription>
                 </>
               )}
-              
             />
             <FormField
               control={form.control}
               name="accessibility"
               render={({ field: { onChange, value } }) => (
                 <>
-                <FormItem className="border rounded-md p-4 my-6">
                   <FormLabel>Accessibility</FormLabel>
-                  <FormControl>
-                    <DualSlider
-                    onChange={onChange}
-                      label="Price Range"
-                      step={1}
-                      minValue={0}
-                      maxValue={100}
-                      defaultValue={value ? value : [0, 50]}
-                      formatOptions={{ style: "currency", currency: "USD" }}
-                      className="max-w-full text-slate-500 text-sm "
-                    />
-                  </FormControl>
-                </FormItem>
-                 <FormDescription className="my-3">How accessible is your activity to others in economic terms.</FormDescription>
-                 </>
+                  <FormItem className="border rounded-md p-4 mt-3">
+                    <FormControl>
+                      <DualSlider
+                        onChange={onChange}
+                        label="Price Range"
+                        step={1}
+                        minValue={0}
+                        maxValue={100}
+                        showOutline
+                        defaultValue={value ? value : [0, 50]}
+                        formatOptions={{ style: "currency", currency: "USD" }}
+                        className="max-w-full text-slate-500 text-sm"
+                      />
+                    </FormControl>
+                  </FormItem>
+                  <FormDescription className="my-3">
+                    Indicate the economic accessibility of your activity.
+                  </FormDescription>
+                </>
               )}
             />
             <FormField
@@ -237,7 +248,7 @@ export function CreateActivityModal() {
               name="category"
               render={({ field }) => (
                 <FormItem className="flex flex-col">
-                  <FormLabel>Category</FormLabel>
+                  <FormLabel className="my-2">Category</FormLabel>
                   <Popover>
                     <PopoverTrigger asChild>
                       <FormControl>
@@ -294,25 +305,24 @@ export function CreateActivityModal() {
                     </PopoverContent>
                   </Popover>
                   <FormDescription>
-                    This is your activity category. Use a proper one according
-                    to what you&apos;re posting.
+                    Choose the appropriate category for your hobby or interest.
                   </FormDescription>
                   <FormMessage className="min-h-4" />
                 </FormItem>
               )}
             />
           </div>
-          <div className="w-full m-auto flex-1">
+          <div className="w-full m-auto flex-1 ml-6">
             <p className="text-red-500 font-medium h-6 text-sm w-[350px]">
               {form.formState?.errors &&
                 form.formState.errors?.tips &&
                 form.formState.errors.tips.root?.message}
             </p>
-            <FormDescription className="px-16 mb-4">
+            <FormDescription className="mb-3">
               Get started uploading tips and images for your hobby. Tips are
               pretty much your explanations or thoughts about your activity.
             </FormDescription>
-            <ul className="flex flex-wrap justify-center gap-4 ">
+            <ul className="flex flex-wrap gap-4">
               {fields.map((item, index) => (
                 <li key={item.id}>
                   {form.watch(`tips.${index}.imageFile`) === undefined ? (
@@ -328,6 +338,15 @@ export function CreateActivityModal() {
                       render={({ field: { onChange, onBlur }, fieldState }) => (
                         <Dropzone
                           noClick
+                    accept={{
+                      'image/*': ['image/png', 'image/jpeg', 'image/jpg'],
+                    }}
+                    onDropRejected={() => {
+                      form.setValue(
+                        `tips.${index}.imageFile`,
+                        undefined as any
+                      )
+                    }}
                           onDrop={(acceptedFiles) => {
                             form.setValue(
                               `tips.${index}.imageFile`,
@@ -346,26 +365,41 @@ export function CreateActivityModal() {
                             acceptedFiles,
                           }) => (
                             <Card
-                              className={`border-2 border-dashed bg-muted hover:cursor-pointer duration-200 hover:border-muted-foreground/50 w-[350px] h-[380px]`}
+                              className={`relative hover:cursor-pointer duration-200 border-2 border-dashed z-10 w-[350px] h-[380px]`}
                             >
                               <CardContent
-                                className="flex flex-col items-center justify-center space-y-2 px-2 py-4 text-xs"
+                                className="flex border-none flex-col items-center justify-center rounded-lg space-y-2 px-2 py-4 text-xs h-full bg-white"
                                 {...getRootProps()}
                               >
-                                <div className="flex items-center justify-center text-muted-foreground">
+
+                                <div className="text-muted-foreground m-auto">
                                   <span className="font-medium">
                                     Drag Files to Upload or
                                   </span>
+                      
                                   <Button
                                     type="button"
                                     variant="ghost"
-                                    size="sm"
-                                    className="ml-auto flex h-8 space-x-2 px-0 pl-1 text-xs"
-                                    onClick={open}
+                                    size="lg"
+                                    className="block text-center m-auto text-xs"
                                   >
                                     Click Here
                                   </Button>
+                                  <div className="ml-auto block bg-mainGreen p-1 rounded-full text-white w-fit m-auto">
+                                    <Plus className="text-white" />
+                                  </div>
+
+                                  <label
+                                    onClick={() => {
+                                      open();
+                                    }}
+                                    className="h-full w-full top-0 left-0 absolute opacity-0"
+                                  >
+                                    Upload Tip
+                                  </label>
+
                                   <input
+                                    className="bg-red-500 h-full"
                                     {...getInputProps({
                                       id: "spreadsheet",
                                       onChange,
@@ -373,8 +407,9 @@ export function CreateActivityModal() {
                                     })}
                                   />
                                 </div>
+
                                 <span
-                                  className="block font-medium text-red-500"
+                                  className="block m-auto text-center font-medium text-red-500"
                                   role="alert"
                                 >
                                   {fieldState.error && fieldState.error.message}
@@ -387,12 +422,12 @@ export function CreateActivityModal() {
                     />
                   ) : (
                     <li>
-                      <Card className="rounded-2xl hover:shadow-sm hover:border-mainGreen relative duration-200 w-[350px] h-[420px]">
+                      <Card className="rounded-2xl hover:shadow-sm hover:border-mainGreen relative duration-200  w-[350px] h-[380px]">
                         <div className="relative">
                           <Image
                             width={0}
                             height={0}
-                            className="object-cover rounded-t-2xl w-full max-h-[300px] h-[250px]"
+                            className="object-cover rounded-t-2xl w-full max-h-[210px] h-[250px]"
                             src={URL.createObjectURL(
                               form.getValues(`tips.${index}.imageFile.${0}`)
                             )}
@@ -421,11 +456,17 @@ export function CreateActivityModal() {
                               </FormLabel>
                               <FormControl>
                                 <Textarea
-                                  className="!outline-none resize-none !p-0 !focus-visible:ring-transparent !focus-visible:ring-offset-transparent !border-none"
+                                  className="!outline-none resize-none !p-0 !focus-visible:ring-transparent !focus-visible:ring-offset-transparent !border-none rounded-none max-h-[50px]"
                                   placeholder="Share some tips or your thoughts..."
                                   {...field}
                                 />
                               </FormControl>
+                              <CharacterCounter
+                                field={field}
+                                maxCharacterCount={
+                                  MAXIMUM_TIP_DESCRIPTION_VALUE
+                                }
+                              />
                             </FormItem>
                           )}
                         />
@@ -442,7 +483,13 @@ export function CreateActivityModal() {
             </ul>
           </div>
         </section>
-        <Button className="bg-mainGreen hover:bg-mainGreen" disabled={isLoading} type="submit">{isLoading ? "Uploading Activity..." : "Create Activity"}</Button>
+        <ButtonLoading
+          className="bg-mainGreen hover:bg-mainGreen min-w-48"
+          isLoading={isLoading}
+          type="submit"
+        >
+          Create Activity
+        </ButtonLoading>
       </form>
     </Form>
   );

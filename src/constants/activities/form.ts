@@ -1,0 +1,11 @@
+export const MINIMUM_ACTIVITY_NAME_VALUE: number = 10;
+export const MAXIMUM_ACTIVITY_NAME_VALUE: number = 100;
+export const MAXIMUM_DESCRIPTION_VALUE: number = 150;
+export const MINIMUM_DESCRIPTION_VALUE: number = 50;
+export const MINIMUM_ACCESSIBILITY_VALUE: number = 0;
+export const MAXIMUM_ACCESSIBILITY_VALUE: number = 100;
+export const MINIMUM_PARTICIPANTS_VALUE: number = 1;
+export const MAXIMUM_PARTICIPANTS_VALUE: number = 100;
+export const DEFAULT_PARTICIPANTS_VALUE: number = 1;
+export const DEFAULT_PARTICIPANTS_ARRAY_VALUE: number = 1;
+export const ACCESSIBILITY_ARRAY_LENGTH: number = 2;

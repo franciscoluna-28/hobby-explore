@@ -3,6 +3,19 @@ import { ACTIVITIES_CATEGORIES } from "@/constants/activities/categories";
 import * as tipsConstants from "../../constants/tips/globals";
 import { TipSchema } from "../tips/TipSchema";
 import { ServerImageFileSchema } from "../files/ImageFileSchema";
+import {
+  ACCESSIBILITY_ARRAY_LENGTH,
+  DEFAULT_PARTICIPANTS_ARRAY_VALUE,
+  DEFAULT_PARTICIPANTS_VALUE,
+  MAXIMUM_ACCESSIBILITY_VALUE,
+  MAXIMUM_ACTIVITY_NAME_VALUE,
+  MAXIMUM_DESCRIPTION_VALUE,
+  MAXIMUM_PARTICIPANTS_VALUE,
+  MINIMUM_ACCESSIBILITY_VALUE,
+  MINIMUM_ACTIVITY_NAME_VALUE,
+  MINIMUM_DESCRIPTION_VALUE,
+  MINIMUM_PARTICIPANTS_VALUE,
+} from "@/constants/activities/form";
 
 const {
   MAXIMUM_ALLOWED_TIPS_MESSAGE,
@@ -11,24 +24,14 @@ const {
   MAXIMUM_ALLOWED_TIPS,
 } = tipsConstants;
 
-const MINIMUM_ACTIVITY_NAME_VALUE: number = 10;
-const MAXIMUM_ACTIVITY_NAME_VALUE: number = 100;
-const MAXIMUM_DESCRIPTION_VALUE: number = 150;
-const MINIMUM_DESCRIPTION_VALUE: number = 50;
-const MINIMUM_ACCESSIBILITY_VALUE: number = 0;
-const MAXIMUM_ACCESSIBILITY_VALUE: number = 100;
-const MINIMUM_PARTICIPANTS_VALUE: number = 1;
-const MAXIMUM_PARTICIPANTS_VALUE: number = 100;
 const MINIMUM_ACTIVITY_NAME_VALUE_MESSAGE: string = `Activity name must be at least ${MINIMUM_ACTIVITY_NAME_VALUE} characters long`;
 const MAXIMUM_ACTIVITY_NAME_VALUE_MESSAGE: string = `Activity name must be at most ${MAXIMUM_ACTIVITY_NAME_VALUE} characters long`;
 const MINIMUM_DESCRIPTION_VALUE_MESSAGE: string = `Activity description must be at least ${MINIMUM_DESCRIPTION_VALUE} characters long`;
 const MAXIMUM_DESCRIPTION_VALUE_MESSAGE: string = `Activity description must be at most ${MAXIMUM_DESCRIPTION_VALUE} characters long`;
 const MINIMUM_PARTICIPANTS_MESSAGE: string = `Your activity needs to have at least ${MINIMUM_PARTICIPANTS_VALUE} participants`;
 const MAXIMUM_PARTICIPANTS_MESSAGE: string = `Your activity needs to have at most ${MAXIMUM_PARTICIPANTS_VALUE} participants`;
-const DEFAULT_PARTICIPANTS_ARRAY_VALUE: number = 1;
-const ACCESSIBILITY_ARRAY_LENGTH: number = 2;
+
 const DEFAULT_STRING_VALUE = "";
-const DEFAULT_PARTICIPANTS_VALUE: number = 1;
 
 const INVALID_PARTICIPANTS_VALUE_TYPE_MESSAGE: string =
   "Type is invalid, make sure you're using a number as a value";
@@ -134,8 +137,6 @@ const ActivitySchema = z.object({
     ),
 });
 
-
-
 // Data processed by form data
 export const ActivityServerSideSchemaValidation = z.object({
   name: ActivitySchema.shape.name,
@@ -155,10 +156,15 @@ export const ActivityServerSideSchemaValidation = z.object({
   category: z.number(),
 
   // We don't really know if the processed tip has a tip image, so we use any
-  tips: z.array(z.object({
-    description: z.string(),
-    imageFile: z.array(z.any())
-  })).min(MINIMUM_ALLOWED_TIPS).max(MAXIMUM_ALLOWED_TIPS)
+  tips: z
+    .array(
+      z.object({
+        description: z.string(),
+        imageFile: z.array(z.any()),
+      })
+    )
+    .min(MINIMUM_ALLOWED_TIPS)
+    .max(MAXIMUM_ALLOWED_TIPS),
 });
 
 export default ActivitySchema;

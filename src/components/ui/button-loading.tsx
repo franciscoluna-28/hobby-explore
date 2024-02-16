@@ -1,7 +1,5 @@
-import { AiOutlineLoading } from "react-icons/ai";
-
 import { Button, ButtonProps } from "@/components/ui/button";
-import { LoadingIcon } from "./LoadingIcon";
+import { Loader2} from "lucide-react"
 
 type Props = ButtonProps & {
   isLoading: boolean;
@@ -14,7 +12,7 @@ export function ButtonLoading({ ...props }: Props) {
 
   return (
     <Button {...props} disabled={props.isLoading}>
-    <LoadingIcon/>
+    <Loader2 className="animate-spin"/>
     </Button>
   );
 }
