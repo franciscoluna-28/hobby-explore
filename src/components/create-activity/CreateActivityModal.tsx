@@ -203,7 +203,7 @@ export function CreateActivityModal() {
                       <Slider
                         label="Number of Participants"
                         classNames={{
-                          track: "bg-slate-200"
+                          track: "bg-slate-200",
                         }}
                         onChange={onChange}
                         step={1}
@@ -214,7 +214,6 @@ export function CreateActivityModal() {
                         disableThumbScale={true}
                         defaultValue={[value ? value[0] : 1]}
                         className="min-w-full text-slate-500 text-sm bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
-                      
                       />
                     </FormControl>
                   </FormItem>
@@ -249,7 +248,7 @@ export function CreateActivityModal() {
                             "data-[dragging=true]:shadow-lg data-[dragging=true]:shadow-black/10",
                             "data-[dragging=true]:w-7 data-[dragging=true]:h-7 data-[dragging=true]:after:h-6 data-[dragging=true]:after:w-6",
                           ],
-                          track: "bg-slate-200"
+                          track: "bg-slate-200",
                         }}
                       />
                     </FormControl>
@@ -345,6 +344,8 @@ export function CreateActivityModal() {
                 {fields.map((item, index) => (
                   <motion.li
                     key={item.id}
+                    transition={{ duration: 0.5}}
+                    
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
@@ -353,6 +354,7 @@ export function CreateActivityModal() {
                       <motion.div
                         key={item.id}
                         initial={{ opacity: 0 }}
+                        transition={{ duration: 0.5}}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                       >
@@ -446,8 +448,6 @@ export function CreateActivityModal() {
                                         })}
                                       />
                                     </div>
-
-                            
                                   </CardContent>
                                 </Card>
                               )}
@@ -456,9 +456,9 @@ export function CreateActivityModal() {
                         />
                       </motion.div>
                     ) : (
-                      
                       <motion.div
                         initial={{ opacity: 0 }}
+                        transition={{ duration: 0.5}}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                       >
@@ -468,8 +468,8 @@ export function CreateActivityModal() {
                               width={0}
                               height={0}
                               className="object-cover rounded-t-2xl w-full max-h-[210px] h-[250px]"
-                              src={URL.createObjectURL(
-                                form.getValues(`tips.${index}.imageFile.${0}`)
+                              src={form.getValues(`tips.${index}.imageFile.${0}`) ? URL.createObjectURL(
+                                form.getValues(`tips.${index}.imageFile.${0}`) : ""
                               )}
                               alt={`Tip #${index + 1}`}
                             />
