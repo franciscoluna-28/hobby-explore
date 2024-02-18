@@ -24,7 +24,6 @@ export const TipSchema = z
         message: MAXIMUM_TIP_DESCRIPTION_MESSAGE,
       })
       .optional(),
-
     imageFile: ImageFileSchema.shape.document.optional(),
     tipId: z.string().optional(),
   })

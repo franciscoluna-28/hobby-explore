@@ -59,6 +59,7 @@ import {
 } from "@/constants/tips/globals";
 import { motion } from "framer-motion";
 import { AnimatePresence } from "framer-motion";
+import useTipStore from "@/store/useTipStore";
 
 // Modal requirements:
 // Description: Refers to a brief activity description (50 - 100 characters) ✅
@@ -78,10 +79,18 @@ import { AnimatePresence } from "framer-motion";
 // Normal slider - Normal slider to select the amount of participants ✅
 
 // First step, create the Zod Schema
+// TODO: REMOVE DESCRIPTION WHEN THE IMAGE IS DELETED
+// TODO: ASK IF THE USER WANTS TO DELETE THE IMAGE OR NOT
+// TODO: USE FILE READER FOR READING IMAGES TO MAKE THE FORM WORK ON FIREFOX
 
 export function CreateActivityModal() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const router = useRouter();
+  const handleTip = useTipStore((state) => state.addOrUpdateTip);
+  const getTipById = useTipStore((state) => state.getTipImageUrlById)
+  const tipImages = useTipStore((state) => state.tipImages)
+
+
 
   // Initialize empty tips
   const TIPS_ARRAY = Array.from({ length: MAXIMUM_ALLOWED_TIPS }, () => ({
@@ -99,6 +108,11 @@ export function CreateActivityModal() {
       accessibility: [0, 50],
     },
   });
+
+  console.log(form.getValues());
+
+  // Maybe setting default values?
+  
 
   const { control } = form;
   const { register } = form;
@@ -328,24 +342,19 @@ export function CreateActivityModal() {
               )}
             />
           </div>
-          <div className="w-full m-auto flex-1 ml-6">
+          <div className="w-full m-auto flex-1 ml-6 justify-center">
             <p className="text-red-500 font-medium h-6 text-sm w-[350px]">
               {form.formState?.errors &&
                 form.formState.errors?.tips &&
                 form.formState.errors.tips.root?.message}
             </p>
-            <FormDescription className="mb-3">
-              Get started uploading tips and images for your hobby. Tips are
-              pretty much your explanations or thoughts about your activity.
-            </FormDescription>
 
-            <ul className="flex flex-wrap gap-4">
+            <ul className="flex flex-wrap gap-4 flex-grow justify-center">
               <AnimatePresence mode="wait" initial={false}>
                 {fields.map((item, index) => (
                   <motion.li
                     key={item.id}
-                    transition={{ duration: 0.5}}
-                    
+                    transition={{ duration: 0.5 }}
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
@@ -354,7 +363,7 @@ export function CreateActivityModal() {
                       <motion.div
                         key={item.id}
                         initial={{ opacity: 0 }}
-                        transition={{ duration: 0.5}}
+                        transition={{ duration: 0.5 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                       >
@@ -374,11 +383,7 @@ export function CreateActivityModal() {
                             <Dropzone
                               noClick
                               accept={{
-                                "image/*": [
-                                  "image/png",
-                                  "image/jpeg",
-                                  "image/jpg",
-                                ],
+                                image: ["image/png", "image/jpeg", "image/jpg", "image/webp"],
                               }}
                               onDropRejected={() => {
                                 toast.error(
@@ -390,6 +395,14 @@ export function CreateActivityModal() {
                                 );
                               }}
                               onDrop={(acceptedFiles) => {
+                                const file = acceptedFiles[0];
+                                const reader = new FileReader();
+                                reader.onload = function (event) {
+                                handleTip(item.id, reader.result as string)
+                                };
+
+                                reader.readAsDataURL(file);
+
                                 form.setValue(
                                   `tips.${index}.imageFile`,
                                   acceptedFiles as unknown as File[],
@@ -440,7 +453,7 @@ export function CreateActivityModal() {
                                       </label>
 
                                       <input
-                                        className="bg-red-500 h-full"
+                                        className="h-full"
                                         {...getInputProps({
                                           id: "spreadsheet",
                                           onChange,
@@ -458,7 +471,7 @@ export function CreateActivityModal() {
                     ) : (
                       <motion.div
                         initial={{ opacity: 0 }}
-                        transition={{ duration: 0.5}}
+                        transition={{ duration: 1 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                       >
@@ -468,9 +481,7 @@ export function CreateActivityModal() {
                               width={0}
                               height={0}
                               className="object-cover rounded-t-2xl w-full max-h-[210px] h-[250px]"
-                              src={form.getValues(`tips.${index}.imageFile.${0}`) ? URL.createObjectURL(
-                                form.getValues(`tips.${index}.imageFile.${0}`) : ""
-                              )}
+                              src={getTipById(item.id)}
                               alt={`Tip #${index + 1}`}
                             />
                             <Button
