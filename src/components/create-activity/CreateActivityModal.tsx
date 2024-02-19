@@ -80,7 +80,7 @@ import { readFileAsDataURL } from "@/lib/blob";
 // Two slider selection - Slider elector to select the min. accessibility value and the max. one. ✅
 // Normal slider - Normal slider to select the amount of participants ✅
 
-// First step, create the Zod Schema  
+// First step, create the Zod Schema
 // TODO: ASK IF THE USER WANTS TO DELETE THE IMAGE OR NOT
 // TODO: FIX MIME EXTENSIONS BUGS
 
@@ -109,8 +109,6 @@ export function CreateActivityModal() {
 
     toast.error(errorMessage);
   };
-
-
 
   // Initialize empty tips
   const TIPS_ARRAY = Array.from({ length: MAXIMUM_ALLOWED_TIPS }, () => ({
@@ -187,10 +185,10 @@ export function CreateActivityModal() {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit, onError)}
-        className="space-y-6"
+        className="space-y-6 w-full flex justify-center flex-col items-center"
       >
-        <section className="flex">
-          <div className="w-1/3">
+        <section className="w-full xl:flex xl:justify-center xl:m-auto max-w-[500px] xl:max-w-full">
+          <div className=" w-full max-w-[500px]">
             <h2 className="mb-6">Create Activity 🎹</h2>
             <FormField
               control={form.control}
@@ -250,7 +248,7 @@ export function CreateActivityModal() {
                         showOutline
                         disableThumbScale={true}
                         defaultValue={[value ? value[0] : 1]}
-                        className="min-w-full text-slate-500 text-sm bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
+                        className="min-w-full text-slate-500 text-sm bg-gray-200 rounded-xl appearance-none cursor-pointer dark:bg-gray-700"
                       />
                     </FormControl>
                   </FormItem>
@@ -282,7 +280,7 @@ export function CreateActivityModal() {
                           filler: "bg-mainGreen",
                           thumb: [
                             "bg-mainGreen",
-                            "data-[dragging=true]:shadow-lg data-[dragging=true]:shadow-black/10",
+                            "data-[dragging=true]:shadow-xl data-[dragging=true]:shadow-black/10",
                             "data-[dragging=true]:w-7 data-[dragging=true]:h-7 data-[dragging=true]:after:h-6 data-[dragging=true]:after:w-6",
                           ],
                           track: "bg-slate-200",
@@ -366,8 +364,8 @@ export function CreateActivityModal() {
               )}
             />
           </div>
-          <div className="w-full m-auto flex-1 ml-6 justify-center">
-            <ul className="flex flex-wrap gap-4 flex-grow justify-center">
+          <div className="w-full justify-center">
+            <ul className="flex flex-col xl:flex-row xl:flex-wrap gap-4 xl:ml-6 m-auto justify-center ">
               <AnimatePresence mode="wait" initial={false}>
                 {fields.map((item, index) => (
                   <motion.li
@@ -419,22 +417,23 @@ export function CreateActivityModal() {
                               }}
                               onDrop={async (acceptedFiles) => {
                                 try {
-                                const file = acceptedFiles[0];
-                                const dataUrl = await readFileAsDataURL(file);
-                                handleTip(item.id, dataUrl as string);
+                                  const file = acceptedFiles[0];
+                                  const dataUrl = await readFileAsDataURL(file);
+                                  handleTip(item.id, dataUrl as string);
 
-                                form.setValue(
-                                  `tips.${index}.imageFile`,
-                                  acceptedFiles as unknown as File[],
-                                  {
-                                    shouldValidate: true,
-                                  }
-                                );
+                                  form.setValue(
+                                    `tips.${index}.imageFile`,
+                                    acceptedFiles as unknown as File[],
+                                    {
+                                      shouldValidate: true,
+                                    }
+                                  );
 
-                                // Avoid the app from displaying debugging errors when the file is not valid
-                              } catch (error) {
-                                console.error(error);
-                              }}}
+                                  // Avoid the app from displaying debugging errors when the file is not valid
+                                } catch (error) {
+                                  console.error(error);
+                                }
+                              }}
                             >
                               {({
                                 getRootProps,
@@ -447,7 +446,7 @@ export function CreateActivityModal() {
                                   className={`relative hover:cursor-pointer duration-200 border-2 border-dashed z-10 w-[350px] h-[380px]`}
                                 >
                                   <CardContent
-                                    className="flex border-none flex-col items-center justify-center rounded-lg space-y-2 px-2 py-4 text-xs h-full bg-white"
+                                    className="flex border-none flex-col items-center justify-center rounded-xl space-y-2 px-2 py-4 text-xs h-full bg-white"
                                     {...getRootProps()}
                                   >
                                     <div className="text-muted-foreground m-auto">
@@ -553,7 +552,7 @@ export function CreateActivityModal() {
           </div>
         </section>
         <ButtonLoading
-          className="bg-mainGreen hover:bg-mainGreen min-w-48"
+          className="bg-mainGreen flex xl:mr-auto hover:bg-mainGreen min-w-48"
           isLoading={isLoading}
           type="submit"
         >
