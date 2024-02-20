@@ -11,6 +11,8 @@ import { TipCarouselCard } from "@/components/tips/TipCarouselCard";
 import Link from "next/link";
 import { ChevronRight } from "lucide-react";
 import { getSupabaseFileUrlFromRelativePath } from "@/services/supabase/storage";
+import { Swiper, SwiperSlide } from "swiper/react";
+import TipCarousel from "@/components/tips/TipCarousel";
 
 // TODO: ISOLATE THE BREADCRUMB AND CREATE ITS OWN COMPONENT
 function Component({ activityName }: { activityName?: string }) {
@@ -67,35 +69,41 @@ export default async function ActivityPage({
   // TODO: CREATE A COMMON AVATAR COMPONENT FOR THE USER INSTEAD OF CODING IT EVERY SINGLE TIME LOL
   // TODO: WRITE UNIT TEST WITHOUT USING THE API TO TEST DIFFERENT BEHAVIORS
   return (
-    <>
-      <section>
-        <Component activityName={activity[0].name ?? ""} />
-        <div className="flex items-center gap-2">
-          <Avatar>
-            <AvatarImage src={getSupabaseFileUrlFromRelativePath(activity[0].users?.profile_picture_url ??  "", "avatars")} alt="@shadcn" />
-            <AvatarFallback>CN</AvatarFallback>
-          </Avatar>
-          <div className="">
-            <p className="text-darkGray font-medium text-sm">
-              {activity[0].users?.displayName ?? "User"}
-            </p>
-            <p className="text-gray text-sm">
-              {handleDateConversion(activity[0].created_at)}
-            </p>
-          </div>
+    <section className="w-full m-auto flex flex-col h-full ">
+      <Component activityName={activity[0].name ?? ""} />
+      <div className="flex items-center gap-2">
+        <Avatar>
+          <AvatarImage
+            src={getSupabaseFileUrlFromRelativePath(
+              activity[0].users?.profile_picture_url ?? "",
+              "avatars"
+            )}
+            alt="@shadcn"
+          />
+          <AvatarFallback>CN</AvatarFallback>
+        </Avatar>
+        <div className="">
+          <p className="text-darkGray font-medium text-sm">
+            {activity[0].users?.displayName ?? "User"}
+          </p>
+          <p className="text-gray text-sm">
+            {handleDateConversion(activity[0].created_at)}
+          </p>
         </div>
-        <h2 className="text-mainBlack text-3xl font-semibold leading-normal my-4">
-          {activity[0].name}
-        </h2>
-        <Badge variant="secondary">
-          {getCategoryNameById(activity[0].category_id)}
-        </Badge>
-        <section className="my-6 flex gap-4" data-testid="tips-section">
-          {activity[0].tips.map((tip) => {
-            return <TipCarouselCard key={tip.tip_id} tip={tip} />;
-          })}
-        </section>
-      </section>
-    </>
+      </div>
+      <h2 className="text-mainBlack text-3xl font-semibold leading-normal my-3">
+        {activity[0].name}
+      </h2>
+      <p className="text-slate-500 text-sm mb-6">
+        {activity[0].description}
+      </p>
+      <Badge variant="secondary" className="w-fit">
+        {getCategoryNameById(activity[0].category_id)}
+      </Badge>
+      <TipCarousel tips={activity[0].tips} />
+      <p>Max. Accessibility: {activity[0].accessibility_max_value}</p>
+      <p>Min. Accessibility: {activity[0].accessibility_min_value}</p>
+      <p>Participants: {activity[0].participants}</p>
+    </section>
   );
 }

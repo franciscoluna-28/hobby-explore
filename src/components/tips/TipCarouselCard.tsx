@@ -9,21 +9,23 @@ import { getSupabaseFileUrlFromRelativePath } from "@/services/supabase/storage"
 
 type Props = {
   tip: Tables<"tips">;
+  index: number;
 };
 
-export function TipCarouselCard({ tip }: Props) {
+export function TipCarouselCard({ tip, index }: Props) {
   return (
 
-      <Card className="rounded-2xl hover:shadow-md duration-200 w-[350px] shadow-sm h-[320px] z-0 bg-mainGreen border-none ">
+      <Card className="rounded-2xl hover:shadow-md duration-200 w-[350px] shadow-sm h-[350px] z-0 bg-mainGreen border-none ">
         <div className="relative overflow-hidden">
           <img
-            className="object-cover !rounded-t-xl w-full h-[200px] overflow-hidden z-50"
+            className="object-cover !rounded-t-xl min-w-full max-h-[200px] overflow-hidden z-50"
             src={getSupabaseFileUrlFromRelativePath(tip?.display_image_url ?? "", "tips")}
           />
         </div>
         <CardHeader>
         <CardDescription className="text-white">
-        {tip.description}
+          <h3 className="text-white text-start text-sm">{`Tip #${index + 1}`}</h3>
+        <p className="text-left">{tip.description}</p>
         </CardDescription>
         </CardHeader>
       </Card>
