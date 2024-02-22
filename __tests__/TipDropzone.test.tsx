@@ -18,7 +18,7 @@ const TIPS_ARRAY = Array.from({ length: MAXIMUM_ALLOWED_TIPS }, () => ({
   imageFile: undefined,
 }));
 
-describe("TipDropzone", async () => {
+describe("TipDropzone", () => {
   it("should render correctly and handle file drop", async () => {
     const { result } = renderHook(() =>
       useForm<z.infer<typeof ActivitySchema>>({
@@ -75,7 +75,7 @@ it("A file must be replaced by another one since multiple uploading isn't suppor
   const dropzone = screen.getByTestId("dropzone") as HTMLInputElement;
 
   await userEvent.upload(dropzone, file1);
-  await userEvent.upload(dropzone, file2); 
+  await userEvent.upload(dropzone, file2);
 
   expect(dropzone.files).toHaveLength(1);
   expect(dropzone.files && dropzone.files[0]).toStrictEqual(file2);
