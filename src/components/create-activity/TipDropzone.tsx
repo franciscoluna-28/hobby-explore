@@ -41,6 +41,7 @@ export function TipDropzone({ form, index, item }: TipDropzoneProps) {
         render={({ field: { onChange, onBlur }, fieldState }) => (
           <Dropzone 
             noClick
+            multiple={false}
             accept={{
               image: ["image/png", "image/jpeg", "image/jpg", "image/webp"],
             }}

@@ -50,3 +50,33 @@ describe("TipDropzone", async () => {
     expect(dropzone.files && dropzone.files[0]).toStrictEqual(file);
   });
 });
+
+it("A file must be replaced by another one since multiple uploading isn't supported", async () => {
+  const { result } = renderHook(() =>
+    useForm<z.infer<typeof ActivitySchema>>({
+      resolver: zodResolver(ActivitySchema),
+      defaultValues: {
+        tips: TIPS_ARRAY,
+        accessibility: [
+          DEFAULT_ACCESSIBILITY_MIN_VALUE,
+          DEFAULT_ACCESSIBILITY_MAX_VALUE,
+        ],
+      },
+    })
+  );
+  const index = 0;
+  const item = { id: "some-id" };
+
+  render(<TipDropzone form={result.current} index={index} item={item} />);
+
+  const file1 = new File(["test1"], "test1.png", { type: "image/png" });
+  const file2 = new File(["test2"], "test2.png", { type: "image/png" });
+
+  const dropzone = screen.getByTestId("dropzone") as HTMLInputElement;
+
+  await userEvent.upload(dropzone, file1);
+  await userEvent.upload(dropzone, file2); 
+
+  expect(dropzone.files).toHaveLength(1);
+  expect(dropzone.files && dropzone.files[0]).toStrictEqual(file2);
+});
