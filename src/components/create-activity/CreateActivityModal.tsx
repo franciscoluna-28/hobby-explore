@@ -51,6 +51,9 @@ import { ButtonLoading } from "../ui/button-loading";
 import { CharacterCounter } from "../form/CharacterCounter";
 import { FieldErrors } from "react-hook-form";
 import {
+  ACCESSIBILITY_VALUE_STEPS,
+  DEFAULT_ACCESSIBILITY_MAX_VALUE,
+  DEFAULT_ACCESSIBILITY_MIN_VALUE,
   MAXIMUM_ACTIVITY_NAME_VALUE,
   MAXIMUM_DESCRIPTION_VALUE,
 } from "@/constants/activities/form";
@@ -62,6 +65,9 @@ import { motion } from "framer-motion";
 import { AnimatePresence } from "framer-motion";
 import useTipStore from "@/store/useTipStore";
 import { readFileAsDataURL } from "@/lib/blob";
+import { MAXIMUM_ACCESSIBILITY_VALUE, MINIMUM_ACCESSIBILITY_VALUE } from "../../constants/activities/form";
+import { TipDropzone } from "./TipDropzone";
+import { TipForm } from "./TipForm";
 
 // Modal requirements:
 // Description: Refers to a brief activity description (50 - 100 characters) ✅
@@ -88,11 +94,8 @@ export function CreateActivityModal() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [openCategory, setOpenCategory] = useState(false);
   const router = useRouter();
-  const handleTip = useTipStore((state) => state.addOrUpdateTip);
-  const getTipById = useTipStore((state) => state.getTipImageUrlById);
 
   const onError = (errors: FieldErrors<z.infer<typeof ActivitySchema>>) => {
-    console.log(errors);
     const errorCount = Object.keys(errors).length;
     const errorMessages = Object.values(errors)
       .filter((error) => error.message && error.message.trim() !== "")
@@ -123,7 +126,7 @@ export function CreateActivityModal() {
     resolver: zodResolver(ActivitySchema),
     defaultValues: {
       tips: TIPS_ARRAY,
-      accessibility: [0, 50],
+      accessibility: [DEFAULT_ACCESSIBILITY_MIN_VALUE, DEFAULT_ACCESSIBILITY_MAX_VALUE],
     },
   });
 
@@ -173,13 +176,7 @@ export function CreateActivityModal() {
     setIsLoading(false);
   };
 
-  const removeDescriptionFromTip = (index: number): void => {
-    form.setValue(`tips.${index}.description`, undefined);
-  };
 
-  const removeImageFromTip = (index: number): void => {
-    form.setValue(`tips.${index}.imageFile`, undefined);
-  };
 
   return (
     <Form {...form}>
@@ -269,9 +266,9 @@ export function CreateActivityModal() {
                       <DualSlider
                         onChange={onChange}
                         label="Price Range"
-                        step={1}
-                        minValue={0}
-                        maxValue={100}
+                        step={ACCESSIBILITY_VALUE_STEPS}
+                        minValue={MINIMUM_ACCESSIBILITY_VALUE}
+                        maxValue={MAXIMUM_ACCESSIBILITY_VALUE}
                         showOutline
                         defaultValue={value ? value : [0, 50]}
                         formatOptions={{ style: "currency", currency: "USD" }}
@@ -376,174 +373,9 @@ export function CreateActivityModal() {
                     exit={{ opacity: 0 }}
                   >
                     {form.watch(`tips.${index}.imageFile`) === undefined ? (
-                      <motion.div
-                        key={item.id}
-                        initial={{ opacity: 0 }}
-                        transition={{ duration: 0.5 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                      >
-                        <Controller
-                          control={form.control}
-                          name={`tips.${index}.imageFile`}
-                          rules={{
-                            required: {
-                              value: true,
-                              message: "This field is required",
-                            },
-                          }}
-                          render={({
-                            field: { onChange, onBlur },
-                            fieldState,
-                          }) => (
-                            <Dropzone
-                              noClick
-                              accept={{
-                                image: [
-                                  "image/png",
-                                  "image/jpeg",
-                                  "image/jpg",
-                                  "image/webp",
-                                ],
-                              }}
-                              onDropRejected={() => {
-                                toast.error(
-                                  "We only support images. Please, make sure you're uploading a valid image."
-                                );
-                                form.setValue(
-                                  `tips.${index}.imageFile`,
-                                  undefined as any
-                                );
-                              }}
-                              onDrop={async (acceptedFiles) => {
-                                try {
-                                  const file = acceptedFiles[0];
-                                  const dataUrl = await readFileAsDataURL(file);
-                                  handleTip(item.id, dataUrl as string);
-
-                                  form.setValue(
-                                    `tips.${index}.imageFile`,
-                                    acceptedFiles as unknown as File[],
-                                    {
-                                      shouldValidate: true,
-                                    }
-                                  );
-
-                                  // Avoid the app from displaying debugging errors when the file is not valid
-                                } catch (error) {
-                                  console.error(error);
-                                }
-                              }}
-                            >
-                              {({
-                                getRootProps,
-                                getInputProps,
-                                open,
-                                isDragActive,
-                                acceptedFiles,
-                              }) => (
-                                <Card
-                                  className={`relative hover:cursor-pointer duration-200 border-2 border-dashed z-10 w-[350px] h-[380px]`}
-                                >
-                                  <CardContent
-                                    className="flex border-none flex-col items-center justify-center rounded-xl space-y-2 px-2 py-4 text-xs h-full bg-white"
-                                    {...getRootProps()}
-                                  >
-                                    <div className="text-muted-foreground m-auto">
-                                      <span className="font-medium">
-                                        Drag Files to Upload or
-                                      </span>
-
-                                      <Button
-                                        type="button"
-                                        variant="ghost"
-                                        size="lg"
-                                        className="block text-center m-auto text-xs"
-                                      >
-                                        Click Here
-                                      </Button>
-                                      <div className="ml-auto block bg-mainGreen p-1 rounded-full text-white w-fit m-auto">
-                                        <Plus className="text-white" />
-                                      </div>
-
-                                      <label
-                                        onClick={() => {
-                                          open();
-                                        }}
-                                        className="h-full w-full top-0 left-0 absolute opacity-0"
-                                      >
-                                        Upload Tip
-                                      </label>
-
-                                      <input
-                                        className="h-full"
-                                        {...getInputProps({
-                                          id: "spreadsheet",
-                                          onChange,
-                                          onBlur,
-                                        })}
-                                      />
-                                    </div>
-                                  </CardContent>
-                                </Card>
-                              )}
-                            </Dropzone>
-                          )}
-                        />
-                      </motion.div>
+                     <TipDropzone form={form} index={index} item={item}/>
                     ) : (
-                      <motion.div
-                        initial={{ opacity: 0 }}
-                        transition={{ duration: 1 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                      >
-                        <Card className="rounded-2xl hover:shadow-sm hover:border-mainGreen relative duration-200  w-[350px] h-[380px]">
-                          <div className="relative">
-                            <Image
-                              width={0}
-                              height={0}
-                              className="object-cover rounded-t-2xl w-full max-h-[210px] h-[250px]"
-                              src={getTipById(item.id)}
-                              alt={`Tip #${index + 1}`}
-                            />
-                            <Button
-                              type="button"
-                              onClick={() => {
-                                removeImageFromTip(index);
-                                removeDescriptionFromTip(index);
-                              }}
-                              className="bg-white p-1 rounded-full absolute top-4 right-4 w-8 h-8 hover:bg-white/90"
-                            >
-                              <X className="text-mainBlack text-sm" />
-                            </Button>
-                          </div>
-                          <FormField
-                            control={form.control}
-                            name={`tips.${index}.description`}
-                            render={({ field }) => (
-                              <FormItem className="p-4">
-                                <FormLabel className=" text-gray text-sm">
-                                  Tip #{index + 1}
-                                </FormLabel>
-                                <FormControl>
-                                  <Textarea
-                                    className="!outline-none resize-none !p-0 !focus-visible:ring-transparent !focus-visible:ring-offset-transparent !border-none rounded-none max-h-[50px]"
-                                    placeholder="Share some tips or your thoughts..."
-                                    {...field}
-                                  />
-                                </FormControl>
-                                <CharacterCounter
-                                  field={field}
-                                  maxCharacterCount={
-                                    MAXIMUM_TIP_DESCRIPTION_VALUE
-                                  }
-                                />
-                              </FormItem>
-                            )}
-                          />
-                        </Card>
-                      </motion.div>
+                     <TipForm form={form} index={index} item={item}/>
                     )}
                   </motion.li>
                 ))}
