@@ -5,7 +5,7 @@ import { Card } from "../ui/card";
 import Image from "next/image";
 import { Button } from "../ui/button";
 import { FormField } from "../ui/form";
-import { FieldValues, UseFormReturn } from "react-hook-form";
+import { FieldArrayWithId, FieldValues, UseFormReturn } from "react-hook-form";
 import ActivitySchema from "@/schemas/activities/ActivitySchema";
 import { z } from "zod";
 import { FormItem, FormLabel, FormControl } from "../ui/form";
@@ -13,32 +13,24 @@ import { CharacterCounter } from "../form/CharacterCounter";
 import { MAXIMUM_TIP_DESCRIPTION_VALUE } from "@/constants/tips/globals";
 import { Textarea } from "../ui/textarea";
 import { X } from "lucide-react";
-import { useEffect, useState } from "react";
+import useTipStore from "@/store/useTipStore";
 
 type TipFormProps = {
   form: UseFormReturn<z.infer<typeof ActivitySchema>>;
   index: number;
-  file: File;
+  item: FieldArrayWithId;
 };
 
-export function TipForm({ form, index, file }: TipFormProps) {
-  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+export const TipForm = ({ form, index, item }: TipFormProps) => {
+  const removeDescriptionFromTip = (index: number): void => {
+    form.setValue(`tips.${index}.description`, undefined);
+  };
 
-  useEffect(() => {
-    if (!file) {
-      return;
-    }
+  const removeImageFromTip = (index: number): void => {
+    form.setValue(`tips.${index}.imageFile`, undefined);
+  };
 
-    console.log(file);
-
-    const reader = new FileReader();
-
-    reader.onloadend = () => {
-      setPreviewUrl(reader.result as string);
-    };
-
-    reader.readAsDataURL(file);
-  }, [file]);
+  const getTipById = useTipStore((state) => state.getTipImageUrlById);
 
   return (
     <motion.div
@@ -53,14 +45,15 @@ export function TipForm({ form, index, file }: TipFormProps) {
             width={0}
             height={0}
             className="object-cover rounded-t-2xl w-full max-h-[210px] h-[250px]"
-            src={previewUrl ?? ""}
+            src={getTipById(item.id)}
             alt={`Tip #${index + 1}`}
           />
           <Button
             type="button"
-            onClick={() =>
-              form.setValue(`tips.${index}.imageFile`, undefined as any)
-            }
+            onClick={() => {
+              removeDescriptionFromTip(index);
+              removeImageFromTip(index);
+            }}
             className="bg-white p-1 rounded-full absolute top-4 right-4 w-8 h-8 hover:bg-white/90"
           >
             <X className="text-mainBlack text-sm" />
@@ -91,4 +84,4 @@ export function TipForm({ form, index, file }: TipFormProps) {
       </Card>
     </motion.div>
   );
-}
+};
