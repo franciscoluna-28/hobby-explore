@@ -1,6 +1,5 @@
 import React from "react";
 import { render, renderHook, screen } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
 import { TipDropzone } from "../src/components/create-activity/TipDropzone";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -11,13 +10,15 @@ import {
   DEFAULT_ACCESSIBILITY_MIN_VALUE,
 } from "../src/constants/activities/form";
 import { MAXIMUM_ALLOWED_TIPS } from "../src/constants/tips/globals";
+import "@testing-library/jest-dom";
+import userEvent from "@testing-library/user-event";
 
 const TIPS_ARRAY = Array.from({ length: MAXIMUM_ALLOWED_TIPS }, () => ({
   description: undefined,
   imageFile: undefined,
 }));
 
-describe("TipDropzone", () => {
+describe("TipDropzone", async () => {
   it("should render correctly and handle file drop", async () => {
     const { result } = renderHook(() =>
       useForm<z.infer<typeof ActivitySchema>>({
@@ -40,7 +41,12 @@ describe("TipDropzone", () => {
     expect(screen.getByTestId("dropzone")).toBeDefined();
 
     const file = new File(["test"], "test.png", { type: "image/png" });
+
     const dropzone = screen.getByTestId("dropzone") as HTMLInputElement;
-    userEvent.upload(dropzone, file);
+
+    await userEvent.upload(dropzone, file);
+
+    expect(dropzone.files).toHaveLength(1);
+    expect(dropzone.files && dropzone.files[0]).toStrictEqual(file);
   });
 });
