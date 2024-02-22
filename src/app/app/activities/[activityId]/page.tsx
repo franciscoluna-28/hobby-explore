@@ -91,12 +91,13 @@ export default async function ActivityPage({
           </p>
         </div>
       </div>
-      <h2 className="text-mainBlack text-3xl font-semibold leading-normal my-3">
+      <h2
+        className="text-mainBlack text-3xl font-semibold leading-normal my-3"
+        test-id={"activityTitle"}
+      >
         {activity[0].name}
       </h2>
-      <p className="text-slate-500 text-sm mb-6">
-        {activity[0].description}
-      </p>
+      <p className="text-slate-500 text-sm mb-6">{activity[0].description}</p>
       <Badge variant="secondary" className="w-fit">
         {getCategoryNameById(activity[0].category_id)}
       </Badge>

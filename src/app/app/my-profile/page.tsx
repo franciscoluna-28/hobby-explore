@@ -35,11 +35,6 @@ export default async function Profile() {
           defaultDescription={user?.description ?? ""}
         />
 
-        <ChangeHomeModal
-          defaultDisplayName={user?.location ?? ""}
-          userId={user?.user_id ?? ""}
-        />
-
         <section className="flex flex-wrap min-w-full justify-center gap-4 mt-8">
           <EmailCard email={user?.email ?? ""} />
           <HomeCard location={user?.location} />

@@ -8,8 +8,7 @@ import { ExistingActivityCategories } from "@/constants/activities/categories";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 
-// TODO: DEAL WITH THE NO EXISTING CATEGORIES CASES AND USE A DEFAULT VALUE FOR THEM
-// TODO: PERSIST THE STATE GLOBALLY SOMEHOW USING THE URL QUERY PARAMS
+// TODO: DEAL WITH THE NO EXISTING CATEGORIES CASES AND USE A DEFAULT VALUE FOR THEM 
 const FilterActivityButtonsSection: React.FC = () => {
   const searchParams = useSearchParams();
   const selectedCategory = searchParams.get("category") as
@@ -19,7 +18,7 @@ const FilterActivityButtonsSection: React.FC = () => {
   return (
     <div
       className="gap-2 
-     overflow-x-scroll w-screen flex px-8 scrollbar-hide sm:justify-center sm:w-full sm:px-0 overflow-auto sm:overflow-hidden sm:flex sm:flex-wrap"
+     overflow-x-scroll w-full flex px-4 sm:justify-center sm:w-full sm:px-0 overflow-hidden sm:overflow-hidden sm:flex sm:flex-wrap"
     >
       <Link href={`explore`}>
         <Button
