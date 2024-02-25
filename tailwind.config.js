@@ -26,6 +26,7 @@ module.exports = {
         mainGreen: "#00CAA7",
         complement: "#30F07D",
         mainBlack: "#1E1E1E",
+        ratingYellow: "#F6B704",
         lightGray: "#FAFAFA",
         extraDarkBlack: "#0B0C10",
         gray: "#D9D9D9",
