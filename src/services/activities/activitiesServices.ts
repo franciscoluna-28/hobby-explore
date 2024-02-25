@@ -16,7 +16,9 @@ const supabase = createServerComponentClient<Database>({ cookies });
  * @param activityId
  * @returns Promise<boolean>
  */
-async function doesActivityExist(activityId: Tables<"activities">["activity_id"]): Promise<boolean> {
+async function doesActivityExist(
+  activityId: Tables<"activities">["activity_id"]
+): Promise<boolean> {
   const { data, error } = await supabase
     .from("activities")
     .select("activity_id")
@@ -72,7 +74,9 @@ export async function validateActivityExistence(
  * @param userId The ID of the user performing the action.
  * @returns A success or error result indicating the outcome of the operation.
  */
-export async function handleAddActivity(activityId: Tables<"saved-activities">["activity_id"]) {
+export async function handleAddActivity(
+  activityId: Tables<"saved-activities">["activity_id"]
+) {
   try {
     const userId = await getCurrentUserId();
 
@@ -82,7 +86,7 @@ export async function handleAddActivity(activityId: Tables<"saved-activities">["
       .match({ activity_id: activityId, created_by_user_id: userId })
       .maybeSingle();
 
-      console.log(error)
+    console.log(error);
 
     if (error) {
       return generateErrorResult("Error retrieving saved activity", error);
@@ -91,7 +95,7 @@ export async function handleAddActivity(activityId: Tables<"saved-activities">["
     // If the activity isn't saved, save it
     if (!savedActivity) {
       const res = await saveActivityByUserAndActivityId(activityId, userId);
-      revalidatePath("/app/explore")
+      revalidatePath("/app/explore");
       return res;
     }
 
@@ -117,8 +121,6 @@ async function saveActivityByUserAndActivityId(
       activity_id: Number(validatedActivityId),
     });
 
-
-
     if (error) {
       return generateErrorResult(
         SAVE_ACTIVITY_ERRORS_CONSTANTS.SaveActivityError,
@@ -126,10 +128,8 @@ async function saveActivityByUserAndActivityId(
       );
     }
 
-  
-
     if (!error) {
-      revalidatePath("/app/saved/my-activities")
+      revalidatePath("/app/saved/my-activities");
       return generateSuccessResult("Activity has successfully been saved!");
     }
 
@@ -155,7 +155,10 @@ export async function deleteSavedActivityByUserAndActivityId(
     const { error } = await supabase
       .from("saved-activities")
       .delete()
-      .match({ created_by_user_id: validatedUserId, activity_id: validatedActivityId });
+      .match({
+        created_by_user_id: validatedUserId,
+        activity_id: validatedActivityId,
+      });
 
     if (error) {
       return generateErrorResult(
@@ -165,7 +168,7 @@ export async function deleteSavedActivityByUserAndActivityId(
     }
 
     if (!error) {
-      revalidatePath("/app/saved/my-activities")
+      revalidatePath("/app/saved/my-activities");
       return generateSuccessResult("Activity has successfully been deleted!");
     }
 
@@ -184,7 +187,6 @@ export async function getActivitySavedStatusAction(
   activityId: Tables<"saved-activities">["activity_id"]
 ): Promise<boolean> {
   const userId = await getCurrentUserId();
-
 
   const { data, error } = await supabase
     .from("saved-activities")

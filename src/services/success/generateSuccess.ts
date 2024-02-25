@@ -12,7 +12,7 @@ export function generateSuccessResult(
     return {
       success: true,
       message,
-      statusCode,
+      statusCode: statusCode ?? 201,
     };
   }
   
