@@ -13,11 +13,24 @@ import { ChevronRight } from "lucide-react";
 import { getSupabaseFileUrlFromRelativePath } from "@/services/supabase/storage";
 import { Swiper, SwiperSlide } from "swiper/react";
 import TipCarousel from "@/components/tips/TipCarousel";
+import RatingContainer from "@/components/rating/RatingContainer";
+import { Coins } from "lucide-react";
+import { UsersRound } from "lucide-react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
+
+
 
 // TODO: ISOLATE THE BREADCRUMB AND CREATE ITS OWN COMPONENT
 function Component({ activityName }: { activityName?: string }) {
   return (
-    <nav aria-label="Breadcrumb" className="p-4 mr-auto flex items-center">
+    <nav aria-label="Breadcrumb" className="py-4 mr-auto flex items-center">
       <ol className="flex flex-wrap gap-2 text-sm text-gray-500 dark:text-gray-400">
         <li>
           <Link
@@ -69,7 +82,7 @@ export default async function ActivityPage({
   // TODO: CREATE A COMMON AVATAR COMPONENT FOR THE USER INSTEAD OF CODING IT EVERY SINGLE TIME LOL
   // TODO: WRITE UNIT TEST WITHOUT USING THE API TO TEST DIFFERENT BEHAVIORS
   return (
-    <section className="w-full m-auto flex flex-col h-full ">
+    <section className="w-full m-auto flex flex-col h-full max-w-[900px] ">
       <Component activityName={activity[0].name ?? ""} />
       <div className="flex items-center gap-2">
         <Avatar>
@@ -101,10 +114,26 @@ export default async function ActivityPage({
       <Badge variant="secondary" className="w-fit">
         {getCategoryNameById(activity[0].category_id)}
       </Badge>
+      <section className="mr-auto">
       <TipCarousel tips={activity[0].tips} />
-      <p>Max. Accessibility: {activity[0].accessibility_max_value}</p>
-      <p>Min. Accessibility: {activity[0].accessibility_min_value}</p>
-      <p>Participants: {activity[0].participants}</p>
+      </section>
+      <h3>Learn More 📕</h3>
+      <section>
+
+      
+        <div className="my-6 flex ">
+              <Coins className=""/>
+ 
+      <p className="font-medium ml-4 flex items-center">Accessibility: {activity[0].accessibility_min_value === 0 && activity[0].accessibility_max_value === 0 ? "Free" : `${activity[0].accessibility_min_value} - ${activity[0].accessibility_max_value}`} </p>
+      </div>
+        <div className="my-6 flex ">
+              <UsersRound className="mr-4"/>
+ 
+      <p>{activity[0].participants}</p>
+      </div>
+        </section>
+
+      <RatingContainer activityId={activity[0].activity_id}/>
     </section>
   );
 }
