@@ -9,6 +9,10 @@ import { TipCarouselCard } from "./TipCarouselCard";
 import { Pagination } from 'swiper/modules';
 
 
+// import styles bundle
+import 'swiper/css/bundle';
+
+
 // Import Swiper styles
 import 'swiper/css';
 import 'swiper/css/pagination';
@@ -24,7 +28,20 @@ export default function TipCarousel({
   tips: ActivityQueryResponse["tips"];
 }) {
   return (
-    <Swiper spaceBetween={1} slidesPerView={'auto'} className="mySwiper bg-white overflow-hidden w-full h-full my-6"              modules={[Pagination, Navigation]} >
+    <Swiper spaceBetween={1}    navigation={true}  breakpoints={{
+      320: {
+        slidesPerView: 1, 
+        spaceBetween: 10
+      },
+      640: {
+        slidesPerView: 2,
+        spaceBetween: 5
+      },
+      1080: {
+        slidesPerView: 2.2,
+        spaceBetween: 10
+      }
+    }} slidesPerView={2.5} className="max-w-[900px] my-6 rounded-lg" modules={[Navigation]}               >
       {tips.map((tip, index) => {
         return (
           <SwiperSlide key={tip.tip_id}>
@@ -32,7 +49,7 @@ export default function TipCarousel({
           </SwiperSlide>
         );
       })}
-      ...
+      
     </Swiper>
   );
 }

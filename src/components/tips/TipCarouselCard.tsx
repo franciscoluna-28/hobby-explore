@@ -25,7 +25,7 @@ export function TipCarouselCard({ tip, index }: Props) {
         <CardHeader>
         <CardDescription className="text-white">
           <h3 className="text-white text-start text-sm">{`Tip #${index + 1}`}</h3>
-        <p className="text-left">{tip.description}</p>
+        <p className="text-left mt-2">{tip.description}</p>
         </CardDescription>
         </CardHeader>
       </Card>
