@@ -63,6 +63,42 @@ export type Database = {
           }
         ]
       }
+      activities_rating: {
+        Row: {
+          activity_id: number
+          rated_at: string
+          rating: number
+          user_id: string
+        }
+        Insert: {
+          activity_id: number
+          rated_at?: string
+          rating?: number
+          user_id: string
+        }
+        Update: {
+          activity_id?: number
+          rated_at?: string
+          rating?: number
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "public_activity_rating_activity_id_fkey"
+            columns: ["activity_id"]
+            isOneToOne: false
+            referencedRelation: "activities"
+            referencedColumns: ["activity_id"]
+          },
+          {
+            foreignKeyName: "public_activity_rating_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["user_id"]
+          }
+        ]
+      }
       categories: {
         Row: {
           category_id: number

@@ -7,6 +7,7 @@ import { useMutation } from "@tanstack/react-query";
 import { useQuery } from "@tanstack/react-query";
 import { useQueryClient } from "@tanstack/react-query";
 
+// TODO: ADD OPTIMISTIC UPDATES
 // Supabase state
 type useSaveActivityProps = {
   activityId: Tables<"activities">["activity_id"];
