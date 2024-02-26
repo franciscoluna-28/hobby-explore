@@ -23,9 +23,7 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card"
-
-
+} from "@/components/ui/card";
 
 // TODO: ISOLATE THE BREADCRUMB AND CREATE ITS OWN COMPONENT
 function Component({ activityName }: { activityName?: string }) {
@@ -115,25 +113,57 @@ export default async function ActivityPage({
         {getCategoryNameById(activity[0].category_id)}
       </Badge>
       <section className="mr-auto">
-      <TipCarousel tips={activity[0].tips} />
+        <TipCarousel tips={activity[0].tips} />
       </section>
-      <h3>Learn More 📕</h3>
+      <h3 className="my-6">Learn More 📕</h3>
       <section>
+        <div className="flex gap-8 items-center my-6 ">
+          <Card className="max-w-[300px]">
+            <CardHeader>
+              <CardTitle>Accessibility</CardTitle>
+              <CardDescription>
+                This sections describes how accessible your activity is
+                economically.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="!m-0 !pl-2">
+              <p className="font-medium ml-4 flex items-center text-sm">
+                Value:{" "}
+                {activity[0].accessibility_min_value === 0 &&
+                activity[0].accessibility_max_value === 0
+                  ? "Free"
+                  : `${activity[0].accessibility_min_value} - ${activity[0].accessibility_max_value}`}{" "}
+              </p>
+            </CardContent>
+          </Card>
+          <Card className="max-w-[300px]">
+            <CardHeader>
+              <CardTitle>Participants</CardTitle>
+              <CardDescription>
+                This sections describes how many participants are in the
+                activity.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="!m-0 !pl-2">
+              <p className="font-medium ml-4 flex items-center text-sm">
+                Participants: {activity[0].participants}
+              </p>
+            </CardContent>
+          </Card>
 
-      
-        <div className="my-6 flex ">
-              <Coins className=""/>
- 
-      <p className="font-medium ml-4 flex items-center">Accessibility: {activity[0].accessibility_min_value === 0 && activity[0].accessibility_max_value === 0 ? "Free" : `${activity[0].accessibility_min_value} - ${activity[0].accessibility_max_value}`} </p>
-      </div>
-        <div className="my-6 flex ">
-              <UsersRound className="mr-4"/>
- 
-      <p>{activity[0].participants}</p>
-      </div>
-        </section>
-
-      <RatingContainer activityId={activity[0].activity_id}/>
+          <Card className="max-w-[300px]">
+            <CardHeader>
+              <CardTitle>Rating</CardTitle>
+              <CardDescription>
+                Support the activity creator by rating their activity.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="!m-0 !pl-2">
+              <RatingContainer activityId={activity[0].activity_id} />
+            </CardContent>
+          </Card>
+        </div>
+      </section>
     </section>
   );
 }
