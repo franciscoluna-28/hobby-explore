@@ -14,10 +14,12 @@ import { SaveActivityButton } from "./SaveActivityButton";
 import { getSupabaseFileUrlFromRelativePath } from "@/services/supabase/storage";
 import Sample from "../../../public/sample.jpg";
 import { Tables } from "@/lib/database";
+import { RatingReadOnly } from "../rating/RatingOnlyRead";
 
 type Props = {
   activity: ActivityQueryResponse;
   userId?: Tables<"users">["user_id"];
+  children: React.ReactNode
 };
 
 const isCreatedByCurrentUser = (
@@ -40,11 +42,13 @@ const renderCurrentUserString = (
   return activityUserDisplayName;
 };
 
+const DEFAULT_USER_NAME = "Shadcn";
+
 // TODO: IF THE ACTIVITY IS FROM THE SAME USER, DISPLAY A MENU TO SEE DELETE AND READ OPERATIONS. FOR EXAMPLE, A USER CAN GO TO THE ACTIVITY FORM AND EDIT THE INFORMATION OR DELETE THE ACTIVITY
 // TODO: USERS AREN'T ABLE TO SAVE THEIR OWN ACTIVITIES. ONLY ACTIVITIES FROM OTHER USERS. THAT'S WHY THE ACTIVITIES THEY HAVE CREATED HAVE A SPECIFIC UI SECTION. ALSO, AVOID USERS FROM SAVING THEIR OWN ACTIVITIES SERVER SIDE
 // TODO: ADD BLUR EFFECT TO IMAGES WHEN THEY'RE LOADING
 // TODO: FIX GLOBAL OVERFLOW-X ISSUE ON MOBILE DEVICES
-export function ActivityCard({ activity, userId }: Props) {
+export function ActivityCard({ activity, userId, children }: Props) {
   return (
     <li>
       <Card className="rounded-2xl hover:shadow-md duration-200 w-[350px] h-[500px]">
@@ -87,7 +91,7 @@ export function ActivityCard({ activity, userId }: Props) {
                         )
                       : "https://github.com/shadcn.png"
                   }
-                  alt={activity.users?.username ?? "@shadn"}
+                  alt={activity.users?.username ?? DEFAULT_USER_NAME}
                 />
                 <AvatarFallback>CN</AvatarFallback>
               </Avatar>
@@ -108,6 +112,9 @@ export function ActivityCard({ activity, userId }: Props) {
               {activity.name}
             </CardTitle>
           </CardHeader>
+          <CardFooter>
+          {children}
+          </CardFooter>
         </Link>
       </Card>
     </li>

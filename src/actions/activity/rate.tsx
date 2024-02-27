@@ -14,6 +14,28 @@ type ActivityId = Tables<"activities">["activity_id"];
 
 const supabase = createServerComponentClient<Database>({ cookies });
 
+export async function getExactRatingCountInActivityAction(
+  activityId: ActivityId
+): Promise<number> {
+  if (!activityId) return 0;
+
+  const { error, data, count } = await supabase
+    .from("activities_rating")
+    .select("activity_id", { count: "exact" });
+
+    console.log(count)
+
+  if (error) {
+    return 0;
+  }
+
+  if (data) {
+    return count ?? 0;
+  }
+
+  return 0;
+}
+
 export async function getCurrentActivityRatingAction(
   activityId: ActivityId
 ): Promise<number> {

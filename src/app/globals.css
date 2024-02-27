@@ -34,24 +34,19 @@
 
     --radius: 0.5rem;
 
+    --swiper-navigation-size: 15px !important;
+    --swiper-navigation-top-offset: 50%;
+    --swiper-navigation-sides-offset: 10px;
+    --swiper-navigation-color: var(--swiper-theme-color);
 
-      --swiper-navigation-size: 15px !important;
-      --swiper-navigation-top-offset: 50%;
-      --swiper-navigation-sides-offset: 10px;
-      --swiper-navigation-color: var(--swiper-theme-color);
-    
-      .swiper-button-next {
-        color: #1e1e1e;
-        background-color: white;
-        border-radius: 360px;
-        width: 30px;
-        height: 30px; 
-        
+    .swiper-button-next {
+      color: #1e1e1e;
+      background-color: white;
+      border-radius: 360px;
+      width: 30px;
+      height: 30px;
     }
-
-
   }
-  
 
   .dark {
     --background: 222.2 84% 4.9%;
@@ -108,4 +103,3 @@ body {
 .bg-default-300\/50 {
   background-color: hsl(var(--primary) / 0.1) !important;
 }
-

@@ -111,9 +111,7 @@ export async function getTenRandomActivities(
     .select(RANDOM_ACTIVITY_WITH_TIPS_QUERY)
     .match({ category_id: getCategoryIdByName(categoryName) })
     .range(from, to);
-
-  console.log("data is: ", data, error);
-
+    
   if (error) {
     return error;
   }
