@@ -17,7 +17,7 @@ export function RatingReadOnly({ activityId }: RatingOnlyReadProps) {
     <div className="flex gap-2 items-center">
       <Star fill="#F6B704" strokeWidth={0}/>
       <p className="text-[#F6B704] text-sm">{initialData?.rating}</p>
-      <p className="text-[#D9D9D9] text-sm">({initialData?.count})</p>
+      <p className="text-[#D9D9D9] text-sm">( { initialData?.count } )</p>
 
     </div>
   );
