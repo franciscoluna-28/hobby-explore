@@ -54,14 +54,14 @@ export async function getCurrentActivityRatingAction(
     .maybeSingle();
 
   if (!data && error) {
-    return 0;
+    return DEFAULT_ACTIVITY_RATING_HELPER_VALUE;
   }
 
   if (data) {
     return data.rating;
   }
 
-  return 0;
+  return DEFAULT_ACTIVITY_RATING_HELPER_VALUE;
 }
 
 async function updateActivityRating(
