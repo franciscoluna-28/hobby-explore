@@ -260,6 +260,12 @@ export type Database = {
         }
         Returns: Record<string, unknown>
       }
+      get_average_rating: {
+        Args: {
+          activity_id: number
+        }
+        Returns: number
+      }
     }
     Enums: {
       [_ in never]: never

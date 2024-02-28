@@ -15,28 +15,65 @@ type ActivityId = Tables<"activities">["activity_id"];
 
 const supabase = createServerComponentClient<Database>({ cookies });
 
-export async function getExactRatingCountInActivityAction(
+async function getRatingMeanInActivity(
   activityId: ActivityId
 ): Promise<number> {
-  if (!activityId) return DEFAULT_ACTIVITY_RATING_HELPER_VALUE;
-
-  const { error, data, count } = await supabase
-    .from("activities_rating")
-    .select("activity_id", { count: "exact" }).match({
-      activity_id: activityId
-    });
-
-    console.log(count)
+  const { data, error } = await supabase.rpc("get_average_rating", {
+    activity_id: activityId,
+  });
 
   if (error) {
+    console.error(error);
     return DEFAULT_ACTIVITY_RATING_HELPER_VALUE;
   }
 
   if (data) {
-    return count ?? DEFAULT_ACTIVITY_RATING_HELPER_VALUE;
+    return data;
   }
 
   return DEFAULT_ACTIVITY_RATING_HELPER_VALUE;
+}
+
+export type RatingCountAndMean = {
+  count: number;
+  rating: number;
+};
+
+export async function getExactRatingCountInActivityAction(
+  activityId: ActivityId
+): Promise<RatingCountAndMean> {
+  if (!activityId) return {
+    count: DEFAULT_ACTIVITY_RATING_HELPER_VALUE,
+    rating: DEFAULT_ACTIVITY_RATING_HELPER_VALUE
+  };
+
+  const { error, data, count } = await supabase
+    .from("activities_rating")
+    .select("activity_id", { count: "exact" })
+    .match({
+      activity_id: activityId,
+    });
+
+  if (error) {
+    return {
+      count: DEFAULT_ACTIVITY_RATING_HELPER_VALUE,
+      rating: DEFAULT_ACTIVITY_RATING_HELPER_VALUE
+    };
+  }
+
+  if (data) {
+    const rating = await getRatingMeanInActivity(activityId);
+
+    return {
+      count: count ?? 0,
+      rating: rating,
+    };
+  }
+
+  return {
+    count: DEFAULT_ACTIVITY_RATING_HELPER_VALUE,
+    rating: DEFAULT_ACTIVITY_RATING_HELPER_VALUE
+  };
 }
 
 export async function getCurrentActivityRatingAction(
