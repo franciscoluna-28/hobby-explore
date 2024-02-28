@@ -9,6 +9,7 @@ import { cookies } from "next/headers";
 
 const MINIMUM_RATING_VALUE: number = 1;
 const MAXIMUM_RATING_VALUE: number = 5;
+const DEFAULT_ACTIVITY_RATING_HELPER_VALUE: number = 0;
 
 type ActivityId = Tables<"activities">["activity_id"];
 
@@ -17,23 +18,25 @@ const supabase = createServerComponentClient<Database>({ cookies });
 export async function getExactRatingCountInActivityAction(
   activityId: ActivityId
 ): Promise<number> {
-  if (!activityId) return 0;
+  if (!activityId) return DEFAULT_ACTIVITY_RATING_HELPER_VALUE;
 
   const { error, data, count } = await supabase
     .from("activities_rating")
-    .select("activity_id", { count: "exact" });
+    .select("activity_id", { count: "exact" }).match({
+      activity_id: activityId
+    });
 
     console.log(count)
 
   if (error) {
-    return 0;
+    return DEFAULT_ACTIVITY_RATING_HELPER_VALUE;
   }
 
   if (data) {
-    return count ?? 0;
+    return count ?? DEFAULT_ACTIVITY_RATING_HELPER_VALUE;
   }
 
-  return 0;
+  return DEFAULT_ACTIVITY_RATING_HELPER_VALUE;
 }
 
 export async function getCurrentActivityRatingAction(
