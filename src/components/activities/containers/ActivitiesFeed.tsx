@@ -48,9 +48,7 @@ export function ActivitiesFeed({ userId }: ActivitiesFeedProps) {
               key={activity.activity_id}
               activity={activity}
               userId={userId}
-            
             />
-
           </ActivityMotion>
         ))}
       </ActivitiesLayout>

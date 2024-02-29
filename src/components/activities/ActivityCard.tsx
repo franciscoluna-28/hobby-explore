@@ -19,7 +19,6 @@ import { RatingReadOnly } from "../rating/RatingOnlyRead";
 type Props = {
   activity: ActivityQueryResponse;
   userId?: Tables<"users">["user_id"];
-  children: React.ReactNode
 };
 
 const isCreatedByCurrentUser = (
@@ -48,7 +47,7 @@ const DEFAULT_USER_NAME = "Shadcn";
 // TODO: USERS AREN'T ABLE TO SAVE THEIR OWN ACTIVITIES. ONLY ACTIVITIES FROM OTHER USERS. THAT'S WHY THE ACTIVITIES THEY HAVE CREATED HAVE A SPECIFIC UI SECTION. ALSO, AVOID USERS FROM SAVING THEIR OWN ACTIVITIES SERVER SIDE
 // TODO: ADD BLUR EFFECT TO IMAGES WHEN THEY'RE LOADING
 // TODO: FIX GLOBAL OVERFLOW-X ISSUE ON MOBILE DEVICES
-export function ActivityCard({ activity, userId, children }: Props) {
+export function ActivityCard({ activity, userId }: Props) {
   return (
     <li>
       <Card className="rounded-2xl hover:shadow-md duration-200 w-[350px] h-[500px]">
@@ -113,7 +112,7 @@ export function ActivityCard({ activity, userId, children }: Props) {
             </CardTitle>
           </CardHeader>
           <CardFooter>
-                    <RatingReadOnly activityId={activity.activity_id}/>
+            <RatingReadOnly activityId={activity.activity_id} />
           </CardFooter>
         </Link>
       </Card>
