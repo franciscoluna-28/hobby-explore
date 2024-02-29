@@ -113,7 +113,7 @@ export function ActivityCard({ activity, userId, children }: Props) {
             </CardTitle>
           </CardHeader>
           <CardFooter>
-          {children}
+                    <RatingReadOnly activityId={activity.activity_id}/>
           </CardFooter>
         </Link>
       </Card>

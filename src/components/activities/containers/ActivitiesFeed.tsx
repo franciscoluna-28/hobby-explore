@@ -48,9 +48,9 @@ export function ActivitiesFeed({ userId }: ActivitiesFeedProps) {
               key={activity.activity_id}
               activity={activity}
               userId={userId}
-            >
-              <RatingReadOnly activityId={activity.activity_id} />
-            </ActivityCard>
+            
+            />
+
           </ActivityMotion>
         ))}
       </ActivitiesLayout>
