@@ -78,7 +78,7 @@ export function ActivityCard({ activity, userId }: Props) {
           key={activity.activity_id}
           href={`activities/${activity.activity_id}`}
         >
-          <CardHeader className="max-w-[350px] flex flex-wrap overflow-hidden flex-col">
+          <CardHeader className="max-w-[350px] flex flex-wrap overflow-hidden flex-col max-h-[300px] h-full relative">
             <div className="flex items-center gap-2">
               <Avatar>
                 <AvatarImage
@@ -110,11 +110,13 @@ export function ActivityCard({ activity, userId }: Props) {
             <CardTitle className="leading-normal pt-2 text-mainBlack ">
               {activity.name}
             </CardTitle>
+            <div className="absolute right-4 bottom-4">
+        <RatingReadOnly activityId={activity.activity_id} />
+        </div>
           </CardHeader>
-          <CardFooter>
-            <RatingReadOnly activityId={activity.activity_id} />
-          </CardFooter>
+
         </Link>
+       
       </Card>
     </li>
   );
