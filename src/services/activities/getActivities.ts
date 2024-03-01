@@ -48,8 +48,9 @@ export async function getExactActivitiesCount(
 }
 
 export type ActivityQueryResponse = Tables<"activities"> & {
-  tips: Tables<"tips">[];
-  users: Tables<"users"> | null;
+  tips: Tables<"tips">[],
+  users: Tables<"users"> | null,
+      average_rating: number
 };
 
 export type SavedActivitiesFromOtherUsersQueryResponse = {
@@ -65,16 +66,18 @@ export type SavedActivitiesFromOtherUsersQueryResponse = {
     description: Tables<"activities">["description"];
     accessibility_max_value: Tables<"activities">["accessibility_max_value"];
     accessibility_min_value: Tables<"activities">["accessibility_min_value"];
+    average_rating: number
   };
 };
 
+// TODO: ONLY RETRIEVE THE TIP COUNT
 // Query to retrieve the activity as well as their tips information
 const RANDOM_ACTIVITY_WITH_TIPS_QUERY =
-  "*, users!activities_created_by_user_id_fkey(*), tips(*)";
+  "*, users!activities_created_by_user_id_fkey(user_id, username, profile_picture_url, displayName), tips(*), average_rating:activities_rating(activity_id).avg(rating), rating_count:activities_rating(activity_id).count(activity_id)";
 
 // Query to retrieve activities saved by other users
 const ACTIVITIES_WITH_TIPS_AND_USER_FROM_OTHER_USERS_QUERY =
-  "activity_id, activities!inner(tips(*), *, users!activities_created_by_user_id_fkey(*)) ";
+  "activity_id, activities!inner(tips(*), *, users!activities_created_by_user_id_fkey(*), ratings_count:activities_rating!inner.count()) ";
 
 // Response type
 type Response =
@@ -98,25 +101,27 @@ export async function getTenRandomActivities(
       .select(RANDOM_ACTIVITY_WITH_TIPS_QUERY)
       .range(from, to);
 
+    console.log(data);
+
     if (error) {
       console.log(error);
       return error;
     }
 
-    return data;
+    return data as unknown as Response;
   }
 
   const { data, error } = await supabase
     .from("activities")
-    .select(RANDOM_ACTIVITY_WITH_TIPS_QUERY)
+    .select(`${RANDOM_ACTIVITY_WITH_TIPS_QUERY} `)
     .match({ category_id: getCategoryIdByName(categoryName) })
     .range(from, to);
-    
+
   if (error) {
     return error;
   }
 
-  return data;
+  return data as unknown as Response;
 }
 
 /*
@@ -134,7 +139,7 @@ export async function getActivityById(activityId: string): Promise<Response> {
     return error;
   }
 
-  return data;
+  return data as unknown as Response;
 }
 
 /*
@@ -154,7 +159,7 @@ export async function getUserActivitiesByUserId(
     return error;
   }
 
-  return data;
+  return data as unknown as Response;
 }
 
 export async function getCurrentUserSavedActivities(): Promise<Response> {
@@ -165,10 +170,9 @@ export async function getCurrentUserSavedActivities(): Promise<Response> {
     .select(ACTIVITIES_WITH_TIPS_AND_USER_FROM_OTHER_USERS_QUERY)
     .match({ created_by_user_id: currentUserId });
 
-
   if (error) {
     return error;
   }
 
-  return data as SavedActivitiesFromOtherUsersQueryResponse[];
+  return data as unknown as SavedActivitiesFromOtherUsersQueryResponse[];
 }
