@@ -3,7 +3,7 @@
 import ActivitySchema from "@/schemas/activities/ActivitySchema";
 import { motion } from "framer-motion";
 import { Controller, FieldArrayWithId, UseFormReturn } from "react-hook-form";
-import { z } from "zod";
+import { z, ZodError } from "zod";
 import { toast } from "sonner";
 import Dropzone from "react-dropzone";
 import { readFileAsDataURL } from "@/lib/blob";
@@ -11,6 +11,8 @@ import useTipStore from "@/store/useTipStore";
 import { Card, CardContent } from "../ui/card";
 import { Button } from "../ui/button";
 import { Plus } from "lucide-react";
+import { TipSchema } from "@/schemas/tips/TipSchema";
+import { ImageFileSchema } from "@/schemas/files/ImageFileSchema";
 
 type TipDropzoneProps = {
   form: UseFormReturn<z.infer<typeof ActivitySchema>>;
@@ -53,8 +55,16 @@ export function TipDropzone({ form, index, item }: TipDropzoneProps) {
             }}
             onDrop={async (acceptedFiles) => {
               try {
-                const file = acceptedFiles[0];
-                const dataUrl = await readFileAsDataURL(file);
+                
+
+                const file = acceptedFiles;
+
+                const parsedFile = ImageFileSchema.shape.document.parse(file);
+
+        
+                
+
+                const dataUrl = await readFileAsDataURL(parsedFile[0]);
                 handleTip(item.id, dataUrl as string);
 
                 form.setValue(
@@ -67,7 +77,20 @@ export function TipDropzone({ form, index, item }: TipDropzoneProps) {
 
                 // Avoid the app from displaying debugging errors when the file is not valid
               } catch (error) {
+                if(error instanceof ZodError) {
+                  const errorObject = JSON.parse(error as unknown as string);
+
+
+
+                  toast.error(errorObject[0].message);
+                  form.setValue(
+                    `tips.${index}.imageFile`,
+                    undefined
+                  );
+                }
+
                 console.error(error);
+        
               }
             }}
           >
