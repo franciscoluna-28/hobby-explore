@@ -1,6 +1,4 @@
-import {
-  getExactRatingCountInActivityAction,
-} from "@/actions/activity/rate";
+import { getExactRatingCountInActivityAction } from "@/actions/activity/rate";
 import { Tables } from "@/lib/database";
 import { useQuery } from "@tanstack/react-query";
 
@@ -8,7 +6,9 @@ type UseGetActivityRatingProps = {
   activityId: Tables<"activities_rating">["activity_id"];
 };
 
-export function useGetActivityCountRating({ activityId }: UseGetActivityRatingProps) {
+export function useGetActivityCountRating({
+  activityId,
+}: UseGetActivityRatingProps) {
   // Activity initial rating
   const {
     isLoading: isInitialDataLoading,
@@ -19,6 +19,8 @@ export function useGetActivityCountRating({ activityId }: UseGetActivityRatingPr
     queryKey: ["ratingCount", { activityId: activityId }],
     queryFn: () => getExactRatingCountInActivityAction(activityId!),
   });
+
+  console.log(initialData);
 
   return {
     isInitialDataError,

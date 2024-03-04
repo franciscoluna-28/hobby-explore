@@ -34,7 +34,7 @@ const RatingIcon: React.FC<RatingIconProps> = ({
       onMouseLeave={() => onMouseLeave()}
       onClick={() => onSaveRating(index)}
     >
-      <Star
+      <Star className="duration-200 transition-all"
         fill={fill}
         color={"#D9D9D9"}
         strokeWidth={fill === "#F6B704" ? 0 : 1}
