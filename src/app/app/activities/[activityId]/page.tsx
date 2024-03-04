@@ -117,13 +117,12 @@ export default async function ActivityPage({
       </section>
       <h3 className="my-6">Learn More 📕</h3>
       <section>
-        <div className="flex gap-8 items-center my-6 ">
-          <Card className="max-w-[300px]">
+        <div className="flex gap-8 items-center my-6 flex-wrap lg:flex-nowrap w-full">
+          <Card className="lg:max-w-[300px] w-full">
             <CardHeader>
               <CardTitle>Accessibility</CardTitle>
               <CardDescription>
-                This sections describes how accessible your activity is
-                economically.
+              Learn about the cost of the activity here.
               </CardDescription>
             </CardHeader>
             <CardContent className="!m-0 !pl-2">
@@ -136,11 +135,11 @@ export default async function ActivityPage({
               </p>
             </CardContent>
           </Card>
-          <Card className="max-w-[300px]">
+          <Card className="lg:max-w-[300px] w-full">
             <CardHeader>
               <CardTitle>Participants</CardTitle>
               <CardDescription>
-                This sections describes how many participants are in the
+                How many participants are in the
                 activity.
               </CardDescription>
             </CardHeader>
@@ -151,14 +150,14 @@ export default async function ActivityPage({
             </CardContent>
           </Card>
 
-          <Card className="max-w-[300px]">
+          <Card className="lg:max-w-[300px] w-full">
             <CardHeader>
               <CardTitle>Rating</CardTitle>
               <CardDescription>
                 Support the activity creator by rating their activity.
               </CardDescription>
             </CardHeader>
-            <CardContent className="!m-0 !pl-2">
+            <CardContent className="">
               <RatingContainer activityId={activity[0].activity_id} />
             </CardContent>
           </Card>
