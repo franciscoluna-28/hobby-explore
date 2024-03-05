@@ -77,7 +77,7 @@ export function ActivityCard({ activity, userId }: Props) {
         <Link
           className="w-min bg-red-500"
           key={activity.activity_id}
-          href={`activities/${activity.activity_id}`}
+          href={`/app/activities/${activity.activity_id}`}
         >
           <CardHeader className="max-w-[350px] flex flex-wrap overflow-hidden flex-col max-h-[300px] h-full relative">
             <div className="flex items-center gap-2">
