@@ -10,15 +10,23 @@ type Props = {
 };
 
 const RatingContainer = ({ activityId }: Props) => {
+  const STARTING_RATING_DEFAULT_VALUE: number = 0;
+  /** InitialData can be a number with the value obtained from the API, or an array.
+   *  With the first index being the initial value from the API which is updated whenever we get a positive response from the server
+   *  and a value and the second one being the optimistic value */
   const { mutation, initialData } = useRateActivity({ activityId });
-  const [hoverRating, setHoverRating] = useState<number>(0);
+  const [hoverRating, setHoverRating] = useState<number>(
+    STARTING_RATING_DEFAULT_VALUE
+  );
+
+  console.log(initialData);
 
   const onMouseEnter = (index: number) => {
     setHoverRating(index);
   };
 
   const onMouseLeave = () => {
-    setHoverRating(0);
+    setHoverRating(STARTING_RATING_DEFAULT_VALUE);
   };
 
   const onSaveRating = (index: number) => {
@@ -31,7 +39,11 @@ const RatingContainer = ({ activityId }: Props) => {
         <RatingIcon
           key={index}
           index={index}
-          rating={initialData ?? 0}
+          rating={
+            Array.isArray(initialData)
+              ? initialData[1]
+              : initialData ?? STARTING_RATING_DEFAULT_VALUE
+          }
           hoverRating={hoverRating}
           onMouseEnter={onMouseEnter}
           onMouseLeave={onMouseLeave}

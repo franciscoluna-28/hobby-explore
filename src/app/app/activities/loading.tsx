@@ -14,7 +14,7 @@ export default function Loading() {
       <div className="mr-auto flex flex-col w-full">
       <Skeleton className="mt-4 w-72 h-8"></Skeleton>
       <Skeleton className="mt-4 w-80 h-4"></Skeleton>
-        <div className="flex gap-8 mt-8 flex-wrap">
+        <div className="flex gap-8 mt-8 flex-col lg:flex-row">
             <Skeleton className="w-[350px] h-64"></Skeleton>
             <Skeleton className="w-[350px] h-64"></Skeleton>
             <Skeleton className="w-[150px] h-64"></Skeleton>

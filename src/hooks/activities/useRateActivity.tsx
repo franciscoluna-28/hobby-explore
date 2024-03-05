@@ -27,6 +27,40 @@ export function useRateActivity({ activityId }: UseRateActivityProps) {
     onSuccess: (data) => {
       queryClient.setQueryData(["rating", { activityId: activityId }], data);
     },
+    onMutate: async (newRating) => {
+      // Cancel any outgoing refetches (so they don't overwrite the optimistic update)
+      await queryClient.cancelQueries({
+        queryKey: ["rating", { activityId: activityId }],
+      });
+
+      // Snapshot the previous value
+      const previousRating = queryClient.getQueryData([
+        "rating",
+        { activityId: activityId },
+      ]);
+
+      // Optimistically update to the new value
+      queryClient.setQueryData(
+        ["rating", { activityId: activityId }],
+        (old) => [old, newRating]
+      );
+
+      // Return a context object with the snapshotted value
+      return { previousRating };
+    },
+    onError: (_, __, context) => {
+      // If the mutation fails, use the context returned from onMutate to roll back
+      queryClient.setQueryData(
+        ["rating", { activityId: activityId }],
+        context?.previousRating
+      );
+    },
+    onSettled: () => {
+      // Always refetch after error or success:
+      queryClient.invalidateQueries({
+        queryKey: ["rating", { activityId: activityId }],
+      });
+    },
   });
 
   // Activity initial rating
@@ -44,7 +78,7 @@ export function useRateActivity({ activityId }: UseRateActivityProps) {
     mutation,
     isInitialDataError,
     isInitialDataLoading,
-    initialData,
+    initialData: initialData as number[] | number,
     initialDataError,
   };
 }
