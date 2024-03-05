@@ -15,6 +15,22 @@ import { getSupabaseFileUrlFromRelativePath } from "@/services/supabase/storage"
 import Sample from "../../../public/sample.jpg";
 import { Tables } from "@/lib/database";
 import { RatingReadOnly } from "../rating/RatingOnlyRead";
+import { MoreHorizontal } from "lucide-react";
+import { Button } from "../ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuPortal,
+  DropdownMenuSeparator,
+  DropdownMenuShortcut,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 type Props = {
   activity: ActivityQueryResponse;
@@ -35,7 +51,7 @@ const renderCurrentUserString = (
   userId?: string
 ) => {
   if (isCreatedByCurrentUser(activityUserId, userId)) {
-    return `${activityUserDisplayName} (you)`;
+    return `You`;
   }
 
   return activityUserDisplayName;
@@ -43,11 +59,9 @@ const renderCurrentUserString = (
 
 const DEFAULT_USER_NAME = "Shadcn";
 
-
 // TODO: IF THE ACTIVITY IS FROM THE SAME USER, DISPLAY A MENU TO SEE DELETE AND READ OPERATIONS. FOR EXAMPLE, A USER CAN GO TO THE ACTIVITY FORM AND EDIT THE INFORMATION OR DELETE THE ACTIVITY
 // TODO: USERS AREN'T ABLE TO SAVE THEIR OWN ACTIVITIES. ONLY ACTIVITIES FROM OTHER USERS. THAT'S WHY THE ACTIVITIES THEY HAVE CREATED HAVE A SPECIFIC UI SECTION. ALSO, AVOID USERS FROM SAVING THEIR OWN ACTIVITIES SERVER SIDE
 // TODO: ADD BLUR EFFECT TO IMAGES WHEN THEY'RE LOADING
-// TODO: FIX GLOBAL OVERFLOW-X ISSUE ON MOBILE DEVICES
 export function ActivityCard({ activity, userId }: Props) {
   return (
     <li>
@@ -74,50 +88,112 @@ export function ActivityCard({ activity, userId }: Props) {
             alt={activity.name ?? "Activity"}
           />
         </div>
-        <Link
-          className="w-min bg-red-500"
-          key={activity.activity_id}
-          href={`/app/activities/${activity.activity_id}`}
-        >
-          <CardHeader className="max-w-[350px] flex flex-wrap overflow-hidden flex-col max-h-[300px] h-full relative">
-            <div className="flex items-center gap-2">
-              <Avatar>
-                <AvatarImage
-                  src={
-                    activity.users?.profile_picture_url
-                      ? getSupabaseFileUrlFromRelativePath(
-                          activity.users.profile_picture_url,
-                          "avatars"
-                        )
-                      : "https://github.com/shadcn.png"
-                  }
-                  alt={activity.users?.username ?? DEFAULT_USER_NAME}
-                />
-                <AvatarFallback>CN</AvatarFallback>
-              </Avatar>
-              <div className="">
-                <p className="text-darkGray font-medium text-sm">
-                  {renderCurrentUserString(
-                    activity.users?.user_id!,
-                    activity.users?.displayName!,
-                    userId
-                  )}
-                </p>
-                <p className="text-slate-600 text-sm">
-                  {handleDateConversion(activity.created_at)}
-                </p>
-              </div>
+
+        <CardHeader className="max-w-[350px] flex flex-wrap overflow-hidden flex-col max-h-[300px] h-full relative">
+          <div className="flex items-center gap-2">
+            <Avatar>
+              <AvatarImage
+                src={
+                  activity.users?.profile_picture_url
+                    ? getSupabaseFileUrlFromRelativePath(
+                        activity.users.profile_picture_url,
+                        "avatars"
+                      )
+                    : "https://github.com/shadcn.png"
+                }
+                alt={activity.users?.username ?? DEFAULT_USER_NAME}
+              />
+              <AvatarFallback>CN</AvatarFallback>
+            </Avatar>
+            <div className="">
+              <p className="text-darkGray font-medium text-sm">
+                {renderCurrentUserString(
+                  activity.users?.user_id!,
+                  activity.users?.displayName!,
+                  userId
+                )}
+              </p>
+              <p className="text-slate-600 text-sm">
+                {handleDateConversion(activity.created_at)}
+              </p>
             </div>
+          </div>
+          <Link
+            className=""
+            key={activity.activity_id}
+            href={`/app/activities/${activity.activity_id}`}
+          >
             <CardTitle className="leading-normal pt-2 text-mainBlack ">
               {activity.name}
             </CardTitle>
+          </Link>
+          <div className="flex items-center">
             <div className="absolute right-4 bottom-4">
-        <RatingReadOnly activityId={activity.activity_id} />
-        </div>
-          </CardHeader>
-
-        </Link>
-       
+              <RatingReadOnly activityId={activity.activity_id} />
+            </div>
+            <div className="absolute left-4 bottom-4">
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button className="bg-white !p-0 w-8 h-8 hover:bg-white border rounded-full">
+                    <MoreHorizontal className="w-6 h-6 text-slate-300" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-56">
+                  <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuGroup>
+                    <DropdownMenuItem>
+                      Profile
+                      <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem>
+                      Billing
+                      <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem>
+                      Settings
+                      <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem>
+                      Keyboard shortcuts
+                      <DropdownMenuShortcut>⌘K</DropdownMenuShortcut>
+                    </DropdownMenuItem>
+                  </DropdownMenuGroup>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuGroup>
+                    <DropdownMenuItem>Team</DropdownMenuItem>
+                    <DropdownMenuSub>
+                      <DropdownMenuSubTrigger>
+                        Invite users
+                      </DropdownMenuSubTrigger>
+                      <DropdownMenuPortal>
+                        <DropdownMenuSubContent>
+                          <DropdownMenuItem>Email</DropdownMenuItem>
+                          <DropdownMenuItem>Message</DropdownMenuItem>
+                          <DropdownMenuSeparator />
+                          <DropdownMenuItem>More...</DropdownMenuItem>
+                        </DropdownMenuSubContent>
+                      </DropdownMenuPortal>
+                    </DropdownMenuSub>
+                    <DropdownMenuItem>
+                      New Team
+                      <DropdownMenuShortcut>⌘+T</DropdownMenuShortcut>
+                    </DropdownMenuItem>
+                  </DropdownMenuGroup>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem>GitHub</DropdownMenuItem>
+                  <DropdownMenuItem>Support</DropdownMenuItem>
+                  <DropdownMenuItem disabled>API</DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem>
+                    Log out
+                    <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
+          </div>
+        </CardHeader>
       </Card>
     </li>
   );
