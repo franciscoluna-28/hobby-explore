@@ -65,7 +65,7 @@ const renderCurrentUserString = (
     return `You`;
   }
 
-  return activityUserDisplayName;
+  return activityUserDisplayName ? activityUserDisplayName : "User";
 };
 
 const DEFAULT_USER_NAME = "Shadcn";
