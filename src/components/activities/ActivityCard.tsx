@@ -17,6 +17,7 @@ import { Tables } from "@/lib/database";
 import { RatingReadOnly } from "../rating/RatingOnlyRead";
 import { MoreHorizontal } from "lucide-react";
 import { Button } from "../ui/button";
+import { Trash2 } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -31,6 +32,16 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  Dialog,
+  DialogFooter,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { DeleteActivityDialog } from "./DeleteActivityDialog";
 
 type Props = {
   activity: ActivityQueryResponse;
@@ -132,65 +143,31 @@ export function ActivityCard({ activity, userId }: Props) {
               <RatingReadOnly activityId={activity.activity_id} />
             </div>
             <div className="absolute left-4 bottom-4">
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button className="bg-white !p-0 w-8 h-8 hover:bg-white border rounded-full">
-                    <MoreHorizontal className="w-6 h-6 text-slate-300" />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent className="w-56">
-                  <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuGroup>
-                    <DropdownMenuItem>
-                      Profile
-                      <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem>
-                      Billing
-                      <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem>
-                      Settings
-                      <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem>
-                      Keyboard shortcuts
-                      <DropdownMenuShortcut>⌘K</DropdownMenuShortcut>
-                    </DropdownMenuItem>
-                  </DropdownMenuGroup>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuGroup>
-                    <DropdownMenuItem>Team</DropdownMenuItem>
-                    <DropdownMenuSub>
-                      <DropdownMenuSubTrigger>
-                        Invite users
-                      </DropdownMenuSubTrigger>
-                      <DropdownMenuPortal>
-                        <DropdownMenuSubContent>
-                          <DropdownMenuItem>Email</DropdownMenuItem>
-                          <DropdownMenuItem>Message</DropdownMenuItem>
-                          <DropdownMenuSeparator />
-                          <DropdownMenuItem>More...</DropdownMenuItem>
-                        </DropdownMenuSubContent>
-                      </DropdownMenuPortal>
-                    </DropdownMenuSub>
-                    <DropdownMenuItem>
-                      New Team
-                      <DropdownMenuShortcut>⌘+T</DropdownMenuShortcut>
-                    </DropdownMenuItem>
-                  </DropdownMenuGroup>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem>GitHub</DropdownMenuItem>
-                  <DropdownMenuItem>Support</DropdownMenuItem>
-                  <DropdownMenuItem disabled>API</DropdownMenuItem>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem>
-                    Log out
-                    <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
+              <DeleteActivityDialog activityId={activity.activity_id}>
+                <DropdownMenu>
+                  <DropdownMenuTrigger>
+                    <Button className="bg-white !p-0 w-8 h-8 hover:bg-white border rounded-full">
+                      <MoreHorizontal className="w-6 h-6 text-slate-300" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent className="w-56">
+                    <DropdownMenuLabel>More Options</DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuGroup>
+                      <DropdownMenuItem className="text-red-500 flex gap-2 hover:bg-red-500 hover:text-white duration-200">
+                        <DialogTrigger className="flex items-center gap-2">
+                          Delete Activity <Trash2 className="w-4 h-4" />
+                        </DialogTrigger>
+                      </DropdownMenuItem>
+
+                      <DropdownMenuItem>
+                        Share Activity
+                        <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
+                      </DropdownMenuItem>
+                    </DropdownMenuGroup>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </DeleteActivityDialog>
             </div>
           </div>
         </CardHeader>
