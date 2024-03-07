@@ -12,7 +12,8 @@ import {
 import { Button } from "../ui/button";
 import { deleteActivityByIdAction } from "@/actions/activity/delete";
 import { Tables } from "@/lib/database";
-
+import { useState } from "react";
+import { ButtonLoading } from "../ui/button-loading";
 
 // TODO: CREATE MORE DESCRIPTIVE MESSAGES
 export function DeleteActivityDialog({
@@ -22,10 +23,16 @@ export function DeleteActivityDialog({
   children: React.ReactNode;
   activityId: Tables<"activities">["activity_id"];
 }) {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  // TODO: ADD ACTUAL ERRORS AND STATES
   const handleDeleteActivity = async (
     activityId: Tables<"activities">["activity_id"]
   ): Promise<void> => {
+    setIsLoading(true);
     const response = await deleteActivityByIdAction(activityId);
+
+    setIsLoading(false);
 
     console.log(response);
   };
@@ -42,13 +49,14 @@ export function DeleteActivityDialog({
           </DialogDescription>
         </DialogHeader>
         <DialogFooter>
-          <Button
+          <ButtonLoading
+            isLoading={isLoading}
             onClick={() => handleDeleteActivity(activityId)}
             variant="destructive"
             type="submit"
           >
             Save changes
-          </Button>
+          </ButtonLoading>
         </DialogFooter>
       </DialogContent>
     </Dialog>

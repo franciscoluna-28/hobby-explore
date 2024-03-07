@@ -43,6 +43,10 @@ import {
 } from "@/components/ui/dialog";
 import { DeleteActivityDialog } from "./DeleteActivityDialog";
 
+const DEFAULT_USER_NAME = "Shadcn";
+const DEFAULT_USER_DISPLAY_NAME = "User";
+const YOUR_NAME_IN_YOUR_ACTIVITY_DISPLAY_NAME = "You";
+
 type Props = {
   activity: ActivityQueryResponse;
   userId?: Tables<"users">["user_id"];
@@ -62,18 +66,22 @@ const renderCurrentUserString = (
   userId?: string
 ) => {
   if (isCreatedByCurrentUser(activityUserId, userId)) {
-    return `You`;
+    return YOUR_NAME_IN_YOUR_ACTIVITY_DISPLAY_NAME;
   }
 
-  return activityUserDisplayName ? activityUserDisplayName : "User";
+  return activityUserDisplayName
+    ? activityUserDisplayName
+    : DEFAULT_USER_DISPLAY_NAME;
 };
-
-const DEFAULT_USER_NAME = "Shadcn";
 
 // TODO: IF THE ACTIVITY IS FROM THE SAME USER, DISPLAY A MENU TO SEE DELETE AND READ OPERATIONS. FOR EXAMPLE, A USER CAN GO TO THE ACTIVITY FORM AND EDIT THE INFORMATION OR DELETE THE ACTIVITY
 // TODO: USERS AREN'T ABLE TO SAVE THEIR OWN ACTIVITIES. ONLY ACTIVITIES FROM OTHER USERS. THAT'S WHY THE ACTIVITIES THEY HAVE CREATED HAVE A SPECIFIC UI SECTION. ALSO, AVOID USERS FROM SAVING THEIR OWN ACTIVITIES SERVER SIDE
 // TODO: ADD BLUR EFFECT TO IMAGES WHEN THEY'RE LOADING
 export function ActivityCard({ activity, userId }: Props) {
+
+  console.log(activity)
+  console.log(userId)
+
   return (
     <li>
       <Card className="rounded-2xl hover:shadow-md duration-200 w-[350px] h-[500px]">
@@ -142,33 +150,35 @@ export function ActivityCard({ activity, userId }: Props) {
             <div className="absolute right-4 bottom-4">
               <RatingReadOnly activityId={activity.activity_id} />
             </div>
-            <div className="absolute left-4 bottom-4">
-              <DeleteActivityDialog activityId={activity.activity_id}>
-                <DropdownMenu>
-                  <DropdownMenuTrigger>
-                    <Button className="bg-white !p-0 w-8 h-8 hover:bg-white border rounded-full">
-                      <MoreHorizontal className="w-6 h-6 text-slate-300" />
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent className="w-56">
-                    <DropdownMenuLabel>More Options</DropdownMenuLabel>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuGroup>
-                      <DropdownMenuItem className="text-red-500 flex gap-2 hover:bg-red-500 hover:text-white duration-200">
-                        <DialogTrigger className="flex items-center gap-2">
-                          Delete Activity <Trash2 className="w-4 h-4" />
-                        </DialogTrigger>
-                      </DropdownMenuItem>
+            {isCreatedByCurrentUser(activity.users?.user_id ?? "", userId) ? (
+              <div className="absolute left-4 bottom-4">
+                <DeleteActivityDialog activityId={activity.activity_id}>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger>
+                      <Button className="bg-white !p-0 w-8 h-8 hover:bg-white border rounded-full">
+                        <MoreHorizontal className="w-6 h-6 text-slate-300" />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent className="w-56">
+                      <DropdownMenuLabel>More Options</DropdownMenuLabel>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuGroup>
+                        <DropdownMenuItem className="text-red-500 flex gap-2 hover:bg-red-500 hover:text-white duration-200">
+                          <DialogTrigger className="flex items-center gap-2">
+                            Delete Activity <Trash2 className="w-4 h-4" />
+                          </DialogTrigger>
+                        </DropdownMenuItem>
 
-                      <DropdownMenuItem>
-                        Share Activity
-                        <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
-                      </DropdownMenuItem>
-                    </DropdownMenuGroup>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </DeleteActivityDialog>
-            </div>
+                        <DropdownMenuItem>
+                          Share Activity
+                          <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
+                        </DropdownMenuItem>
+                      </DropdownMenuGroup>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </DeleteActivityDialog>
+              </div>
+            ) : null}
           </div>
         </CardHeader>
       </Card>
