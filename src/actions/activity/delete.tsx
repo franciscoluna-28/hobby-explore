@@ -2,6 +2,7 @@
 
 import { Database } from "@/lib/database";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
+import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 
 const supabase = createServerComponentClient<Database>({ cookies });
@@ -14,6 +15,8 @@ export async function deleteActivityByIdAction(activityId: number) {
   if (error) {
     throw new Error(error.message);
   }
+
+  revalidatePath("/app/saved/my-activities");
 
   console.log("Activity deleted successfully");
 }

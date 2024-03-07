@@ -8,10 +8,12 @@ import {
   getCurrentUserSavedActivities,
   getUserActivitiesByUserId,
 } from "@/services/activities/getActivities";
-import { getCurrentUser } from "@/services/auth";
+import { getCurrentUser, getCurrentUserId } from "@/services/auth";
 
 export default async function SavedActivities() {
   const savedActivities = await getCurrentUserSavedActivities();
+  const currentUserId = await getCurrentUserId();
+  const EMPTY_ACTIVITY_ARRAY_LENGTH: number = 0;
 
   // TODO: REFACTOR THIS TO ANOTHER COMPONENT
   if (savedActivities && "error" in savedActivities) {
@@ -25,7 +27,7 @@ export default async function SavedActivities() {
   const activities =
     savedActivities as SavedActivitiesFromOtherUsersQueryResponse[];
 
-  if (activities.length === 0) {
+  if (activities.length === EMPTY_ACTIVITY_ARRAY_LENGTH) {
     return (
       <ActivityMotion>
         <NoExistingSavedActivities />
@@ -41,6 +43,7 @@ export default async function SavedActivities() {
             <ActivityCard
               key={activity.activities?.activity_id}
               activity={activity?.activities as ActivityQueryResponse}
+              userId={currentUserId}
             />
           </ActivityMotion>
         ))}

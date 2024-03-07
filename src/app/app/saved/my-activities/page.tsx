@@ -30,7 +30,7 @@ export default async function MyActivities() {
       <ul className="flex flex-wrap gap-6 justify-center">
         {activities.map((activity) => (
           <ActivityMotion key={activity.activity_id}>
-            <ActivityCard key={activity.activity_id} activity={activity} />
+            <ActivityCard key={activity.activity_id} activity={activity} userId={currentUser?.user_id ?? ""} />
           </ActivityMotion>
         ))}
       </ul>
