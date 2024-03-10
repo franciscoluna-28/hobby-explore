@@ -1,4 +1,5 @@
 import { ActivityCard } from "@/components/activities/ActivityCard";
+import { NoExistingSavedActivities } from "@/components/activities/NoExistingSavedActivities";
 import { ActivityMotion } from "@/components/motion/ActivityMotion";
 import {
   ActivityQueryResponse,
@@ -13,14 +14,19 @@ export default async function MyActivities() {
     currentUser?.user_id
   );
 
+
   // TODO: ADD EMPTY ACTIVITIES COMPONENT HERE
   if (!currentUserActivities) {
-    return <div>You don&apos;t have activities right now</div>;
+    return <div>Auth or system error...</div>;
   }
 
   // TODO: ADD ERROR COMPONENT
   if ("error" in currentUserActivities) {
     return <div>Auth or system error...</div>;
+  }
+
+  if(Array.isArray(currentUserActivities) && currentUserActivities.length === 0) {
+    return <NoExistingSavedActivities shouldBeYourOwnActivities/>
   }
 
   const activities = currentUserActivities as ActivityQueryResponse[];
