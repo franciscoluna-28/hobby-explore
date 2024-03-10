@@ -28,7 +28,7 @@ export function useRateActivity({ activityId }: UseRateActivityProps) {
       queryClient.setQueryData(["rating", { activityId: activityId }], data);
     },
     onMutate: async (newRating) => {
-      // Cancel any outgoing refetches (so they don't overwrite the optimistic update)
+      // Cancel any outgoing fetching requests (so they don't overwrite the optimistic update)
       await queryClient.cancelQueries({
         queryKey: ["rating", { activityId: activityId }],
       });

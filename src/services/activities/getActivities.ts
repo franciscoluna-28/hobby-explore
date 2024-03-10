@@ -77,7 +77,7 @@ const RANDOM_ACTIVITY_WITH_TIPS_QUERY =
 
 // Query to retrieve activities saved by other users
 const ACTIVITIES_WITH_TIPS_AND_USER_FROM_OTHER_USERS_QUERY =
-  "activity_id, activities!inner(tips(*), *, users!activities_created_by_user_id_fkey(*), ratings_count:activities_rating!inner.count()) ";
+  "activity_id, activities!inner(tips(*), *, users!activities_created_by_user_id_fkey(*))";
 
 // Response type
 type Response =
@@ -101,7 +101,6 @@ export async function getTenRandomActivities(
       .select(RANDOM_ACTIVITY_WITH_TIPS_QUERY)
       .range(from, to);
 
-    console.log(data);
 
     if (error) {
       console.log(error);
@@ -173,6 +172,8 @@ export async function getCurrentUserSavedActivities(): Promise<Response> {
   if (error) {
     return error;
   }
+
+  console.log(data)
 
   return data as unknown as SavedActivitiesFromOtherUsersQueryResponse[];
 }
