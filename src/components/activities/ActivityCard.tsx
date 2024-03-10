@@ -78,9 +78,8 @@ const renderCurrentUserString = (
 // TODO: USERS AREN'T ABLE TO SAVE THEIR OWN ACTIVITIES. ONLY ACTIVITIES FROM OTHER USERS. THAT'S WHY THE ACTIVITIES THEY HAVE CREATED HAVE A SPECIFIC UI SECTION. ALSO, AVOID USERS FROM SAVING THEIR OWN ACTIVITIES SERVER SIDE
 // TODO: ADD BLUR EFFECT TO IMAGES WHEN THEY'RE LOADING
 export function ActivityCard({ activity, userId }: Props) {
-
-  console.log(activity)
-  console.log(userId)
+  console.log(activity);
+  console.log(userId);
 
   return (
     <li>
@@ -91,7 +90,9 @@ export function ActivityCard({ activity, userId }: Props) {
           </Badge>
 
           <div className="absolute bottom-4 left-4 z-50">
-            <SaveActivityButton activityId={activity.activity_id} />
+            {!isCreatedByCurrentUser(activity.users?.user_id ?? "", userId) ? (
+              <SaveActivityButton activityId={activity.activity_id} />
+            ) : null}
           </div>
 
           <img
