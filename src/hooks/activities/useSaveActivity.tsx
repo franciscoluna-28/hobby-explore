@@ -7,7 +7,6 @@ import { useMutation } from "@tanstack/react-query";
 import { useQuery } from "@tanstack/react-query";
 import { useQueryClient } from "@tanstack/react-query";
 
-// TODO: ADD OPTIMISTIC UPDATES
 // Supabase state
 type useSaveActivityProps = {
   activityId: Tables<"activities">["activity_id"];
@@ -37,12 +36,39 @@ export function useSaveActivity({ activityId }: useSaveActivityProps) {
   // Updates the initial data for the activity according to its ID
   const mutation = useMutation({
     mutationFn: (activityId: number) => handleSaveDeleteActivity(activityId),
+    onMutate: async (variables) => {
+      await queryClient.cancelQueries({
+        queryKey: ["savedStatus", { activityId: activityId }],
+      });
 
-    onSuccess: (data) => {
+      // Snapshot the previous value
+      const previousSavedStatus = queryClient.getQueryData([
+        "savedStatus",
+        { activityId: activityId },
+      ]);
+
+      // Optimistically update to the new value
       queryClient.setQueryData(
-        ["saveStatus", { activityId: activityId }],
-        data
+        ["savedStatus", { activityId: activityId }],
+        (old) => [old, variables]
       );
+
+      // Return a context object with the snapshotted value
+      return { previousSavedStatus };
+    },
+
+    onError: (_, __, context) => {
+      // If the mutation fails, use the context returned from onMutate to roll back
+      queryClient.setQueryData(
+        ["savedStatus", { activityId: activityId }],
+        context?.previousSavedStatus
+      );
+    },
+    onSettled: () => {
+      // Always refetch after error or success:
+      queryClient.invalidateQueries({
+        queryKey: ["savedStatus", { activityId: activityId }],
+      });
     },
   });
 
@@ -53,7 +79,7 @@ export function useSaveActivity({ activityId }: useSaveActivityProps) {
     error: initialDataError,
     data: initialData,
   } = useQuery({
-    queryKey: ["saveStatus", { activityId: activityId }],
+    queryKey: ["savedStatus", { activityId: activityId }],
     queryFn: () => getActivitySavedStatusAction(activityId!),
   });
 

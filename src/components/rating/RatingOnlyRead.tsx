@@ -19,9 +19,14 @@ export function RatingReadOnly({ activityId }: RatingOnlyReadProps) {
       <Star fill="#F6B704" strokeWidth={WIDTH_STROKE_TARGET} />
 
       <p className="text-[#F6B704] text-sm">
-        {Number(initialData?.rating.toFixed(FIXED_NUMBER_TARGET) ?? DEFAULT_RATING_AND_COUNT_VALUE)}
+        {Number(
+          initialData?.rating.toFixed(FIXED_NUMBER_TARGET) ??
+            DEFAULT_RATING_AND_COUNT_VALUE
+        )}
       </p>
-      <p className="text-[#D9D9D9] text-sm">( {initialData?.count ?? DEFAULT_RATING_AND_COUNT_VALUE} )</p>
+      <p className="text-[#D9D9D9] text-sm">
+        ( {initialData?.count ?? DEFAULT_RATING_AND_COUNT_VALUE} )
+      </p>
     </div>
   );
 }
