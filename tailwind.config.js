@@ -30,6 +30,7 @@ module.exports = {
         lightGray: "#FAFAFA",
         extraDarkBlack: "#0B0C10",
         gray: "#D9D9D9",
+        mainPurple: "#9747FF",
         darkGray: "#818181",
         textGray: "#7E7E7E",
         ring: "hsl(var(--ring))",
