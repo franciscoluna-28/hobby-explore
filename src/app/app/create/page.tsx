@@ -1,5 +1,3 @@
-
-
 import { CreateActivityModal } from "@/components/create-activity/CreateActivityModal";
 import ErrorBoundary from "@/components/layout/ErrorBoundary";
 

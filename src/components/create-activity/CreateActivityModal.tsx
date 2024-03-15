@@ -32,16 +32,7 @@ import { cn } from "@/lib/utils";
 import { ACTIVITIES_CATEGORIES } from "@/constants/activities/categories";
 import { CheckIcon, ChevronDown, Plus } from "lucide-react";
 import { Slider } from "@nextui-org/react";
-import Dropzone from "react-dropzone";
-import Image from "next/image";
-import { X } from "lucide-react";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+
 import { Slider as DualSlider } from "@nextui-org/react";
 import { createNewActivity } from "@/services/activities/createActiviy";
 import { redirect, useRouter } from "next/navigation";
@@ -56,6 +47,8 @@ import {
   DEFAULT_ACCESSIBILITY_MIN_VALUE,
   MAXIMUM_ACTIVITY_NAME_VALUE,
   MAXIMUM_DESCRIPTION_VALUE,
+  MINIMUM_ACTIVITY_NAME_VALUE,
+  MINIMUM_DESCRIPTION_VALUE,
 } from "@/constants/activities/form";
 import {
   MAXIMUM_ALLOWED_TIPS,
@@ -88,11 +81,10 @@ import { TipForm } from "./TipForm";
 
 // First step, create the Zod Schema
 // TODO: ASK IF THE USER WANTS TO DELETE THE IMAGE OR NOT
-// TODO: FIX MIME EXTENSIONS BUGS
 
 export function CreateActivityModal() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [openCategory, setOpenCategory] = useState(false);
+  const [openCategory, setOpenCategory] = useState<boolean>(false);
   const router = useRouter();
 
   const onError = (errors: FieldErrors<z.infer<typeof ActivitySchema>>) => {
@@ -132,8 +124,6 @@ export function CreateActivityModal() {
 
   const { control } = form;
   const { register } = form;
-
-  console.log(form.formState.errors);
 
   const { fields } = useFieldArray({
     control,
@@ -193,6 +183,7 @@ export function CreateActivityModal() {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Name</FormLabel>
+                  <FormDescription className="">{`The name of your activity must have a minimum of ${MINIMUM_ACTIVITY_NAME_VALUE} characters and a maximum of ${MAXIMUM_ACTIVITY_NAME_VALUE}`}.</FormDescription>
                   <FormControl>
                     <Input placeholder="My Activity" {...field} />
                   </FormControl>
@@ -210,6 +201,7 @@ export function CreateActivityModal() {
               render={({ field }) => (
                 <FormItem className="my-3">
                   <FormLabel>Description</FormLabel>
+                  <FormDescription className="">{`The description must have a minimum of ${MINIMUM_DESCRIPTION_VALUE} characters and a maximum of ${MAXIMUM_DESCRIPTION_VALUE}`}.</FormDescription>
                   <FormControl>
                     <Textarea
                       placeholder="Explain briefly what's your activity about. Let the tips do the rest of the work."

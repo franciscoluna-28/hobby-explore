@@ -12,7 +12,16 @@ import { FormItem, FormLabel, FormControl } from "../ui/form";
 import { CharacterCounter } from "../form/CharacterCounter";
 import { MAXIMUM_TIP_DESCRIPTION_VALUE } from "@/constants/tips/globals";
 import { Textarea } from "../ui/textarea";
-import { X } from "lucide-react";
+import { Info, X } from "lucide-react";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
 import useTipStore from "@/store/useTipStore";
 
 type TipFormProps = {
@@ -30,8 +39,18 @@ export const TipForm = ({ form, index, item }: TipFormProps) => {
     form.setValue(`tips.${index}.imageFile`, undefined);
   };
 
+  const isFirstTipSoItCanBeUsedAsActivityImage = (index: number): boolean => {
+    const FIRST_INDEX_VALUE: number = 0;
+    if (index === FIRST_INDEX_VALUE) {
+      return true;
+    }
+
+    return false;
+  };
+
   const getTipById = useTipStore((state) => state.getTipImageUrlById);
 
+  // TODO: UPDATE CARD RESPONSIVE DESIGN BY CHANGING THE MAX-WIDTH USING MEDIA QUERIES
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -39,7 +58,26 @@ export const TipForm = ({ form, index, item }: TipFormProps) => {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
     >
-      <Card className="rounded-2xl hover:shadow-sm hover:border-mainGreen relative duration-200  w-[350px] h-[380px]">
+
+      <Card className="rounded-2xl hover:shadow-sm hover:border-mainGreen duration-200  w-[350px] h-[380px] relative">
+        {isFirstTipSoItCanBeUsedAsActivityImage(index) ? (
+           <Dialog>
+           <DialogTrigger asChild>
+             <Button className="absolute right-4 bottom-4 bg-transparent hover:bg-transparent" variant="outline"><Info/></Button>
+           </DialogTrigger>
+           <DialogContent className="sm:max-w-[425px]">
+             <DialogHeader>
+               <DialogTitle>Fist Tip</DialogTitle>
+               <DialogDescription>
+                 The image you've added to the first tip of your activity will be used as the one will be displayed in your activity card.
+               </DialogDescription>
+             </DialogHeader>
+             <DialogFooter>
+               <Button>Okay, I understand now</Button>
+             </DialogFooter>
+           </DialogContent>
+         </Dialog>
+        ) : null}
         <div className="relative">
           <Image
             width={0}
