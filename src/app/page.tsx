@@ -9,8 +9,6 @@ import DarkModeLogo from "../../public/Logo-Dark.svg";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import Dog from "../../public/dog.png";
-import Badge from "../../public/save-badge.svg";
 import { ImagePlus } from "lucide-react";
 import { Check } from "lucide-react";
 import {
@@ -21,6 +19,17 @@ import {
 } from "@/components/ui/accordion";
 import { KeyboardMusic, User } from "lucide-react";
 import { FeaturesCard } from "@/components/landing-page/FeaturesCard";
+import Card1 from "../../public/cards/card-1.png"
+import Card2 from "../../public/cards/card-2.png"
+import Card3 from "../../public/cards/card-3.png"
+import Card4 from "../../public/cards/card-4.png"
+import Comments from "../../public/comments/comment.png";
+
+// Import Swiper React components
+import { Swiper, SwiperSlide } from "swiper/react";
+
+// Import Swiper styles
+import "swiper/css";
 
 // Note: The 'use client' directive is needed for Google Authentication
 const supabase = createClientComponentClient<Database>();
@@ -30,7 +39,7 @@ export default function Home() {
   return (
     <>
       <Toaster />
-      <header className="w-full h-20 bg-white border-b px-4 flex justify-center">
+      <header className="w-full h-20 bg-white border-b px-4 lg:flex justify-center hidden">
         <div className="flex items-center max-w-[1000px]">
           <Image
             src={DarkModeLogo}
@@ -74,27 +83,40 @@ export default function Home() {
           </ul>
         </div>
       </header>
-      <main className="flex relative w-full min-h-screen flex-col items-center justify-between max-w-[1100px] m-auto py-8">
-        <section className="flex w-full my-16 justify-between">
-          <div className="max-w-[500px]">
+      <main className="flex relative w-full min-h-screen flex-col items-center justify-between max-w-[1100px] m-auto p-8">
+        <section className="flex flex-col md:flex-row gap-16 w-full my-16 justify-between">
+          <div className="lg:max-w-[500px] m-auto">
             <h1 className="font-semibold text-6xl leading-relaxed">
               Find your New Hobbies Today
             </h1>
             <p className="text-mainBlack/80 text-[18px] mt-8">
               Discover exciting pastimes, connect with fellow enthusiasts, and
-              grow personally. Welcome to Hobby Explore, your gateway to a
+              grow personally. Welcome to&nbsp;Hobby Explore, your gateway to a
               vibrant world of hobbies and innovation.
             </p>
             <Button className="mt-12">Try it for free</Button>
           </div>
           <div>
             <div className="relative mr-auto">
-              <Image src={Dog} alt="Dog" className="w-full max-h-[500px]" />
-              <Image
-                src={Badge}
-                alt="Badge"
-                className="absolute w-32 h-32 z-40 right-0 bottom-0 translate-x-12 translate-y-16"
-              />
+              <Swiper
+                className="w-full lg:max-w-[500px] overflow-hidden p-4 shadow-md rounded-[36px]"
+                spaceBetween={50}
+                slidesPerView={1}
+              >
+                <SwiperSlide>
+                  <Image width={0} height={0} className="w-full h-auto" src={Card1} alt="Activity 1"></Image>
+                </SwiperSlide>
+                <SwiperSlide>
+                  <Image width={0} height={0} className="w-full h-auto" src={Card2} alt="Activity 2"></Image>
+                </SwiperSlide>
+                <SwiperSlide>
+                  <Image width={0} height={0} className="w-full h-auto" src={Card3} alt="Activity 3"></Image>
+                </SwiperSlide>
+                <SwiperSlide>
+                  <Image width={0} height={0} className="w-full h-auto" src={Card4} alt="Activity 4"></Image>
+                </SwiperSlide>
+
+              </Swiper>
             </div>
           </div>
         </section>
@@ -102,7 +124,7 @@ export default function Home() {
           <h2 className="font-semibold text-5xl text-left my-16">
             Our Features
           </h2>
-          <ul className="flex gap-8">
+          <ul className="flex gap-16 flex-col lg:flex-row">
             <FeaturesCard
               cardRole="profileVariant"
               title="User Profile"
@@ -113,7 +135,7 @@ export default function Home() {
             <FeaturesCard
               cardRole="activitiesVariant"
               title="Activities"
-              description="                  Create your own activities and share them with the world."
+              description="Create your own activities and share them with the world."
             >
               <KeyboardMusic fill="transparent" stroke="white" />
             </FeaturesCard>
@@ -132,34 +154,64 @@ export default function Home() {
           <h2 className="font-semibold text-5xl text-left my-16 max-w-[500px] leading-relaxed">
             How Hobby Explore Will Help You
           </h2>
-          <div>
-            <ul className="flex flex-col gap-8">
+          <div className="flex gap-8 w-full">
+            <div className="w-full">
+            <ul className="flex flex-col gap-8 max-w-[600px]">
               <li className="flex gap-4 items-center">
                 <div className="bg-mainGreen w-8 h-8 rounded-full flex items-center justify-center">
-                <Check className="text-white" />
+                  <Check className="text-white min-w-[40px]" />
                 </div>
-              <p className="text-mainBlack/80">Explore a variety of hobbies and find new interests with ease.</p>
+                <p className="text-mainBlack/80">
+                  Explore a variety of hobbies and find new interests with ease.
+                </p>
               </li>
               <li className="flex gap-4 items-center">
                 <div className="bg-mainGreen w-8 h-8 rounded-full flex items-center justify-center">
-                <Check className="text-white" />
+                  <Check className="text-white min-w-[40px]" />
                 </div>
-              <p className="text-mainBlack/80">Save favorite hobbies, rate them, and access helpful tips.</p>
+                <p className="text-mainBlack/80">
+                  Save favorite hobbies, rate them, and access helpful tips.
+                </p>
               </li>
               <li className="flex gap-4 items-center">
                 <div className="bg-mainGreen w-8 h-8 rounded-full flex items-center justify-center">
-                <Check className="text-white" />
+                  <Check className="text-white min-w-[40px]" />
                 </div>
-              <p className="text-mainBlack/80">Share tips and insights to inspire others, while getting inspired by their experiences.</p>
+                <p className="text-mainBlack/80">
+                  Share tips and insights to inspire others, while getting
+                  inspired by their experiences.
+                </p>
               </li>
               <li className="flex gap-4 items-center">
                 <div className="bg-mainGreen w-8 h-8 rounded-full flex items-center justify-center">
-                <Check className="text-white" />
+                  <Check className="text-white w-4 min-w-[40px]" />
                 </div>
-              <p className="text-mainBlack/80">Whether it's art, coding, or anything in between, find your niche on our app with the categories.</p>
+                <p className="text-mainBlack/80">
+                  Whether it&apos;s art, coding, or anything in between, find
+                  your niche on our app with the categories.
+                </p>
+              </li>
+              <li className="flex gap-4 items-center">
+                <div className="bg-mainGreen w-8 h-8 rounded-full flex items-center justify-center">
+                  <Check className="text-white w-4 min-w-[40px]" />
+                </div>
+                <p className="text-mainBlack/80">
+                  Whether it&apos;s art, coding, or anything in between, find
+                  your niche on our app with the categories.
+                </p>
               </li>
             </ul>
+            </div>
+
+<div className="max-w-[500px]">
+<Image width={0} height={0} className="w-full h-auto" src={Comments} alt="Comments"></Image>
+</div>
+
           </div>
+
+
+
+
         </section>
 
         <section className="w-full">
@@ -167,6 +219,7 @@ export default function Home() {
             Frequently Asked Questions
           </h2>
 
+          
           <Accordion type="single" collapsible className="w-full">
             <AccordionItem value="item-1">
               <AccordionTrigger className=" text-[18px]">
@@ -174,9 +227,9 @@ export default function Home() {
               </AccordionTrigger>
               <AccordionContent className="text-darkGray">
                 Hobby Explore is a unique application designed to help you
-                discover exciting hobbies and activities. Whether you're seeking
-                new adventures to embark on or looking to explore your interests
-                further, Hobby Explore is your go-to platform.
+                discover exciting hobbies and activities. Whether you&apos;re
+                seeking new adventures to embark on or looking to explore your
+                interests further, Hobby Explore is your go-to platform.
               </AccordionContent>
             </AccordionItem>
             <AccordionItem value="item-2">
@@ -207,10 +260,10 @@ export default function Home() {
               </AccordionTrigger>
               <AccordionContent className="text-darkGray">
                 Visit our website, create an account, and start exploring.
-                Whether you're a seasoned hobbyist or a newcomer, Hobby Explore
-                welcomes you with open arms. Sign up effortlessly using your
-                Google account with OAuth, or by registering with your email and
-                password.
+                Whether you&apos;re a seasoned hobbyist or a newcomer, Hobby
+                Explore welcomes you with open arms. Sign up effortlessly using
+                your Google account with OAuth, or by registering with your
+                email and password.
               </AccordionContent>
             </AccordionItem>
             <AccordionItem value="item-5">
@@ -219,7 +272,7 @@ export default function Home() {
               </AccordionTrigger>
               <AccordionContent className="text-darkGray">
                 Absolutely! Hobby Explore is designed to cater to individuals of
-                all ages and interests. Whether you're a teenager eager to
+                all ages and interests. Whether you&apos;re a teenager eager to
                 discover new hobbies or a retiree seeking fulfilling pastimes,
                 our platform offers something for everyone. Our recommended age
                 for users is 16 and above, ensuring a safe and enriching
@@ -233,7 +286,7 @@ export default function Home() {
               <AccordionContent className="text-darkGray">
                 Hobby Explore is my dream realized - a place where we can freely
                 share our creative passions and grow together as a community.
-                Join me in building a space where every hobbyist's voice is
+                Join me in building a space where every hobbyist&apos;s voice is
                 celebrated.{" "}
               </AccordionContent>
             </AccordionItem>

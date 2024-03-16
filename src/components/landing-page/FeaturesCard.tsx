@@ -44,7 +44,7 @@ export function FeaturesCard({
 
   return (
     <Card
-      className={`lg:max-w-[350px] border-b-8 hover:border-mainGreen duration-200`}
+      className={`lg:max-w-[350px] w-full border-b-8 hover:border-mainGreen duration-200`}
     >
       <CardHeader>
         <div className={variantClass}>{children}</div>
