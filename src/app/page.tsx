@@ -229,7 +229,7 @@ export default function Home() {
           
           <Accordion type="single" collapsible className="w-full">
             <AccordionItem value="item-1">
-              <AccordionTrigger className=" text-[18px]">
+              <AccordionTrigger className=" text-[18px] text-left">
                 What is Hobby Explore?{" "}
               </AccordionTrigger>
               <AccordionContent className="text-darkGray">
@@ -240,7 +240,7 @@ export default function Home() {
               </AccordionContent>
             </AccordionItem>
             <AccordionItem value="item-2">
-              <AccordionTrigger className=" text-[18px]">
+              <AccordionTrigger className=" text-[18px] text-left">
                 How can Hobby Explore benefit me?{" "}
               </AccordionTrigger>
               <AccordionContent className="text-darkGray">
@@ -251,7 +251,7 @@ export default function Home() {
               </AccordionContent>
             </AccordionItem>
             <AccordionItem value="item-3">
-              <AccordionTrigger className=" text-[18px]">
+              <AccordionTrigger className=" text-[18px] text-left">
                 How does Hobby Explore work?
               </AccordionTrigger>
               <AccordionContent className="text-darkGray">
@@ -262,7 +262,7 @@ export default function Home() {
               </AccordionContent>
             </AccordionItem>
             <AccordionItem value="item-4">
-              <AccordionTrigger className=" text-[18px]">
+              <AccordionTrigger className="text-left text-[18px]">
                 How can I get started with Hobby Explore?
               </AccordionTrigger>
               <AccordionContent className="text-darkGray">
@@ -274,7 +274,7 @@ export default function Home() {
               </AccordionContent>
             </AccordionItem>
             <AccordionItem value="item-5">
-              <AccordionTrigger className=" text-[18px]">
+              <AccordionTrigger className=" text-[18px] text-left">
                 Is Hobby Explore suitable for all ages?
               </AccordionTrigger>
               <AccordionContent className="text-darkGray">
@@ -287,7 +287,7 @@ export default function Home() {
               </AccordionContent>
             </AccordionItem>
             <AccordionItem value="item-6">
-              <AccordionTrigger className=" text-[18px]">
+              <AccordionTrigger className=" text-[18px] text-left">
                 Why I built Hobby Explore?
               </AccordionTrigger>
               <AccordionContent className="text-darkGray">
