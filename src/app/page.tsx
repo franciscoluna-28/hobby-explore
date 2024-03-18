@@ -23,7 +23,8 @@ import Card1 from "../../public/cards/card-1.png"
 import Card2 from "../../public/cards/card-2.png"
 import Card3 from "../../public/cards/card-3.png"
 import Card4 from "../../public/cards/card-4.png"
-import Comments from "../../public/comments/comment.png";
+import Comments from "../../public/comments/comment-1.png";
+import Comments2 from "../../public/comments/comment-2.png";
 
 // Import Swiper React components
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -39,54 +40,58 @@ export default function Home() {
   return (
     <>
       <Toaster />
-      <header className="w-full h-20 bg-white border-b px-4 lg:flex justify-center hidden">
-        <div className="flex items-center max-w-[1000px]">
+      <header className="w-full h-20 bg-white border-b px-4 lg:flex justify-center hidden ">
+        <div className="max-w-[1050px] w-full flex">
+        <div className="flex items-center">
           <Image
             src={DarkModeLogo}
             alt="Hobby Explore"
-            className="h-10 w-auto"
+            className="h-16 w-auto"
           />
         </div>
         <div className="flex flex-row items-center w-full max-w-[1000px]">
           <ul className="flex gap-8 m-auto">
             <li>
-              <Link className="text-sm text-mainBlack" href="#">
+              <Link className="text-sm text-mainBlack link" href="#">
                 About
               </Link>
             </li>
             <li>
-              <Link className="text-sm text-mainBlack" href="#">
+              <Link className="text-sm text-mainBlack link" href="#">
                 Features
               </Link>
             </li>
             <li>
-              <Link className="text-sm text-mainBlack" href="#">
+              <Link className="text-sm text-mainBlack link" href="#">
                 Benefits
               </Link>
             </li>
             <li>
-              <Link className="text-sm text-mainBlack" href="#">
-                Testimonials
+              <Link className="text-sm text-mainBlack link" href="#">
+                FAQ
               </Link>
             </li>
           </ul>
-
-          <ul className="gap-8 flex items-center">
+          </div>
+          <ul className="gap-8 flex items-center min-w-[200px]">
             <li>
-              <LoginWithGoogle supabase={supabase} />
+            <Link className="text-sm" href="/auth/login">
+                Sign In
+              </Link>
             </li>
             <Button asChild>
-              <Link className="" href="#">
+              <Link className="" href="/auth/register">
                 Sign Up
               </Link>
             </Button>
           </ul>
         </div>
+
       </header>
-      <main className="flex relative w-full min-h-screen flex-col items-center justify-between max-w-[1100px] m-auto p-8">
+      <main className="flex relative w-full min-h-screen flex-col items-center justify-between max-w-[1100px] m-auto px-8 lg:p-0">
         <section className="flex flex-col md:flex-row gap-16 w-full my-16 justify-between">
           <div className="lg:max-w-[500px] m-auto">
-            <h1 className="font-semibold text-6xl leading-relaxed">
+            <h1 className="font-semibold text-6xl leading-normal">
               Find your New Hobbies Today
             </h1>
             <p className="text-mainBlack/80 text-[18px] mt-8">
@@ -121,10 +126,10 @@ export default function Home() {
           </div>
         </section>
         <section className="w-full">
-          <h2 className="font-semibold text-5xl text-left my-16">
+          <h2 className="font-semibold text-5xl text-left my-16 leading-normal">
             Our Features
           </h2>
-          <ul className="flex gap-16 flex-col lg:flex-row">
+          <ul className="flex gap-8 lg:gap-16 flex-col lg:flex-row">
             <FeaturesCard
               cardRole="profileVariant"
               title="User Profile"
@@ -151,12 +156,12 @@ export default function Home() {
         </section>
 
         <section className="w-full">
-          <h2 className="font-semibold text-5xl text-left my-16 max-w-[500px] leading-relaxed">
+          <h2 className="font-semibold text-5xl text-left my-16 max-w-[500px] leading-normal">
             How Hobby Explore Will Help You
           </h2>
-          <div className="flex gap-8 w-full">
+          <div className="flex gap-8 w-full flex-col lg:flex-row">
             <div className="w-full">
-            <ul className="flex flex-col gap-8 max-w-[600px]">
+            <ul className="flex flex-col gap-8 lg:max-w-[500px]">
               <li className="flex gap-4 items-center">
                 <div className="bg-mainGreen w-8 h-8 rounded-full flex items-center justify-center">
                   <Check className="text-white min-w-[40px]" />
@@ -203,8 +208,9 @@ export default function Home() {
             </ul>
             </div>
 
-<div className="max-w-[500px]">
-<Image width={0} height={0} className="w-full h-auto" src={Comments} alt="Comments"></Image>
+<div className="max-w-[500px] space-y-8 mt-6 lg:m-auto">
+<Image width={0} height={0} className="w-full relative h-auto shadow-md rounded-[36px] border" src={Comments2} alt="Comments"></Image>
+<Image width={0} height={0} className="w-full relative h-auto shadow-md rounded-[36px] border" src={Comments} alt="Comments"></Image>
 </div>
 
           </div>
@@ -293,6 +299,13 @@ export default function Home() {
           </Accordion>
         </section>
       </main>
+
+<footer className="w-full bg-mainBlack mt-32">
+    <div className="text-sm text-[#A6A6A6] m-auto p-4 flex justify-center">
+    © 2024 Hobby Explore. All rights reserved.
+    </div>
+</footer>
+
     </>
   );
 }
