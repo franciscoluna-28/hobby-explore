@@ -52,31 +52,31 @@ export default function Home() {
         <div className="flex flex-row items-center w-full max-w-[1000px]">
           <ul className="flex gap-8 m-auto">
             <li>
-              <Link className="text-sm text-mainBlack link" href="#">
+              <Link className="text-sm text-mainBlack/80 link" href="#">
                 About
               </Link>
             </li>
             <li>
-              <Link className="text-sm text-mainBlack link" href="#">
+              <Link className="text-sm text-mainBlack/80 link" href="#">
                 Features
               </Link>
             </li>
             <li>
-              <Link className="text-sm text-mainBlack link" href="#">
+              <Link className="text-sm text-mainBlack/80 link" href="#">
                 Benefits
               </Link>
             </li>
             <li>
-              <Link className="text-sm text-mainBlack link" href="#">
+              <Link className="text-sm text-mainBlack/80 link" href="#">
                 FAQ
               </Link>
             </li>
           </ul>
           </div>
-          <ul className="gap-8 flex items-center min-w-[200px]">
+          <ul className="gap-8 flex items-center min-w-[150px]">
             <li>
-            <Link className="text-sm" href="/auth/login">
-                Sign In
+            <Link className="text-sm w-full font-medium" href="/auth/login">
+                Login
               </Link>
             </li>
             <Button asChild>
@@ -104,12 +104,13 @@ export default function Home() {
           <div>
             <div className="relative mr-auto">
               <Swiper
-                className="w-full lg:max-w-[500px] overflow-hidden p-4 shadow-md rounded-[36px]"
+                className="min-w-full lg:max-w-[500px] overflow-hidden p-4 shadow-md rounded-[36px] h-full min-h-full"
                 spaceBetween={50}
                 slidesPerView={1}
+                
               >
                 <SwiperSlide>
-                  <Image width={0} height={0} className="w-full h-auto" src={Card1} alt="Activity 1"></Image>
+                  <Image width={0} height={0} className="w-full h-auto " src={Card1} alt="Activity 1"></Image>
                 </SwiperSlide>
                 <SwiperSlide>
                   <Image width={0} height={0} className="w-full h-auto" src={Card2} alt="Activity 2"></Image>
@@ -138,14 +139,14 @@ export default function Home() {
               <User fill="white" stroke="transparent" />
             </FeaturesCard>
             <FeaturesCard
-              cardRole="activitiesVariant"
+              cardRole="profileVariant"
               title="Activities"
               description="Create your own activities and share them with the world."
             >
               <KeyboardMusic fill="transparent" stroke="white" />
             </FeaturesCard>
             <FeaturesCard
-              cardRole="tipsVariant"
+              cardRole="profileVariant"
               title="Tips"
               description="Explain your activities through tips. You can give advice or
               give explanations."
@@ -155,7 +156,7 @@ export default function Home() {
           </ul>
         </section>
 
-        <section className="w-full">
+        <section className="w-full mt-16">
           <h2 className="font-semibold text-5xl text-left my-16 max-w-[500px] leading-normal">
             How Hobby Explore Will Help You
           </h2>
@@ -220,7 +221,7 @@ export default function Home() {
 
         </section>
 
-        <section className="w-full">
+        <section className="w-full mt-16">
           <h2 className="font-semibold text-5xl text-left my-16 max-w-[400px] leading-relaxed">
             Frequently Asked Questions
           </h2>
