@@ -69,7 +69,7 @@ export const TipForm = ({ form, index, item }: TipFormProps) => {
              <DialogHeader>
                <DialogTitle>Fist Tip</DialogTitle>
                <DialogDescription>
-                 The image you've added to the first tip of your activity will be used as the one will be displayed in your activity card.
+                 The image you&apos;ve added to the first tip of your activity will be used as the one will be displayed in your activity card.
                </DialogDescription>
              </DialogHeader>
              <DialogFooter>
