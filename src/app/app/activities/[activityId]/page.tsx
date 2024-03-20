@@ -29,17 +29,17 @@ import {
 function Component({ activityName }: { activityName?: string }) {
   return (
     <nav aria-label="Breadcrumb" className="py-4 mr-auto flex items-center">
-      <ol className="flex flex-wrap gap-2 text-sm text-gray-500 dark:text-gray-400">
+      <ol className="flex flex-wrap gap-2 text-sm text-gray-500 dark:text-gray-400 items-center">
         <li>
           <Link
-            className="hover:text-gray-900 dark:hover:text-gray-50"
+            className="text-slate-500"
             href="/app/explore"
           >
             Home
           </Link>
         </li>
         <li>
-          <ChevronRight className="w-4 h-4 mt-[1px]" />
+          <ChevronRight className="w-4 h-4" />
         </li>
         <li
           aria-current="page"
@@ -95,7 +95,7 @@ export default async function ActivityPage({
         </Avatar>
         <div className="">
           <p className="text-darkGray font-medium text-sm">
-            {activity[0].users?.displayName ?? "User"}
+            {activity[0].users?.displayName && activity[0].users?.displayName !== "" ? activity[0].users?.displayName : "User"}
           </p>
           <p className="text-gray text-sm">
             {handleDateConversion(activity[0].created_at)}

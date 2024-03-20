@@ -20,7 +20,6 @@ export default async function AppLayout({
         <Header profilePictureUrl={user?.profile_picture_url} />
         <MobileMenu />
         <main className="flex justify-center flex-col p-8 items-center relative mb-8 sm:my-0">
-      
           {children}
         </main>
       </ErrorBoundary>

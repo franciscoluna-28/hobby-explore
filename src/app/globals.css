@@ -39,12 +39,12 @@
     --swiper-navigation-sides-offset: 10px;
     --swiper-navigation-color: var(--swiper-theme-color);
 
-    .swiper-button-next {
+    .swiper-button-next, .swiper-button-prev {
       color: #1e1e1e;
       background-color: white;
       border-radius: 360px;
-      width: 30px;
-      height: 30px;
+      width: 35px;
+      height: 35px;
     }
   }
 
