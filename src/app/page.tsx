@@ -3,7 +3,6 @@
 import "./globals.css";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { Database } from "@/lib/database";
-import { LoginWithGoogle } from "@/components/auth/LoginWithGoogle";
 import { Toaster } from "sonner";
 import DarkModeLogo from "../../public/Logo-Dark.svg";
 import Image from "next/image";
@@ -32,17 +31,13 @@ import { Swiper, SwiperSlide } from "swiper/react";
 // Import Swiper styles
 import "swiper/css";
 
-// Note: The 'use client' directive is needed for Google Authentication
-const supabase = createClientComponentClient<Database>();
-
-// TODO: CREATE SECTIONS AND REUSABLE COMPONENTS FOR CARDS AND ACCORDIONS
 export default function Home() {
   return (
     <>
       <Toaster />
-      <header className="w-full h-20 bg-white border-b px-4 lg:flex justify-center hidden ">
+      <header className="w-full h-20 bg-white border-b lg:flex justify-center hidden px-16 ">
         <div className="max-w-[1050px] w-full flex">
-        <div className="flex items-center">
+        <div className="flex items-center ml-12">
           <Image
             src={DarkModeLogo}
             alt="Hobby Explore"
@@ -88,8 +83,8 @@ export default function Home() {
         </div>
 
       </header>
-      <main className="flex relative w-full min-h-screen flex-col items-center justify-between max-w-[1100px] m-auto px-8 lg:p-0">
-        <section className="flex flex-col md:flex-row gap-16 w-full my-16 justify-between">
+      <main className="flex relative w-full min-h-screen flex-col items-center justify-between max-w-[1100px] m-auto px-8">
+        <section className="flex flex-col md:flex-row gap-16 min-w-full my-16 lg:justify-between ">
           <div className="lg:max-w-[500px] m-auto">
             <h1 className="font-semibold text-6xl leading-normal">
               Find your New Hobbies Today
@@ -102,15 +97,15 @@ export default function Home() {
             <Button className="mt-12">Try it for free</Button>
           </div>
           <div>
-            <div className="relative mr-auto">
+            <div className="relative h-full">
               <Swiper
-                className="min-w-full lg:max-w-[500px] overflow-hidden p-4 shadow-md rounded-[36px] h-full min-h-full"
+                className="w-fit max-w-[400px] overflow-hidden shadow-md rounded-[36px]"
                 spaceBetween={50}
                 slidesPerView={1}
                 
               >
                 <SwiperSlide>
-                  <Image width={0} height={0} className="w-full h-auto " src={Card1} alt="Activity 1"></Image>
+                  <Image width={0} height={0} className=" " src={Card1} alt="Activity 1"></Image>
                 </SwiperSlide>
                 <SwiperSlide>
                   <Image width={0} height={0} className="w-full h-auto" src={Card2} alt="Activity 2"></Image>

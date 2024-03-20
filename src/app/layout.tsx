@@ -10,7 +10,9 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Hobby Explore",
-  description: "Welcome to Hobby Explore! Find new hobbies and share your existing ones to new people by being yourself.",
+  metadataBase: new URL("https://hobby-explore.vercel.app/"),
+  description:
+    "Welcome to Hobby Explore! Find new hobbies and share your existing ones to new people by being yourself.  ",
 };
 
 export default function RootLayout({
