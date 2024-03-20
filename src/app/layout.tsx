@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   title: "Hobby Explore",
   metadataBase: new URL("https://hobby-explore.vercel.app/"),
   description:
-    "Welcome to Hobby Explore! Find new hobbies and share your existing ones to new people by being yourself.  ",
+    "Welcome to Hobby Explore! Discover new hobbies and connect with others by sharing your existing interests. Be yourself and explore the world of hobbies!",
 };
 
 export default function RootLayout({

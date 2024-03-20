@@ -21,7 +21,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog"
+} from "@/components/ui/dialog";
 import useTipStore from "@/store/useTipStore";
 
 type TipFormProps = {
@@ -58,27 +58,33 @@ export const TipForm = ({ form, index, item }: TipFormProps) => {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
     >
-
       <Card className="rounded-2xl hover:shadow-sm hover:border-mainGreen duration-200  w-[350px] h-[380px] relative">
         {isFirstTipSoItCanBeUsedAsActivityImage(index) ? (
-           <Dialog>
-           <DialogTrigger asChild>
-             <Button className="absolute bg-white !p-2 w-10 h-10  rounded-full right-4 bottom-4 bg-transparent hover:bg-transparent" variant="outline"><Info className="w-12 h-12 text-mainBlack"/></Button>
-           </DialogTrigger>
-           <DialogContent className="sm:max-w-[425px]">
-             <DialogHeader>
-               <DialogTitle>Fist Tip</DialogTitle>
-               <DialogDescription>
-                 The image you&apos;ve added to the first tip of your activity will be used as the one will be displayed in your activity card.
-               </DialogDescription>
-             </DialogHeader>
-             <DialogFooter>
-             <DialogTrigger>
-               <Button>Okay, I understand now</Button>
-             </DialogTrigger>
-             </DialogFooter>
-           </DialogContent>
-         </Dialog>
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button
+                className="absolute bg-white !p-2 w-10 h-10  rounded-full right-4 bottom-4 bg-transparent hover:bg-transparent"
+                variant="outline"
+              >
+                <Info className="w-12 h-12 text-mainBlack" />
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[425px]">
+              <DialogHeader>
+                <DialogTitle>Fist Tip</DialogTitle>
+                <DialogDescription>
+                  The image you&apos;ve added to the first tip of your activity
+                  will be used as the one will be displayed in your activity
+                  card.
+                </DialogDescription>
+              </DialogHeader>
+              <DialogFooter>
+                <DialogTrigger>
+                  <Button>Okay, I understand now</Button>
+                </DialogTrigger>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
         ) : null}
         <div className="relative">
           <Image
