@@ -63,7 +63,7 @@ export const TipForm = ({ form, index, item }: TipFormProps) => {
         {isFirstTipSoItCanBeUsedAsActivityImage(index) ? (
            <Dialog>
            <DialogTrigger asChild>
-             <Button className="absolute right-4 bottom-4 bg-transparent hover:bg-transparent" variant="outline"><Info/></Button>
+             <Button className="absolute bg-white !p-2 w-10 h-10  rounded-full right-4 bottom-4 bg-transparent hover:bg-transparent" variant="outline"><Info className="w-12 h-12 text-mainBlack"/></Button>
            </DialogTrigger>
            <DialogContent className="sm:max-w-[425px]">
              <DialogHeader>
@@ -73,7 +73,9 @@ export const TipForm = ({ form, index, item }: TipFormProps) => {
                </DialogDescription>
              </DialogHeader>
              <DialogFooter>
+             <DialogTrigger>
                <Button>Okay, I understand now</Button>
+             </DialogTrigger>
              </DialogFooter>
            </DialogContent>
          </Dialog>

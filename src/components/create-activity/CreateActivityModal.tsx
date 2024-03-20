@@ -1,8 +1,8 @@
 "use client";
 
 import ActivitySchema from "@/schemas/activities/ActivitySchema";
-import { Controller, useFieldArray, useForm } from "react-hook-form";
-import { ZodError, z } from "zod";
+import { useFieldArray, useForm } from "react-hook-form";
+import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import {
@@ -30,12 +30,12 @@ import {
 } from "@/components/ui/command";
 import { cn } from "@/lib/utils";
 import { ACTIVITIES_CATEGORIES } from "@/constants/activities/categories";
-import { CheckIcon, ChevronDown, Plus } from "lucide-react";
+import { CheckIcon, ChevronDown } from "lucide-react";
 import { Slider } from "@nextui-org/react";
 
 import { Slider as DualSlider } from "@nextui-org/react";
 import { createNewActivity } from "@/services/activities/createActiviy";
-import { redirect, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { useState } from "react";
 import { ButtonLoading } from "../ui/button-loading";
