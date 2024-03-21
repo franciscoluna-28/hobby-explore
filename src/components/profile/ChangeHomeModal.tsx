@@ -101,7 +101,7 @@ export function ChangeHomeModal({ defaultDisplayName, userId }: Props) {
             </div>
           </div>
           <DialogFooter>
-            <p>{defaultDisplayName}</p>
+          
             <ButtonLoading
               onClick={handleUploading}
               isLoading={isChangingHome}
