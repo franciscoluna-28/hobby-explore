@@ -13,20 +13,21 @@ export function NoExistingSavedActivities({
 }: NoExistingSavedActivitiesProps) {
   return (
     <ActivityMotion>
-      <div className="m-auto flex justify-center flex-col items-center my-12 gap-3">
+      <div className="m-auto flex justify-center flex-col items-center my-16 gap-3 max-w-[1000px]">
         <Image
           src={NotFound}
           width={0}
           height={0}
           sizes="100vw"
-          style={{ width: "20%", height: "auto" }}
+          className="min-h-[150px] max-h-[200px]"
+          style={{ width: "auto" }}
           alt="Not found"
         />
         <h4 className="font-bold text-mainBlack my-3 text-4xl">Oops...</h4>
         <div className="flex flex-col">
-          <span className="text-slate-500 block">
+          <span className="text-slate-500 block text-center">
             {shouldBeYourOwnActivities
-              ? "It seems you haven't created an activity yet. Get started by creating a new one."
+              ? "It seems you haven't created your first activity yet. Get started by creating a new one."
               : "It seems you don't have saved activities yet..."}
           </span>
           <Button variant="ghost" className="my-2" asChild>

@@ -7,14 +7,8 @@ import { getCurrentUser } from "@/services/auth";
 import { Toaster } from "sonner";
 import { IoSettingsOutline } from "react-icons/io5";
 import { Button } from "@/components/ui/button";
-import {
-  HoverCard,
-  HoverCardContent,
-  HoverCardTrigger,
-} from "@/components/ui/hover-card";
 import Link from "next/link";
 import React from "react";
-import { ChangeHomeModal } from "@/components/profile/ChangeHomeModal";
 
 export default async function Profile() {
   const user = await getCurrentUser();
@@ -42,18 +36,10 @@ export default async function Profile() {
         </section>
 
         <section className="justify-center flex pt-8 gap-2 items-center">
-          <HoverCard>
-            <HoverCardTrigger>
-              {" "}
               <Button className="flex gap-2 rounded-[36px]" variant="secondary">
                 <IoSettingsOutline />{" "}
                 <Link href="/app/my-profile/settings">Settings</Link>
               </Button>
-            </HoverCardTrigger>
-            <HoverCardContent className="text-sm">
-              Handle your profile configuration and settings in this section.
-            </HoverCardContent>
-          </HoverCard>
         </section>
       </div>
     </>

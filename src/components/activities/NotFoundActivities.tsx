@@ -15,7 +15,7 @@ export function NotFoundActivities() {
         alt="Not found"
       />
       <h4 className="font-bold text-mainBlack my-3 text-4xl">We&apos;re sorry...</h4>
-      <span className="text-mainBlack">
+      <span className="text-slate-500">
         We don&apos;t have activities within this category yet...
       </span>
     </div>
