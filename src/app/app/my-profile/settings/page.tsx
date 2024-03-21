@@ -7,14 +7,6 @@ import Link from "next/link";
 import { ChangeDisplayNameModal } from "@/components/profile/ChangeDisplayNameModal";
 import ThemeSwitch from "@/components/ui/theme-switcher";
 import { ChangeHomeModal } from "@/components/profile/ChangeHomeModal";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import { ChevronLeft } from "lucide-react";
 
 export default async function UserProfileSettings() {
@@ -26,7 +18,8 @@ export default async function UserProfileSettings() {
       <Separator className="mt-4" />
       <div className="flex w-full flex-col gap-4 mt-4">
         <Link className="flex" href="/app/my-profile">
-          <ChevronLeft className="h-6 w-6" /> <span className="font-medium text-sm items-center flex">Go Back</span>
+          <ChevronLeft className="h-6 w-6" />{" "}
+          <span className="font-medium text-sm items-center flex">Go Back</span>
         </Link>
         <ChangeUserNameModal
           userId={user?.user_id ?? ""}

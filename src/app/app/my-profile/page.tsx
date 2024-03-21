@@ -36,10 +36,10 @@ export default async function Profile() {
         </section>
 
         <section className="justify-center flex pt-8 gap-2 items-center">
-              <Button className="flex gap-2 rounded-[36px]" variant="secondary">
-                <IoSettingsOutline />{" "}
-                <Link href="/app/my-profile/settings">Settings</Link>
-              </Button>
+          <Button className="flex gap-2 rounded-[36px]" variant="secondary">
+            <IoSettingsOutline />{" "}
+            <Link href="/app/my-profile/settings">Settings</Link>
+          </Button>
         </section>
       </div>
     </>
