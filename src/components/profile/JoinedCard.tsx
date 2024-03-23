@@ -1,5 +1,4 @@
 import { format } from "date-fns";
-import { LiaCalendarMinus } from "react-icons/lia";
 import { RiHome7Line } from "react-icons/ri";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tables } from "@/lib/database";

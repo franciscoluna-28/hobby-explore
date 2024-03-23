@@ -7,6 +7,9 @@ type HomeCardProps = {
 };
 
 export function HomeCard({ location }: HomeCardProps) {
+
+  console.log(location)
+
   return (
     <Card className="p-2 rounded-[16px] min-w-[342px]">
       <CardHeader className="!px-2 !py-1">
@@ -17,7 +20,7 @@ export function HomeCard({ location }: HomeCardProps) {
       </CardHeader>
       <CardContent className="!py-1 !px-2">
         <p className="text-slate-600 text-sm">
-          {location}
+          {location !== "" && location !== null ? location : "Unknown"}
         </p>
       </CardContent>
     </Card>

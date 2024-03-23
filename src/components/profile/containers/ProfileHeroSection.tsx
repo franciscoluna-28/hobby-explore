@@ -32,11 +32,11 @@ export function ProfileHeroSection({
         isUploadingProfile={isUploadingProfilePicture}
       />
       <div className="flex gap-2 items-center">
-        <h2 className="font-bold text-3xl z-50 text-center">{displayName}</h2>
+        <h2 className="font-bold text-3xl z-50 text-center">{displayName !== "" && displayName !== null ? displayName : "User"}</h2>
         <ShareProfileModal />
       </div>
       <div className="px-4">
-        <p className="text-slate-600 text-center mx-4">{description}</p>
+        <p className="text-slate-600 text-center mx-4">{description !== "" && description !== null ? description : "I'm new to Hobby Explore!"}</p>
       </div>
     </section>
   );

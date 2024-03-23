@@ -8,7 +8,7 @@ import Link from "next/link";
 
 const getRenderText = (displayName: string | null | undefined): string => {
   return `Hey  ${
-    displayName ?? "User"
+    displayName !== "" ? displayName : `user`
   }! share some activities and tell us how to do it.`;
 };
 
@@ -21,11 +21,15 @@ export async function CreateActivityCard() {
         <CardContent className="flex items-center !p-4 gap-2">
           <Avatar key={user?.user_id}>
             <AvatarImage
-              src={getSupabaseFileUrlFromRelativePath(
-                user?.profile_picture_url ?? "",
-                "avatars"
-              )}
-              alt="user"
+              src={
+                user?.profile_picture_url !== "" && user?.profile_picture_url
+                  ? getSupabaseFileUrlFromRelativePath(
+                      user?.profile_picture_url ?? "",
+                      "avatars"
+                    )
+                  : "https://github.com/shadcn.png"
+              }
+              alt="User"
             />
             <AvatarFallback>User</AvatarFallback>
           </Avatar>
