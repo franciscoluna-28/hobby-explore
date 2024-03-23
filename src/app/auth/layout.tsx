@@ -1,5 +1,6 @@
 import { getCurrentUser } from "@/services/auth";
 import { redirect } from "next/navigation";
+import "../globals.css"
 
 export default async function AuthLayout({
   children,
@@ -10,8 +11,8 @@ export default async function AuthLayout({
 
   // Make sure the user is redirected to the main app screen if they're already authenticated
   if (user) {
-    redirect("/app/explore");   
+    redirect("/app/explore");
   }
 
-  return <>{children}</>;
+  return <main className="flex flex-col max-w-[600px] items-center w-full m-auto h-screen justify-center">{children}</main>;
 }
