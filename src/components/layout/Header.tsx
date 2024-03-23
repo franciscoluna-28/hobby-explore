@@ -13,7 +13,8 @@ type Props = {
 // TODO: UPDATE PROFILE PICTURE WHEN UPDATED
 export function Header({ profilePictureUrl }: Props) {
   return (
-    <header className="bg-mainGreen relative w-full justify-around px-4 py-2.5 md:flex items-center hidden dark:bg-extraDarkBlack transition-all duration-200 dark:border-b dark:border-black ">
+    <header className="bg-mainGreen relative w-full py-2.5 md:block hidden dark:bg-extraDarkBlack transition-all duration-200 dark:border-b dark:border-black ">
+      <div className="w-full flex justify-between items-center max-w-[1200px] px-12 m-auto">
       <Logo />
       <HeaderLinksContainer />
 
@@ -28,6 +29,7 @@ export function Header({ profilePictureUrl }: Props) {
           <AvatarFallback>User</AvatarFallback>
         </Avatar>
       </Link>
+      </div>
     </header>
   );
 }

@@ -19,7 +19,7 @@ export default async function ExplorePage({
         <h3 className="font-semibold text-2xl mr-auto">Explore</h3>
       </div>
       <FilterActivityButtonsSection />
-      <section className="w-full my-6 m-auto max-w-[1000px]">
+      <section className="w-full my-6 m-auto">
         <Suspense fallback={<CreateActivityCardSkeleton />}>
           <CreateActivityCard />
         </Suspense>

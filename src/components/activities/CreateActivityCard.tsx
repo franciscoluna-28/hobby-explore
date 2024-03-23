@@ -17,7 +17,7 @@ export async function CreateActivityCard() {
 
   return (
     <Link href="/app/create">
-      <Card className="!border-none transition-all !w-full rounded-2xl border shadow-sm hover:shadow-md duration-200 shadow-black/5">
+      <Card className="transition-all !w-full rounded-2xl border border-slate-200/50 shadow-sm hover:shadow-md duration-200 shadow-black/5">
         <CardContent className="flex items-center !p-4 gap-2">
           <Avatar key={user?.user_id}>
             <AvatarImage
