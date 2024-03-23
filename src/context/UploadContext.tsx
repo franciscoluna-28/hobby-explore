@@ -3,10 +3,10 @@
 import React, { createContext, ReactNode, useContext, useState } from "react";
 
 interface UploadContextProps {
-  isUploadingProfile: boolean;
-  isUploadingBanner: boolean;
-  setIsUploadingProfile: React.Dispatch<React.SetStateAction<boolean>>;
-  setIsUploadingBanner: React.Dispatch<React.SetStateAction<boolean>>;
+  isUploadingProfilePicture: boolean;
+  isUploadingBannerPicture: boolean;
+  setIsUploadingProfilePicture: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsUploadingBannerPicture: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export const UploadContext = createContext<UploadContextProps | undefined>(undefined);
@@ -14,16 +14,16 @@ export const UploadContext = createContext<UploadContextProps | undefined>(undef
 export const UploadProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
-  const [isUploadingProfile, setIsUploadingProfile] = useState<boolean>(false);
-  const [isUploadingBanner, setIsUploadingBanner] = useState<boolean>(false);
+  const [isUploadingProfilePicture, setIsUploadingProfilePicture] = useState<boolean>(false);
+  const [isUploadingBannerPicture, setIsUploadingBannerPicture] = useState<boolean>(false);
 
   return (
     <UploadContext.Provider
       value={{
-        isUploadingProfile,
-        isUploadingBanner,
-        setIsUploadingProfile,
-        setIsUploadingBanner,
+        isUploadingProfilePicture,
+        isUploadingBannerPicture,
+        setIsUploadingProfilePicture,
+        setIsUploadingBannerPicture,
       }}
     >
       {children}

@@ -12,9 +12,11 @@ import {
 import { useState } from "react";
 import Cropper, { Area } from "react-easy-crop";
 import { cropImage } from "@/lib/cropper/cropperLib";
+import { ButtonLoading } from "../ui/button-loading";
 
 type ImageCropperDialogProps = {
   open: boolean;
+  isLoading: boolean;
   image: string | null;
   onComplete: any;
   containerStyle: any;
@@ -30,18 +32,21 @@ type CropAxis = {
 export function ImageCropperDialog({
   image,
   open,
+  isLoading,
   onComplete,
   containerStyle,
   ...props
 }: ImageCropperDialogProps) {
   const [crop, setCrop] = useState<CropAxis>({ x: 0, y: 0 });
   const [zoom, setZoom] = useState<number>(1);
+
   const [croppedAreaPixels, setCroppedAreaPixels] = useState<Area>({
     x: 0,
     y: 0,
     width: 0,
     height: 0,
   });
+
 
   return (
     <Dialog open={open}>
@@ -67,14 +72,15 @@ export function ImageCropperDialog({
           />
         </div>
         <DialogFooter>
-          <Button
+          <ButtonLoading
+            isLoading={isLoading}
             onClick={() =>
               onComplete(cropImage(image ?? "", croppedAreaPixels, console.log))
             }
             type="submit"
           >
             Save changes
-          </Button>
+          </ButtonLoading>
         </DialogFooter>
       </DialogContent>
     </Dialog>

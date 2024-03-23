@@ -5,6 +5,7 @@ import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { PostgrestError } from "@supabase/supabase-js";
 import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
+import { uploadPictureToSupabase } from "./supabase/storage";
 
 type ActionResponse = {
   success?: boolean;
@@ -27,7 +28,6 @@ export async function updateUserDescription(
   if (error) {
     return {
       ...error,
-      success: false,
     };
   }
 
@@ -66,14 +66,13 @@ export async function updateDisplayName(displayName: string, userId: string) {
     .update({ displayName })
     .match({ user_id: userId });
 
-  console.log(error);
-
   if (error) {
     return {
       ...error,
-      success: false,
     };
   }
+
+  revalidatePath("/app/my-profile");
 
   return {
     success: true,
@@ -97,7 +96,6 @@ export async function updateUserLocation(
   if (error) {
     return {
       ...error,
-      success: false,
     };
   }
 
@@ -107,5 +105,99 @@ export async function updateUserLocation(
   return {
     success: true,
     message: "Location updated successfully!",
+  };
+}
+
+/**
+ * Updates the existing profile picture of the user. Also, updates the cache to reflect the changes in the UI
+ * @param profilePictureUrl - The new profile picture url obtained from uploading an object to Supabase storage
+ */
+export async function updateUserProfilePicture(
+  formData: FormData,
+  userId: string
+) {
+  const file = formData.get("profilePicture") as File | null;
+
+  console.log(file);
+
+  if (!file) {
+    throw new Error("You need to upload a profile picture!");
+  }
+
+  // Upload file to Supabase storage
+  const filePath = await uploadPictureToSupabase(
+    file,
+    userId,
+    supabase,
+    "avatars"
+  );
+
+  if (!filePath || filePath === "") {
+    throw new Error("There was an error uploading the file to Supabase");
+  }
+
+  const { error } = await supabase
+    .from("users")
+    .update({
+      profile_picture_url: filePath,
+    })
+    .match({ user_id: userId });
+
+  if (error) {
+    return {
+      ...error,
+    };
+  }
+
+  revalidatePath("/app/my-profile");
+
+  return {
+    success: true,
+    message: "Profile picture updated successfully!",
+  };
+}
+/**
+ * Updates the existing profile picture of the user. Also, updates the cache to reflect the changes in the UI
+ * @param profilePictureUrl - The new profile picture url obtained from uploading an object to Supabase storage
+ */
+export async function updateUserBannerPicture(
+  formData: FormData,
+  userId: string
+) {
+  const file = formData.get("bannerPicture") as File | null;
+
+  if (!file) {
+    throw new Error("You must provide a banner picture to update");
+  }
+
+  const filePath = await uploadPictureToSupabase(
+    file,
+    userId,
+    supabase,
+    "banners"
+  );
+
+  if (!filePath || filePath === "") {
+    throw new Error("There was an error uploading the file to Supabase");
+  }
+
+  const { error } = await supabase
+    .from("users")
+    .update({
+      banner_picture_url: filePath,
+    })
+    .match({ user_id: userId });
+
+  if (error) {
+    return {
+      ...error,
+    };
+  }
+
+  revalidatePath("/app/my-profile");
+
+  return {
+    success: true,
+    message: "Banner picture updated successfully!",
   };
 }
