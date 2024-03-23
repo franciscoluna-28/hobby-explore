@@ -25,7 +25,7 @@ const ThemeSwitch = () => {
 
   if (!mounted) {
     return (
-      <Skeleton className="flex items-center space-x-4 rounded-md p-4 min-h-[70px]"></Skeleton>
+      <Skeleton className="flex items-center space-x-4 rounded-md p-4 min-h-[75px] min-w-[450px]"></Skeleton>
     );
   }
 
