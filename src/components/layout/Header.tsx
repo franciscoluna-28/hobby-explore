@@ -10,7 +10,6 @@ type Props = {
   profilePictureUrl: string | null | undefined;
 };
 
-// TODO: UPDATE PROFILE PICTURE WHEN UPDATED
 export function Header({ profilePictureUrl }: Props) {
   return (
     <header className="bg-mainGreen relative w-full py-2.5 md:block hidden dark:bg-extraDarkBlack transition-all duration-200 dark:border-b dark:border-black ">
