@@ -8,7 +8,6 @@ import { ExistingActivityCategories } from "@/constants/activities/categories";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 
-// TODO: DEAL WITH THE NO EXISTING CATEGORIES CASES AND USE A DEFAULT VALUE FOR THEM 
 const FilterActivityButtonsSection: React.FC = () => {
   const searchParams = useSearchParams();
   const selectedCategory = searchParams.get("category") as
