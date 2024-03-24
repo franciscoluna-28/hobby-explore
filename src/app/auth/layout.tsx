@@ -1,6 +1,7 @@
 import { getCurrentUser } from "@/services/auth";
 import { redirect } from "next/navigation";
-import "../globals.css"
+import "../globals.css";
+import { Toaster } from "@/components/ui/sonner";
 
 export default async function AuthLayout({
   children,
@@ -14,5 +15,12 @@ export default async function AuthLayout({
     redirect("/app/explore");
   }
 
-  return <main className="flex flex-col max-w-[600px] items-center w-full m-auto h-screen justify-center">{children}</main>;
+  return (
+    <>
+      <Toaster richColors closeButton />
+      <main className="flex flex-col max-w-[600px] items-center w-full m-auto h-screen justify-center">
+        {children}
+      </main>
+    </>
+  );
 }

@@ -19,10 +19,10 @@ import { z } from "zod";
 import { EmailPasswordAuthSchema } from "@/schemas/EmaiPasswordAuthSchema";
 import Link from "next/link";
 import { toast } from "sonner";
-import { redirect } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 
 export default function Register() {
-
+  const router = useRouter();
 
   // 1. Define your form.
   const form = useForm<z.infer<typeof EmailPasswordAuthSchema>>({
@@ -42,12 +42,12 @@ export default function Register() {
       password: values.password,
     });
 
-    if(error) {
+    if (error) {
       toast.error(error.message);
     }
 
-    if(data.session?.user) {
-      redirect("/app/explore");
+    if (data.session?.user) {
+      router.push("/app/explore");
     }
 
     console.log(data);
@@ -55,7 +55,12 @@ export default function Register() {
 
   return (
     <Form {...form}>
-      <h1 className="font-semibold text-3xl text-mainBlack my-6">Register</h1>
+      <h1 className="font-semibold text-3xl text-mainBlack my-6 text-center max-w-[300px] leading-normal">
+        Share your Unique Hobbies
+      </h1>
+      <div>
+        <LoginWithGoogle supabase={supabase}></LoginWithGoogle>
+      </div>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
         <FormField
           control={form.control}
