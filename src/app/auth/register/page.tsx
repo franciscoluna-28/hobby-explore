@@ -72,7 +72,7 @@ export default function Register() {
                 <Input placeholder="user@gmail.com" {...field} />
               </FormControl>
               <FormDescription>
-                The email that'll be used for your registration.
+                The email that&apos;ll be used for your registration.
               </FormDescription>
               <FormMessage />
             </FormItem>

@@ -74,7 +74,7 @@ export default function Login() {
                 <Input placeholder="user@gmail.com" {...field} />
               </FormControl>
               <FormDescription>
-              The email you've created your account with.
+              The email you&apos;ve created your account with.
               </FormDescription>
               <FormMessage />
             </FormItem>
