@@ -11,6 +11,7 @@ import Link from "next/link";
 import React from "react";
 
 export default async function Profile() {
+  // Get current user
   const user = await getCurrentUser();
 
   return (
