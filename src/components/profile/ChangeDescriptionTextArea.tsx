@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { useProfileDescription } from "@/context/ProfileDescriptionContext";
 import { updateUserDescription } from "@/services/userServices";
-import { useAuth } from "@/store/useAuthStore";
 import { ChangeEvent, useEffect, useState } from "react";
 import { toast } from "sonner";
 import { ButtonLoading } from "../ui/button-loading";
@@ -28,10 +27,6 @@ export function ChangeDescriptionTextArea({
 }: Props) {
   const { stopEditing, isUploadingDescription, stopUploading, startUploading } =
     useProfileDescription();
-
-  const setUserDescription = useAuth((state) => state.setUserDescription);
-
-  const userDescription = useAuth((state) => state.userDescription);
 
   const [newDescription, setNewDescription] =
     useState<string>(defaultDescription);
@@ -61,7 +56,7 @@ export function ChangeDescriptionTextArea({
 
       if (updateResult.success) {
         toast.success(updateResult.message);
-        setUserDescription(newDescription);
+        setNewDescription(newDescription);
         stopUploading();
         handleCancel();
         return;
@@ -111,7 +106,7 @@ export function ChangeDescriptionTextArea({
         <Textarea
           className="text-left pr-48 !h-8"
           onChange={handleDescriptionChange}
-          defaultValue={userDescription ?? ""}
+          defaultValue={defaultDescription ?? newDescription}
           placeholder="Change your description here."
         />
 
