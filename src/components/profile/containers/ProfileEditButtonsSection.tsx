@@ -4,8 +4,6 @@ import { EditDescription } from "../EditDescription";
 import { EditPictures } from "../EditPictures";
 import { useProfileDescription } from "@/context/ProfileDescriptionContext";
 import { ChangeDescriptionTextArea } from "../ChangeDescriptionTextArea";
-import { useEffect } from "react";
-import { useAuth } from "@/store/useAuthStore";
 import { AnimatePresence, motion } from "framer-motion";
 
 type Props = {
@@ -18,11 +16,6 @@ export function ProfileEditButtonsSection({
   defaultDescription,
 }: Props) {
   const { isCurrentlyEditing } = useProfileDescription();
-  const setDescription = useAuth((state) => state.setUserDescription);
-
-  useEffect(() => {
-    setDescription(defaultDescription);
-  }, [setDescription]);
 
   return (
     <section className="flex justify-center items-center gap-4 mt-4 min-h-16">

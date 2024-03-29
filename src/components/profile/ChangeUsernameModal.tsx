@@ -46,7 +46,7 @@ export function ChangeUserNameModal({ defaultUserUserName, userId }: Props) {
 
     toast.success(result.message);
 
-    setUserName(newUserName);
+    setNewUserName(newUserName);
     setIsChangingUserName(false);
     handleClose();
   };
@@ -57,7 +57,7 @@ export function ChangeUserNameModal({ defaultUserUserName, userId }: Props) {
   return (
     <Card className=" flex items-center space-x-4 rounded-md border p-4 relative">
       <CaseUpper className="w-6 h-6" />
-      {userName === "" || userName === undefined ? (
+      {defaultUserUserName === "" || defaultUserUserName === undefined ? (
         <div className="absolute -top-1 -right-1">
           <span className="relative flex h-3 w-3">
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-500 opacity-75"></span>
@@ -68,7 +68,7 @@ export function ChangeUserNameModal({ defaultUserUserName, userId }: Props) {
 
       <div className="flex-1 space-y-1">
         <p className="text-sm font-medium leading-none">
-          {userName === "" || userName === null
+          {defaultUserUserName === "" || defaultUserUserName === null
             ? "Create username"
             : "Change username"}
         </p>
