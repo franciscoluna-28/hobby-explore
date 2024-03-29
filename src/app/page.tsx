@@ -18,38 +18,13 @@ import {
 } from "@/components/ui/accordion";
 import { KeyboardMusic, User } from "lucide-react";
 import { FeaturesCard } from "@/components/landing-page/FeaturesCard";
-import Card1 from "../../public/cards/card-1.png";
-import Card2 from "../../public/cards/card-2.png";
-import Card3 from "../../public/cards/card-3.png";
-import Card4 from "../../public/cards/card-4.png";
 import Comments from "../../public/comments/comment-1.png";
 import Comments2 from "../../public/comments/comment-2.png";
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from "@/components/ui/avatar"
- 
-
-
-// Import Swiper React components
-import { Swiper, SwiperSlide } from "swiper/react";
-
-// Import Swiper styles
-import "swiper/css";
 import { DEFAULT_ACTIVITIES } from "@/data/DefaultActivities";
 import { ActivityCardReadOnly } from "@/components/activities/ActivityCardReadOnly";
-import { useState } from "react";
 
 export default function Home() {
-
-  const changeHobbyIndex = (index: number) => {
-    setHobbyIndex(index);
-  };
-
-  // TODO: DEAL WITH UNKNOWN INDEX VALUES
-  const DEFAULT_HOBBY_INDEX: number = 0;
-  const [hobbyIndex, setHobbyIndex] = useState<number>(DEFAULT_HOBBY_INDEX);
+  const randomIndex = Math.floor(Math.random() * DEFAULT_ACTIVITIES.length);
 
   return (
     <>
@@ -102,9 +77,9 @@ export default function Home() {
         </div>
       </header>
       <main className="flex relative w-full min-h-screen flex-col items-center justify-between max-w-[1100px] m-auto px-8">
-        <section className="flex flex-col md:flex-row gap-16 min-w-full my-16 lg:justify-between ">
-          <div className="lg:max-w-[500px] m-auto">
-            <h1 className="font-semibold text-6xl leading-normal">
+        <section className="flex flex-col md:flex-row gap-8 min-w-full my-16 lg:justify-between">
+          <div className="lg:max-w-[500px] mr-auto">
+            <h1 className="font-semibold text-6xl leading-normal text-mainBlack">
               Find your New Hobbies Today
             </h1>
             <p className="text-mainBlack/80 text-[18px] mt-8">
@@ -115,22 +90,8 @@ export default function Home() {
             <Button className="mt-12">Try it for free</Button>
           </div>
           <div>
-          <div className="relative h-full">
-      {/* Render only the activity card corresponding to the hobbyIndex */}
-      <ActivityCardReadOnly activity={DEFAULT_ACTIVITIES[hobbyIndex]} />
-
-      {/* Buttons to navigate between activity cards */}
-      <div className="mt-8">
-        {DEFAULT_ACTIVITIES.map((activity, index) => (
-          <Button className="bg-transparent hover:bg-transparent rounded-full w-min" key={index} onClick={() => changeHobbyIndex(index)}>
-             <Avatar>
-      <AvatarImage src={activity.firstTipImageUrl} alt={activity.name ?? "Unknown Activity"} />
-      <AvatarFallback>{activity.name}</AvatarFallback>
-    </Avatar>
-          </Button>
-
-        ))}
-      </div>
+          <div className="relative h-full" suppressHydrationWarning>
+      <ActivityCardReadOnly activity={DEFAULT_ACTIVITIES[randomIndex]} />
     </div>
           </div>
         </section>
