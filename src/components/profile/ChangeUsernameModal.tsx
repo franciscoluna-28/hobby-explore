@@ -14,7 +14,6 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { updateUserUsername } from "@/services/userServices";
-import { useAuth } from "@/store/useAuthStore";
 import { CaseUpper } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -27,8 +26,6 @@ type Props = {
 
 export function ChangeUserNameModal({ defaultUserUserName, userId }: Props) {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const userName = useAuth((state) => state.userUserName);
-  const setUserName = useAuth((state) => state.setUserUserName);
   const [isChangingUserName, setIsChangingUserName] = useState<boolean>(false);
   const [newUserName, setNewUserName] = useState<string>(defaultUserUserName);
 
@@ -98,7 +95,7 @@ export function ChangeUserNameModal({ defaultUserUserName, userId }: Props) {
               </Label>
               <Input
                 id="username"
-                defaultValue={userName ?? ""}
+                defaultValue={defaultUserUserName ?? newUserName}
                 onChange={(e) => setNewUserName(e.target.value)}
                 className="col-span-3"
               />

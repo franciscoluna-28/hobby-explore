@@ -14,7 +14,6 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { updateDisplayName } from "@/services/userServices";
-import { useAuth } from "@/store/useAuthStore";
 import { useState } from "react";
 import { toast } from "sonner";
 import { Card } from "../ui/card";
@@ -27,8 +26,6 @@ type Props = {
 
 export function ChangeDisplayNameModal({ defaultDisplayName, userId }: Props) {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const displayName = useAuth((state) => state.displayName);
-  const setDisplayName = useAuth((state) => state.setDisplayName);
   const [isChangingDisplayName, setIsChangingDisplayName] =
     useState<boolean>(false);
   const [newDisplayName, setNewDisplayName] =
@@ -51,7 +48,7 @@ export function ChangeDisplayNameModal({ defaultDisplayName, userId }: Props) {
 
     toast.success(result.message);
 
-    setDisplayName(newDisplayName);
+    setNewDisplayName(newDisplayName);
     setIsChangingDisplayName(false);
     handleClose();
   };
@@ -89,7 +86,7 @@ export function ChangeDisplayNameModal({ defaultDisplayName, userId }: Props) {
               </Label>
               <Input
                 id="displayName"
-                defaultValue={displayName ?? ""}
+                defaultValue={defaultDisplayName ?? newDisplayName}
                 onChange={(e) => setNewDisplayName(e.target.value)}
                 className="col-span-3"
               />
