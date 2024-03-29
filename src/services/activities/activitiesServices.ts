@@ -95,6 +95,8 @@ export async function handleAddActivity(
     // If the activity isn't saved, save it
     if (!savedActivity) {
       const res = await saveActivityByUserAndActivityId(activityId, userId);
+
+      // Revalidate the cache in the /explore page
       revalidatePath("/app/explore");
       return res;
     }

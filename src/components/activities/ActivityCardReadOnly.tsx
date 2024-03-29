@@ -1,12 +1,11 @@
 import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
-import Link from "next/link";
 import { handleDateConversion } from "@/lib/dates/dateConversion";
-import { SaveActivityButton } from "./SaveActivityButton";
-import { getSupabaseFileUrlFromRelativePath } from "@/services/supabase/storage";
+
 import { ActivityPreview } from "@/data/DefaultActivities";
 import { SaveActivityButtonReadOnly } from "./SaveActivityButtonReadOnly";
+import { RatingReadOnlyLandingPage } from "../rating/RatingLandingPage";
 
 type ActivityCardReadOnlyProps = {
   activity: ActivityPreview;
@@ -21,7 +20,7 @@ export function ActivityCardReadOnly({ activity }: ActivityCardReadOnlyProps) {
         </Badge>
 
         <div className="absolute bottom-4 left-4 z-50">
-       <SaveActivityButtonReadOnly activity={activity}/>
+          <SaveActivityButtonReadOnly activity={activity} />
         </div>
 
         <img
@@ -50,6 +49,12 @@ export function ActivityCardReadOnly({ activity }: ActivityCardReadOnlyProps) {
         <CardTitle className="leading-normal pt-2 text-mainBlack ">
           {activity.name}
         </CardTitle>
+        <div className="absolute right-4 bottom-4">
+          <RatingReadOnlyLandingPage
+            ratingAverage={activity.ratingAverage}
+            ratingCount={activity.ratingCount}
+          />
+        </div>
       </CardHeader>
     </Card>
   );
