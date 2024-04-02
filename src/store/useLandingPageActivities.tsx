@@ -1,15 +1,18 @@
 import { ActivityPreview } from "@/data/DefaultActivities";
 import { create } from "zustand";
 
-type State = {
-  activities: ActivityPreview[];
+type Actions = {
   addActivity: (activity: ActivityPreview) => void;
   addRating: (activityId: number, rating: number) => void;
   handleSaveActivity: (activity: ActivityPreview) => void;
   getSaveStatus: (activityId: number) => boolean;
 };
 
-const useActivityStore = create<State>((set) => ({
+type State = {
+  activities: ActivityPreview[];
+};
+
+const useActivityStore = create<State & Actions>((set, get) => ({
   activities: [],
   addActivity: (activity) =>
     set((state) => ({ activities: [...state.activities, activity] })),
@@ -29,11 +32,9 @@ const useActivityStore = create<State>((set) => ({
     })),
   handleSaveActivity: (activity) => {
     if (activity.activity_id === undefined) return;
-    const isActivitySaved = useActivityStore
-      .getState()
-      .activities.some(
-        (savedActivity) => savedActivity.activity_id === activity.activity_id
-      );
+    const isActivitySaved = get().activities.some(
+      (savedActivity) => savedActivity.activity_id === activity.activity_id
+    );
     if (isActivitySaved) {
       set((state) => ({
         activities: state.activities.filter(
@@ -45,9 +46,7 @@ const useActivityStore = create<State>((set) => ({
     set((state) => ({ activities: [...state.activities, activity] }));
   },
   getSaveStatus: (activityId) =>
-    useActivityStore
-      .getState()
-      .activities.some(
+    get().activities.some(
         (savedActivity) => savedActivity.activity_id === activityId
       ),
 }));

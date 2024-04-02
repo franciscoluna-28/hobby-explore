@@ -18,7 +18,6 @@ import {
   updateUserLocation,
   updateUserUsername,
 } from "@/services/userServices";
-import { useAuth } from "@/store/useAuthStore";
 import { revalidatePath } from "next/cache";
 import { useState } from "react";
 import { toast } from "sonner";

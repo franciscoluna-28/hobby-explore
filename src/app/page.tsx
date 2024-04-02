@@ -26,6 +26,34 @@ import { ActivityCardReadOnly } from "@/components/activities/ActivityCardReadOn
 export default function Home() {
   const randomIndex = Math.floor(Math.random() * DEFAULT_ACTIVITIES.length);
 
+  type Feature = {
+    title: string;
+    description: string;
+  };
+
+  type FAQ = {
+    title: string;
+    description: string;
+  };
+
+  const FEATURES: Feature[] = [
+    {
+      title: "Share who you are with the world",
+      description:
+        "Discover exciting pastimes, connect with fellow enthusiasts, and grow personally. Welcome to Hobby Explore, your gateway to a vibrant world of hobbies and innovation.",
+    },
+    {
+      title: "Discover your new passions",
+      description:
+        "Dive into a world of limitless discovery. At Hobby Explore, we invite you to explore the unexplored, to find new passions that ignite your soul and lead you to exciting adventures. Let curiosity be your guide and uncover what truly excites you!",
+    },
+    {
+      title: "Let the world find your hobbies",
+      description:
+        "Share your interests with the world and let your hobbies shine. At Hobby Explore, your community awaits to celebrate your passions and connect with fellow enthusiasts. Whether it's a lifelong pursuit or a newfound interest, showcase what makes you uniquely you!",
+    },
+  ];
+
   return (
     <>
       <Toaster />
@@ -90,9 +118,11 @@ export default function Home() {
             <Button className="mt-12">Try it for free</Button>
           </div>
           <div>
-          <div className="relative h-full" suppressHydrationWarning>
-      <ActivityCardReadOnly activity={DEFAULT_ACTIVITIES[randomIndex]} />
-    </div>
+            <div className="relative h-full" suppressHydrationWarning>
+              <ActivityCardReadOnly
+                activity={DEFAULT_ACTIVITIES[randomIndex]}
+              />
+            </div>
           </div>
         </section>
         <section className="w-full">

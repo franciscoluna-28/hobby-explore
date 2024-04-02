@@ -52,12 +52,9 @@ import {
 } from "@/constants/activities/form";
 import {
   MAXIMUM_ALLOWED_TIPS,
-  MAXIMUM_TIP_DESCRIPTION_VALUE,
 } from "@/constants/tips/globals";
 import { motion } from "framer-motion";
 import { AnimatePresence } from "framer-motion";
-import useTipStore from "@/store/useTipStore";
-import { readFileAsDataURL } from "@/lib/blob";
 import { MAXIMUM_ACCESSIBILITY_VALUE, MINIMUM_ACCESSIBILITY_VALUE } from "../../constants/activities/form";
 import { TipDropzone } from "./TipDropzone";
 import { TipForm } from "./TipForm";
@@ -174,8 +171,8 @@ export function CreateActivityModal() {
         onSubmit={form.handleSubmit(onSubmit, onError)}
         className="space-y-6 w-full flex justify-center flex-col items-center"
       >
-        <section className="w-full xl:flex xl:justify-center xl:m-auto max-w-[500px] xl:max-w-full">
-          <div className=" w-full max-w-[500px]">
+        <section className="w-full xl:flex xl:justify-center xl:m-auto max-w-[500px] xl:max-w-full gap-4">
+          <div className=" w-full max-w-[350px]">
             <h2 className="mb-6">Create Activity 🎹</h2>
             <FormField
               control={form.control}
@@ -354,7 +351,7 @@ export function CreateActivityModal() {
             />
           </div>
           <div className="w-full justify-center">
-            <ul className="flex flex-col xl:flex-row xl:flex-wrap gap-4 xl:ml-6 m-auto justify-center ">
+            <ul className="flex flex-col xl:flex-row xl:flex-wrap gap-4 m-auto justify-center ">
               <AnimatePresence mode="wait" initial={false}>
                 {fields.map((item, index) => (
                   <motion.li

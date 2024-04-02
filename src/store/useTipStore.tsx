@@ -48,8 +48,7 @@ const useTipStore = create<TipStore>((set, get) => ({
   getTipImageUrlById: (tipId): string => {
     const tip = get().tipImages.find((tip) => tip.tipId === tipId);
     return tip ? tip.imageUrl : "";
-  }
-  
+  },
 }));
 
 export default useTipStore;

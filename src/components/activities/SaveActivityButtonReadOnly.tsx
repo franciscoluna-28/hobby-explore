@@ -42,7 +42,6 @@ export function SaveActivityButtonReadOnly({ activity }: Props) {
     <Button
       onClick={() => {
         handleSaveActivity(activity);
-        console.log("hi");
       }}
       className="bg-white disabled:opacity-100 p-2 w-12 h-12 transition-all  hover:shadow-lg hover:border-mainGreen  hover:bg-white duration-200 rounded-full shadow-sm"
     >

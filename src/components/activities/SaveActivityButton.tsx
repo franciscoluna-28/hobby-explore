@@ -39,11 +39,7 @@ export function SaveActivityButton({ activityId }: Props) {
   return (
     <Button
       disabled={mutation.isPending}
-      onClick={() => (
-
-        mutation.mutate(activityId!)
-        
-      )}
+      onClick={() => mutation.mutate(activityId!)}
       className="bg-white disabled:opacity-100 p-2 w-12 h-12 transition-all  hover:shadow-lg hover:border-mainGreen  hover:bg-white duration-200 rounded-full shadow-sm"
     >
       {initialData ? <SavedIcon /> : <NotSavedIcon />}
