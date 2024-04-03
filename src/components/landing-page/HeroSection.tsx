@@ -1,12 +1,15 @@
 import { DEFAULT_ACTIVITIES } from "@/data/DefaultActivities";
 import { ActivityCardReadOnly } from "@/components/activities/ActivityCardReadOnly";
 import { Button } from "@/components/ui/button";
+import Decoration from "../../../public/line-1.svg"
+import Image from "next/image";
 
 export function HeroSection() {
   const randomIndex = Math.floor(Math.random() * DEFAULT_ACTIVITIES.length);
 
   return (
-    <section className="flex flex-col md:flex-row gap-16 mt-16 lg:justify-between w-full max-w-[1100px] px-8">
+    <section className="relative flex flex-col md:flex-row gap-16 mt-16 lg:justify-between w-full max-w-[1100px] px-8">
+      <Image className="absolute translate-x-[400px] rotate-12 translate-y-6" alt="Decoration" src={Decoration} width={200} height={200}></Image>
       <div className="lg:max-w-[600px] mr-auto">
         <h1 className="font-semibold text-6xl leading-normal text-mainBlack">
           Find your New Hobbies Today
