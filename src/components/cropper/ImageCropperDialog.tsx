@@ -13,10 +13,13 @@ import { useState } from "react";
 import Cropper, { Area } from "react-easy-crop";
 import { cropImage } from "@/lib/cropper/cropperLib";
 import { ButtonLoading } from "../ui/button-loading";
+import { Dispatch, SetStateAction} from "react"
+
 
 type ImageCropperDialogProps = {
   open: boolean;
   isLoading: boolean;
+  setIsOpen: Dispatch<SetStateAction<boolean>>
   image: string | null;
   onComplete: any;
   containerStyle: any;
@@ -35,6 +38,7 @@ export function ImageCropperDialog({
   isLoading,
   onComplete,
   containerStyle,
+  setIsOpen,
   ...props
 }: ImageCropperDialogProps) {
   const [crop, setCrop] = useState<CropAxis>({ x: 0, y: 0 });
@@ -49,7 +53,7 @@ export function ImageCropperDialog({
 
 
   return (
-    <Dialog open={open}>
+    <Dialog open={open} onOpenChange={setIsOpen}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>Edit profile</DialogTitle>

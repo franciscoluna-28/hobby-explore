@@ -181,6 +181,7 @@ export function EditPictures({ userId }: Props) {
           background: "#333",
         }}
         open={cropperModalOpen}
+        setIsOpen={setCropperModalOpen}
         image={image ? URL.createObjectURL(image) : null}
         onComplete={(imagePromise: Promise<string>) => {
           imagePromise.then((image: string) => {
