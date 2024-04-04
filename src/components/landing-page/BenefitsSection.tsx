@@ -6,6 +6,7 @@ export function BenefitsSection() {
       <h2 className="font-semibold text-5xl text-left my-16 max-w-[500px] leading-normal">
         How Hobby Explore Will Help You
       </h2>
+      <div className="grid lg:grid-cols-2">
       <article className="flex gap-8 w-full flex-col lg:flex-row">
         <div className="w-full">
           <ul className="flex flex-col gap-8 lg:max-w-[500px]">
@@ -55,6 +56,15 @@ export function BenefitsSection() {
           </ul>
         </div>
       </article>
+      <img
+            className="h-72 object-cover w-full"
+            alt="test"
+            src={"/feed.png"}
+          />
+
+      </div>
+
+      
     </section>
   );
 }
