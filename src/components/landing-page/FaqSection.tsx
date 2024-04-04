@@ -34,7 +34,7 @@ const FAQ: FaqElement[] = [
     unique experience.`,
   },
   {
-    title: `How can I get started with Hobby Explore?`,
+    title: "How can I get started with Hobby Explore?",
     description: `Visit our website, create an account, and start exploring. Whether
     you're a seasoned hobbyist or a newcomer, Hobby Explore
     welcomes you with open arms. Sign up effortlessly using your Google
@@ -66,14 +66,16 @@ export function FaqSection() {
       <Accordion type="single" collapsible className="w-full">
         {FAQ.map((element, index) => {
           return (
-            <AccordionItem value={`item-${index + 1}`}>
-              <AccordionTrigger className=" text-[18px] text-left">
+            <AccordionItem key={`item-${index + 1}`} value={`item-${index + 1}`}>
+              <AccordionTrigger className="text-[18px] text-left">
                 <div className="flex gap-2 items-center">
                   <HelpCircle className="w-4 h-4 text-mainBlack" />{" "}
+                  {/* eslint-disable-next-line react/no-unescaped-entities */}
                   {element.title}
                 </div>
               </AccordionTrigger>
               <AccordionContent className="text-darkGray">
+                           {/* eslint-disable-next-line react/no-unescaped-entities */}
                 {element.description}
               </AccordionContent>
             </AccordionItem>

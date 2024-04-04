@@ -25,8 +25,9 @@ type Props = {
   userId: string;
 };
 
-export function EditPictures({ userId }: Props) {
 
+// TODO: DON'T OPEN THE DIALOG WHEN THE USER UPLOAD AN INVALID IMAGE
+export function EditPictures({ userId }: Props) {
   const {
     isUploadingProfilePicture,
     isUploadingBannerPicture,
