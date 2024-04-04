@@ -1,8 +1,5 @@
 "use client";
 
-import Image from "next/image";
-import Decoration from "../../../public/line-2.svg";
-
 export function FeaturesSection() {
   return (
     // TODO: CREATE REUSABLE COMPONENTS ONCE THE MOCKUP IS DONE
@@ -54,7 +51,7 @@ export function FeaturesSection() {
             <p className="text-[#1E1E1E]/80 mt-4 text-[18px]">
               Share your interests with the world and let your hobbies shine. At
               Hobby Explore, your community awaits to celebrate your passions
-              and connect with fellow enthusiasts. Whether it's a lifelong
+              and connect with fellow enthusiasts. Whether it&apos;s a lifelong
               pursuit or a newfound interest, showcase what makes you uniquely
               you!
             </p>
