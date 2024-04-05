@@ -50,6 +50,7 @@ const YOUR_NAME_IN_YOUR_ACTIVITY_DISPLAY_NAME = "You";
 type Props = {
   activity: ActivityQueryResponse;
   userId?: Tables<"users">["user_id"];
+  shouldRenderOptionsMenu?: boolean;
 };
 
 const isCreatedByCurrentUser = (
@@ -76,7 +77,7 @@ const renderCurrentUserString = (
 
 // TODO: USERS AREN'T ABLE TO SAVE THEIR OWN ACTIVITIES. ONLY ACTIVITIES FROM OTHER USERS. THAT'S WHY THE ACTIVITIES THEY HAVE CREATED HAVE A SPECIFIC UI SECTION. ALSO, AVOID USERS FROM SAVING THEIR OWN ACTIVITIES SERVER SIDE
 // TODO: ADD BLUR EFFECT TO IMAGES WHEN THEY'RE LOADING
-export function ActivityCard({ activity, userId }: Props) {
+export function ActivityCard({ activity, userId, shouldRenderOptionsMenu = true }: Props) {
 
   return (
     <li>
@@ -148,7 +149,7 @@ export function ActivityCard({ activity, userId }: Props) {
             <div className="absolute right-4 bottom-4">
               <RatingReadOnly activityId={activity.activity_id} />
             </div>
-            {isCreatedByCurrentUser(activity.users?.user_id ?? "", userId) ? (
+            {isCreatedByCurrentUser(activity.users?.user_id ?? "", userId) && shouldRenderOptionsMenu ? (
               <div className="absolute left-4 bottom-4">
                 <DeleteActivityDialog activityId={activity.activity_id}>
                   <DropdownMenu>

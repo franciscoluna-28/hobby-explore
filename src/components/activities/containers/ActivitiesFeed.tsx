@@ -45,6 +45,7 @@ export function ActivitiesFeed({ userId }: ActivitiesFeedProps) {
         {activities.map((activity) => (
           <ActivityMotion key={activity.activity_id}>
             <ActivityCard
+              shouldRenderOptionsMenu={false}
               key={activity.activity_id}
               activity={activity}
               userId={userId}
