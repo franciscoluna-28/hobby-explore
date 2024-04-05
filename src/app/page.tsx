@@ -16,7 +16,7 @@ export default function Home() {
   return (
     <>
       <Toaster />
-      <header className="w-full h-20 bg-white border-b lg:flex justify-center hidden">
+      <header className="w-full h-20 sticky top-0 z-[9999] bg-white border-b lg:flex justify-center hidden">
         <div className="max-w-[1100px] w-full flex px-8">
           <div className="flex items-center">
             <Image
