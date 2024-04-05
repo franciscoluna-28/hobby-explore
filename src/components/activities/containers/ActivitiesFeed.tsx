@@ -9,7 +9,6 @@ import { ActivityFeedSkeletons } from "@/components/skeletons/containers/Activit
 import { NotFoundActivities } from "../NotFoundActivities";
 import { ActivitiesLayout } from "./ActivitiesLayout";
 import { GLOBAL_FIRST_PAGINATION_PAGE } from "@/constants/pagination/globals";
-import { RatingReadOnly } from "@/components/rating/RatingOnlyRead";
 
 type ActivitiesFeedProps = {
   userId: Tables<"users">["user_id"];
