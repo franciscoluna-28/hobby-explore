@@ -32,7 +32,7 @@ export function LoginWithGoogle({ supabase }: Props) {
     }
   };
   return (
-    <Button onClick={loginWithGoogle} variant="outline" className="w-full">
+    <Button type="button" onClick={loginWithGoogle} variant="outline" className="w-full">
     Continue with Google
   </Button>
   );
