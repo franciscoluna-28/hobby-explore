@@ -49,11 +49,13 @@ export default function Home() {
               </li>
             </ul>
           </div>
-          <ul className="gap-8 flex items-center min-w-[150px]">
+          <ul className="gap-8 flex items-center">
             <li>
-              <Link className="text-sm w-full font-medium" href="/auth/login">
-                Login
-              </Link>
+              <Button asChild variant="ghost">
+                <Link className="text-sm w-full font-medium" href="/auth/login">
+                  Login
+                </Link>
+              </Button>
             </li>
             <Button asChild>
               <Link className="" href="/auth/register">
@@ -98,17 +100,26 @@ export default function Home() {
                 <h5 className="text-white font-semibold">Links</h5>
                 <ul>
                   <li className="mt-4">
-                    <Link className="text-footerGray text-sm" href="#">
+                    <Link
+                      className="text-footerGray text-sm hover:text-gray duration-100"
+                      href="#"
+                    >
                       About
                     </Link>
                   </li>
                   <li className="mt-4">
-                    <Link className="text-footerGray text-sm" href="#">
+                    <Link
+                      className="text-footerGray text-sm hover:text-gray duration-100"
+                      href="#"
+                    >
                       Guides
                     </Link>
                   </li>
                   <li className="mt-4">
-                    <Link className="text-footerGray text-sm" href="#">
+                    <Link
+                      className="text-footerGray text-sm hover:text-gray duration-100"
+                      href="#"
+                    >
                       Terms and Conditions
                     </Link>
                   </li>
@@ -118,17 +129,26 @@ export default function Home() {
                 <h5 className="text-white font-semibold">About the Creator</h5>
                 <ul>
                   <li className="mt-4">
-                    <Link className="text-footerGray text-sm" href="#">
+                    <Link
+                      className="text-footerGray text-sm hover:text-gray duration-100"
+                      href="#"
+                    >
                       Twitter
                     </Link>
                   </li>
                   <li className="mt-4">
-                    <Link className="text-footerGray text-sm" href="#">
+                    <Link
+                      className="text-footerGray text-sm hover:text-gray duration-100"
+                      href="#"
+                    >
                       LinkedIn
                     </Link>
                   </li>
                   <li className="mt-4">
-                    <Link className="text-footerGray text-sm" href="#">
+                    <Link
+                      className="text-footerGray text-sm hover:text-gray duration-100"
+                      href="#"
+                    >
                       Portfolio
                     </Link>
                   </li>
@@ -138,12 +158,18 @@ export default function Home() {
                 <h5 className="text-white font-semibold">Social Media</h5>
                 <ul>
                   <li className="mt-4">
-                    <Link className="text-footerGray text-sm" href="#">
+                    <Link
+                      className="text-footerGray text-sm hover:text-gray duration-100"
+                      href="#"
+                    >
                       Twitter
                     </Link>
                   </li>
                   <li className="mt-4">
-                    <Link className="text-footerGray text-sm" href="#">
+                    <Link
+                      className="text-footerGray text-sm hover:text-gray duration-100"
+                      href="#"
+                    >
                       Instagram
                     </Link>
                   </li>
