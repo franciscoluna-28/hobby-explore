@@ -32,8 +32,8 @@ export function LoginWithGoogle({ supabase }: Props) {
     }
   };
   return (
-    <OauthCard>
-      <Button className="w-full m-auto h-full hover:bg-transparent bg-transparent" onClick={loginWithGoogle}><img className="w-6 h-6" src="/google.svg"/></Button>
-    </OauthCard>
+    <Button onClick={loginWithGoogle} variant="outline" className="w-full">
+    Continue with Google
+  </Button>
   );
 }

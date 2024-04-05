@@ -18,7 +18,7 @@ export default async function AuthLayout({
   return (
     <>
       <Toaster richColors closeButton />
-      <main className="flex flex-col max-w-[600px] items-center w-full m-auto h-screen justify-center">
+      <main className="flex flex-col items-center w-full m-auto h-screen justify-center">
         {children}
       </main>
     </>
