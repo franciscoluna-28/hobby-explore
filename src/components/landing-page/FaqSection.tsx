@@ -5,11 +5,15 @@ import {
   AccordionTrigger,
 } from "../ui/accordion";
 import { HelpCircle } from "lucide-react";
+import Image from "next/image";
+import Decoration from "../../../public/line-3.svg"
 
 type FaqElement = {
   title: string;
   description: string;
 };
+
+
 
 const FAQ: FaqElement[] = [
   {
@@ -59,14 +63,18 @@ const FAQ: FaqElement[] = [
 
 export function FaqSection() {
   return (
-    <section className="max-w-[1100px] px-8 m-auto mt-16 w-full">
+    <section className="max-w-[1100px] px-8 m-auto mt-16 lg:mt-32 w-full relative">
+      <Image className="absolute translate-x-[400px] mt-12 -rotate-12 opacity-0 lg:opacity-100" alt="Decoration" src={Decoration} width={200} height={200}></Image>
       <h2 className="font-semibold text-5xl text-left my-16 max-w-[500px] leading-normal">
         Frequently Asked Questions
       </h2>
       <Accordion type="single" collapsible className="w-full">
         {FAQ.map((element, index) => {
           return (
-            <AccordionItem key={`item-${index + 1}`} value={`item-${index + 1}`}>
+            <AccordionItem
+              key={`item-${index + 1}`}
+              value={`item-${index + 1}`}
+            >
               <AccordionTrigger className="text-[18px] text-left">
                 <div className="flex gap-2 items-center">
                   <HelpCircle className="w-4 h-4 text-mainBlack" />{" "}
@@ -75,7 +83,7 @@ export function FaqSection() {
                 </div>
               </AccordionTrigger>
               <AccordionContent className="text-darkGray">
-                           {/* eslint-disable-next-line react/no-unescaped-entities */}
+                {/* eslint-disable-next-line react/no-unescaped-entities */}
                 {element.description}
               </AccordionContent>
             </AccordionItem>
