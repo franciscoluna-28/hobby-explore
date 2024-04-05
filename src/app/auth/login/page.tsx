@@ -58,14 +58,14 @@ export default function Login() {
   }
 
   return (
-    <article className="grid grid-cols-2 w-full grid-flow-row">
-      <div className="min-h-full flex items-center relative">
+    <article className="grid lg:grid-cols-2 w-full grid-flow-row">
+      <div className="min-h-full hidden lg:flex items-center relative">
         <Image
           alt="test"
           src="/login.png"
           width="1920"
           height="1080"
-          className=" aspect-square"
+          className="aspect-square max-h-[700px] bg-cover object-cover"
         ></Image>
         <div className="absolute bottom-16 left-16 bg-ratingYellow p-4 rounded-[16px] shadow-lg">
         <span className="text-mainBlack font-semibold">Tip #1</span>
@@ -74,7 +74,7 @@ export default function Login() {
       </div>
       <div className="items-center flex justify-center h-screen flex-col">
         <Form {...form}>
-          <h1 className="mt-12 font-semibold text-3xl text-mainBlack my-6 text-center max-w-[300px] leading-normal">
+          <h1 className="font-semibold text-3xl text-mainBlack my-6 text-center max-w-[300px] leading-normal">
             Share your Unique Hobbies
           </h1>
           <div></div>
@@ -113,7 +113,7 @@ export default function Login() {
               Login
             </Button>
             <LoginWithGoogle supabase={supabase} />
-            <div className="text-sm text-center">
+            <div className="text-sm text-center text-darkGray">
               Don&apos;t have an account?{" "}
               <Link
                 className="text-sm font-medium underline"
