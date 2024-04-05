@@ -19,7 +19,8 @@ import { z } from "zod";
 import { EmailPasswordAuthSchema } from "@/schemas/EmaiPasswordAuthSchema";
 import Link from "next/link";
 import { toast } from "sonner";
-import { redirect, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 export default function Register() {
   const router = useRouter();
@@ -54,51 +55,75 @@ export default function Register() {
   }
 
   return (
-    <Form {...form}>
-      <h1 className="font-semibold text-3xl text-mainBlack my-6 text-center max-w-[300px] leading-normal">
-        Share your Unique Hobbies
-      </h1>
-      <div>
-        <LoginWithGoogle supabase={supabase}></LoginWithGoogle>
-      </div>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-        <FormField
-          control={form.control}
-          name="email"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Email</FormLabel>
-              <FormControl>
-                <Input placeholder="user@gmail.com" {...field} />
-              </FormControl>
-              <FormDescription>
-                The email that&apos;ll be used for your registration.
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="password"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Password</FormLabel>
-              <FormControl>
-                <Input placeholder="●●●●●●●●●" {...field} />
-              </FormControl>
-
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <Button type="submit">Register</Button>
-        <div>
-          <Link className="text-sm font-medium" href="/auth/login">
-            Login
-          </Link>
+    <article className="grid lg:grid-cols-2 w-full grid-flow-row">
+      <div className="min-h-full hidden lg:flex items-center relative">
+        <Image
+          alt="test"
+          src="/login.png"
+          width="1920"
+          height="1080"
+          className="aspect-square max-h-[700px] bg-cover object-cover"
+        ></Image>
+        <div className="absolute bottom-16 left-16 bg-ratingYellow p-4 rounded-[16px] shadow-lg">
+          <span className="text-mainBlack font-semibold">Tip #1</span>
+          <p className="text-sm mt-2 text-mainBlack">
+            Still your body when you enter the water, and relax your hands and
+            legs
+          </p>
         </div>
-      </form>
-    </Form>
+      </div>
+      <div className="items-center flex justify-center h-screen flex-col w-full">
+        <Form {...form}>
+          <h1 className="font-semibold text-3xl text-mainBlack my-6 text-center max-w-[300px] leading-normal">
+            Share your Unique Hobbies
+          </h1>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Email</FormLabel>
+                  <FormControl>
+                    <Input placeholder="user@gmail.com" {...field} />
+                  </FormControl>
+                  <FormDescription>
+                    The email you&apos;ve created your account with.
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="password"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Password</FormLabel>
+                  <FormControl>
+                    <Input placeholder="●●●●●●●●●" {...field} />
+                  </FormControl>
+
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <Button className="w-full" type="submit">
+              Sign up
+            </Button>
+            <LoginWithGoogle supabase={supabase} />
+            <div className="text-sm text-center text-darkGray">
+              Already have an account?{" "}
+              <Link
+                className="text-sm font-medium underline"
+                href="/auth/login"
+              >
+                Login
+              </Link>
+            </div>
+          </form>
+        </Form>
+      </div>
+    </article>
   );
 }
