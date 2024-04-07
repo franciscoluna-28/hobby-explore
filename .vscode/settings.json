@@ -1,6 +1,7 @@
 {
     "cSpell.words": [
         "Postgrest",
+        "supabase",
         "tailwindcss"
     ],
     "typescript.tsdk": "node_modules\\typescript\\lib"

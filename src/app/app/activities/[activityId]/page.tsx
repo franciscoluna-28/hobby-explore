@@ -24,6 +24,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { Metadata } from "next";
 
 // TODO: ISOLATE THE BREADCRUMB AND CREATE ITS OWN COMPONENT
 function Component({ activityName }: { activityName?: string }) {
@@ -31,10 +32,7 @@ function Component({ activityName }: { activityName?: string }) {
     <nav aria-label="Breadcrumb" className="py-4 mr-auto flex items-center">
       <ol className="flex flex-wrap gap-2 text-sm text-gray-500 dark:text-gray-400 items-center">
         <li>
-          <Link
-            className="text-slate-500"
-            href="/app/explore"
-          >
+          <Link className="text-slate-500" href="/app/explore">
             Home
           </Link>
         </li>
@@ -50,6 +48,39 @@ function Component({ activityName }: { activityName?: string }) {
       </ol>
     </nav>
   );
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: {
+    activityId: string;
+  };
+}): Promise<Metadata> {
+  const activityData = await getActivityById(params.activityId);
+
+  if (activityData === null) {
+    return {
+      title: "Unknown Activity",
+      description: "Unknown"
+    };
+  }
+
+  // Now we're certain that response is of type ActivityQueryResponse[]
+  const activity = activityData as ActivityQueryResponse[];
+
+  return {
+    title: activity[0].name,
+    description: activity[0].description,
+    openGraph: {
+      images: [
+        getSupabaseFileUrlFromRelativePath(
+          activity[0].tips[0].display_image_url ?? "",
+          "tips"
+        ),
+      ],
+    },
+  };
 }
 
 export default async function ActivityPage({
@@ -95,7 +126,10 @@ export default async function ActivityPage({
         </Avatar>
         <div className="">
           <p className="text-darkGray font-medium text-sm">
-            {activity[0].users?.displayName && activity[0].users?.displayName !== "" ? activity[0].users?.displayName : "User"}
+            {activity[0].users?.displayName &&
+            activity[0].users?.displayName !== ""
+              ? activity[0].users?.displayName
+              : "User"}
           </p>
           <p className="text-gray text-sm">
             {handleDateConversion(activity[0].created_at)}
@@ -122,7 +156,7 @@ export default async function ActivityPage({
             <CardHeader>
               <CardTitle>Accessibility</CardTitle>
               <CardDescription>
-              Learn about the cost of the activity here.
+                Learn about the cost of the activity here.
               </CardDescription>
             </CardHeader>
             <CardContent className="!m-0 !pl-2">
@@ -139,8 +173,7 @@ export default async function ActivityPage({
             <CardHeader>
               <CardTitle>Participants</CardTitle>
               <CardDescription>
-                How many participants are in the
-                activity.
+                How many participants are in the activity.
               </CardDescription>
             </CardHeader>
             <CardContent className="!m-0 !pl-2">
