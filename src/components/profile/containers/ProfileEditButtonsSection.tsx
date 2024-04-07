@@ -35,7 +35,7 @@ export function ProfileEditButtonsSection({
               exit={{ opacity: 0 }}
               className="grid gap-4 sm:flex"
             >
-              <EditDescription key="editDescription" />
+              <EditDescription key="editDescription" userId={userId} />
               <EditPictures key="editPicture" userId={userId} />
             </motion.div>
           </>

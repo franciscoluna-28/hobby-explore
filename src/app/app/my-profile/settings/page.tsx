@@ -8,9 +8,41 @@ import { ChangeDisplayNameModal } from "@/components/profile/ChangeDisplayNameMo
 import ThemeSwitch from "@/components/ui/theme-switcher";
 import { ChangeHomeModal } from "@/components/profile/ChangeHomeModal";
 import { ChevronLeft } from "lucide-react";
+import { ActivityMotion } from "@/components/motion/ActivityMotion";
 
 export default async function UserProfileSettings() {
   const user = await getCurrentUser();
+
+  if (!user) {
+    return (
+      <ActivityMotion>
+        <div className="m-auto flex justify-center flex-col items-center my-16 gap-3 max-w-[1000px]">
+          <h4 className="font-bold text-mainBlack my-3 text-4xl">
+            Unauthorized
+          </h4>
+          <div className="flex flex-col">
+            <span className="text-slate-500 block text-center">
+              You need to create an account before customizing your profile
+              settings!
+            </span>
+
+            <div className="flex gap-4 items-center m-auto mt-4">
+            <Button className="my-2" asChild>
+              <Link className="" href={"/register"}>
+                Create a new account
+              </Link>
+            </Button>
+            <Button variant="ghost" className="my-2" asChild>
+              <Link className="text-mainGreen font-medium" href={"/app/explore"}>
+                Go to feed
+              </Link>
+            </Button>
+            </div>
+          </div>
+        </div>
+      </ActivityMotion>
+    );
+  }
 
   return (
     <div className="w-full">

@@ -6,7 +6,6 @@ import {
   ActivityQueryResponse,
   SavedActivitiesFromOtherUsersQueryResponse,
   getCurrentUserSavedActivities,
-  getUserActivitiesByUserId,
 } from "@/services/activities/getActivities";
 import { getCurrentUser, getCurrentUserId } from "@/services/auth";
 
@@ -15,6 +14,9 @@ export default async function SavedActivities() {
   const currentUserId = await getCurrentUserId();
   const EMPTY_ACTIVITY_ARRAY_LENGTH: number = 0;
 
+  if (!currentUserId) {
+    return <NoExistingSavedActivities isNotAuthenticatedUser />;
+  }
 
   // TODO: REFACTOR THIS TO ANOTHER COMPONENT
   if (savedActivities && "error" in savedActivities) {

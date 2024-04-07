@@ -20,7 +20,7 @@ export function HomeCard({ location }: HomeCardProps) {
       </CardHeader>
       <CardContent className="!py-1 !px-2">
         <p className="text-slate-600 text-sm">
-          {location !== "" && location !== null ? location : "Unknown"}
+        {location !== "" && location ? location : "Unknown"}
         </p>
       </CardContent>
     </Card>

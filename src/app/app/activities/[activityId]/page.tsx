@@ -19,6 +19,7 @@ import {
 } from "@/components/ui/card";
 import { Metadata } from "next";
 import { ActivityBreadCrumb } from "@/components/layout/ActivityBreadcrumb";
+import { getCurrentUserId } from "@/services/auth";
 
 export async function generateMetadata({
   params,
@@ -32,7 +33,7 @@ export async function generateMetadata({
   if (activityData === null) {
     return {
       title: "Unknown Activity",
-      description: "Unknown"
+      description: "Unknown",
     };
   }
 
@@ -61,6 +62,7 @@ export default async function ActivityPage({
   };
 }) {
   const activityData = await getActivityById(params.activityId);
+  const userId = await getCurrentUserId();
 
   // TODO: CREATE CUSTOM COMPONENT
   // First case: activities is null
@@ -161,7 +163,13 @@ export default async function ActivityPage({
               </CardDescription>
             </CardHeader>
             <CardContent className="">
-              <RatingContainer activityId={activity[0].activity_id} />
+              {userId ? (
+                <RatingContainer activityId={activity[0].activity_id} />
+              ) : (
+                <span className="text-sm font-medium">
+                  You cannot rate as a guest.
+                </span>
+              )}
             </CardContent>
           </Card>
         </div>

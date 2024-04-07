@@ -19,7 +19,6 @@ const RatingContainer = ({ activityId }: Props) => {
     STARTING_RATING_DEFAULT_VALUE
   );
 
-  console.log(initialData);
 
   const onMouseEnter = (index: number) => {
     setHoverRating(index);

@@ -126,7 +126,7 @@ export function EditPictures({ userId }: Props) {
     <>
       <Dialog open={openModal} onOpenChange={setOpenModal}>
         <DialogTrigger asChild>
-          <Button variant="icon">
+          <Button disabled={!userId} variant="icon">
             <MdOutlineCameraAlt /> Change Pictures
           </Button>
         </DialogTrigger>

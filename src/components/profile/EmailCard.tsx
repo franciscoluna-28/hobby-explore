@@ -7,6 +7,8 @@ type EmailCardProps = {
 };
 
 export function EmailCard({ email }: EmailCardProps) {
+  console.log(email);
+
   return (
     <Card className="p-2 rounded-[16px] min-w-[342px]">
       <CardHeader className="!px-2 !py-1">
@@ -16,7 +18,9 @@ export function EmailCard({ email }: EmailCardProps) {
         </CardTitle>
       </CardHeader>
       <CardContent className="!py-1 !px-2">
-        <p className="text-slate-600 text-sm">{email ?? "example@gmail.com"}</p>
+        <p className="text-slate-600 text-sm">
+          {email !== "" && email ? email : "guestuser@gmail.com"}
+        </p>
       </CardContent>
     </Card>
   );
