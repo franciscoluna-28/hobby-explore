@@ -44,8 +44,7 @@ export function DeleteActivityDialog({
         <DialogHeader>
           <DialogTitle>Are you absolutely sure?</DialogTitle>
           <DialogDescription>
-            This action cannot be undone. This will permanently delete your
-            account and remove your data from our servers.
+            This action cannot be undone and your activity will be deleted from the servers. 
           </DialogDescription>
         </DialogHeader>
         <DialogFooter>
@@ -55,7 +54,7 @@ export function DeleteActivityDialog({
             variant="destructive"
             type="submit"
           >
-            Save changes
+            Yes, delete activity
           </ButtonLoading>
         </DialogFooter>
       </DialogContent>

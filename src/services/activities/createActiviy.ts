@@ -11,6 +11,7 @@ import { ServerImageFileSchema } from "@/schemas/files/ImageFileSchema";
 import { ActivityServerSideSchemaValidation } from "@/schemas/activities/ActivitySchema";
 import { TipServerSideSchema } from "@/schemas/tips/TipSchema";
 import { getCurrentUserId } from "../auth";
+import { revalidatePath } from "next/cache";
 
 const supabase = createServerComponentClient<Database>({ cookies });
 
@@ -47,11 +48,11 @@ async function generateImageUrl(
     return imageToUploadUrl;
   } catch (error) {
     if (error instanceof ZodError) {
-      console.log(error);
+      console.error(error);
       return generateErrorResult(error.message);
     }
 
-    console.log(error);
+    console.error(error);
     return generateErrorResult("There was an error uploading the tip image...");
   }
 }
@@ -160,7 +161,6 @@ function extractFormData(
       tips,
     });
 
-    console.log(parsedActivity);
 
     return { ...parsedActivity };
   } catch (error) {
@@ -264,7 +264,6 @@ async function insertActivityIntoDatabase(
 export async function createNewActivity(formData: FormData) {
   const data = extractFormData(formData);
 
-  console.log(data);
 
   if ("tips" in data) {
     const userId = await getCurrentUserId();
@@ -286,6 +285,9 @@ export async function createNewActivity(formData: FormData) {
       if ("message" in tipsResponse && tipsResponse.success !== true) {
         return generateErrorResult(tipsResponse.error);
       }
+
+      // Make sure to add the new activity to the explore path
+      revalidatePath("/app/explore");
 
       return {
         success: true,
