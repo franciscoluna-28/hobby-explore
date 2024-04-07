@@ -7,48 +7,18 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { getCategoryNameById } from "@/services/activities/categories";
 import { handleDateConversion } from "@/lib/dates/dateConversion";
-import { TipCarouselCard } from "@/components/tips/TipCarouselCard";
-import Link from "next/link";
-import { ChevronRight } from "lucide-react";
 import { getSupabaseFileUrlFromRelativePath } from "@/services/supabase/storage";
-import { Swiper, SwiperSlide } from "swiper/react";
 import TipCarousel from "@/components/tips/TipCarousel";
 import RatingContainer from "@/components/rating/RatingContainer";
-import { Coins } from "lucide-react";
-import { UsersRound } from "lucide-react";
 import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
 import { Metadata } from "next";
-
-// TODO: ISOLATE THE BREADCRUMB AND CREATE ITS OWN COMPONENT
-function Component({ activityName }: { activityName?: string }) {
-  return (
-    <nav aria-label="Breadcrumb" className="py-4 mr-auto flex items-center">
-      <ol className="flex flex-wrap gap-2 text-sm text-gray-500 dark:text-gray-400 items-center">
-        <li>
-          <Link className="text-slate-500" href="/app/explore">
-            Home
-          </Link>
-        </li>
-        <li>
-          <ChevronRight className="w-4 h-4" />
-        </li>
-        <li
-          aria-current="page"
-          className="text-mainGreen font-medium dark:text-gray-50"
-        >
-          {activityName}
-        </li>
-      </ol>
-    </nav>
-  );
-}
+import { ActivityBreadCrumb } from "@/components/layout/ActivityBreadcrumb";
 
 export async function generateMetadata({
   params,
@@ -112,7 +82,7 @@ export default async function ActivityPage({
   // TODO: WRITE UNIT TEST WITHOUT USING THE API TO TEST DIFFERENT BEHAVIORS
   return (
     <section className="w-full m-auto flex flex-col h-full max-w-[900px] ">
-      <Component activityName={activity[0].name ?? ""} />
+      <ActivityBreadCrumb activityName={activity[0].name ?? ""} />
       <div className="flex items-center gap-2">
         <Avatar>
           <AvatarImage

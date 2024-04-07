@@ -1,6 +1,6 @@
 import { Header } from "@/components/layout/Header";
 import "../globals.css";
-import { getCurrentUser, handleProtectedRoute } from "@/services/auth";
+import { getCurrentUser } from "@/services/auth";
 import { Toaster } from "sonner";
 import ErrorBoundary from "@/components/layout/ErrorBoundary";
 import { MobileMenu } from "@/components/layout/MobileMenu";
@@ -11,7 +11,6 @@ export default async function AppLayout({
   children: React.ReactNode;
 }) {
   const user = await getCurrentUser();
-  await handleProtectedRoute();
 
   return (
     <>
