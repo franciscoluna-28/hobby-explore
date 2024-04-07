@@ -33,7 +33,7 @@ export function NoExistingSavedActivities({
               activities!
             </span>
             <Button variant="ghost" className="my-2" asChild>
-              <Link className="text-mainGreen font-medium" href={"/register"}>
+              <Link className="text-mainGreen font-medium" href={"auth/register"}>
                 Create a new account
               </Link>
             </Button>
