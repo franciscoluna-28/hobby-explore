@@ -14,6 +14,9 @@ export default async function MyActivities() {
     currentUser?.user_id
   );
 
+  if (!currentUser) {
+    return <NoExistingSavedActivities isNotAuthenticatedUser />;
+  }
 
   // TODO: ADD EMPTY ACTIVITIES COMPONENT HERE
   if (!currentUserActivities) {
@@ -25,8 +28,11 @@ export default async function MyActivities() {
     return <div>Auth or system error...</div>;
   }
 
-  if(Array.isArray(currentUserActivities) && currentUserActivities.length === 0) {
-    return <NoExistingSavedActivities shouldBeYourOwnActivities/>
+  if (
+    Array.isArray(currentUserActivities) &&
+    currentUserActivities.length === 0
+  ) {
+    return <NoExistingSavedActivities shouldBeYourOwnActivities />;
   }
 
   const activities = currentUserActivities as ActivityQueryResponse[];
@@ -36,7 +42,11 @@ export default async function MyActivities() {
       <ul className="flex flex-wrap gap-6 justify-center">
         {activities.map((activity) => (
           <ActivityMotion key={activity.activity_id}>
-            <ActivityCard key={activity.activity_id} activity={activity} userId={currentUser?.user_id ?? ""} />
+            <ActivityCard
+              key={activity.activity_id}
+              activity={activity}
+              userId={currentUser?.user_id ?? ""}
+            />
           </ActivityMotion>
         ))}
       </ul>

@@ -89,7 +89,7 @@ export function ActivityCard({ activity, userId, shouldRenderOptionsMenu = true 
 
           <div className="absolute bottom-4 left-4 z-50">
             {!isCreatedByCurrentUser(activity.users?.user_id ?? "", userId) ? (
-              <SaveActivityButton activityId={activity.activity_id} />
+              <SaveActivityButton userId={userId} activityId={activity.activity_id} />
             ) : null}
           </div>
 
