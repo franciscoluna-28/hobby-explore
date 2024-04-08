@@ -32,14 +32,15 @@ import {
 import { Home, SunMoon } from "lucide-react";
 
 type Props = {
-  defaultDisplayName: string;
+  defaultHome: string;
   userId: string;
 };
 
-export function ChangeHomeModal({ defaultDisplayName, userId }: Props) {
+export function ChangeHomeModal({ defaultHome, userId }: Props) {
+
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isChangingHome, setIsChangingHome] = useState<boolean>(false);
-  const [newHome, setNewHome] = useState<string>(defaultDisplayName);
+  const [newHome, setNewHome] = useState<string>(defaultHome);
 
   const handleClose = () => {
     setIsModalOpen(false);
@@ -93,7 +94,7 @@ export function ChangeHomeModal({ defaultDisplayName, userId }: Props) {
               </Label>
               <Input
                 id="location"
-                defaultValue={""}
+                defaultValue={defaultHome ?? ""}
                 onChange={(e) => setNewHome(e.target.value)}
                 className="col-span-3"
               />

@@ -27,16 +27,19 @@ export default async function UserProfileSettings() {
             </span>
 
             <div className="flex gap-4 items-center m-auto mt-4">
-            <Button className="my-2" asChild>
-              <Link className="" href={"/register"}>
-                Create a new account
-              </Link>
-            </Button>
-            <Button variant="ghost" className="my-2" asChild>
-              <Link className="text-mainGreen font-medium" href={"/app/explore"}>
-                Go to feed
-              </Link>
-            </Button>
+              <Button className="my-2" asChild>
+                <Link className="" href={"/register"}>
+                  Create a new account
+                </Link>
+              </Button>
+              <Button variant="ghost" className="my-2" asChild>
+                <Link
+                  className="text-mainGreen font-medium"
+                  href={"/app/explore"}
+                >
+                  Go to feed
+                </Link>
+              </Button>
             </div>
           </div>
         </div>
@@ -63,11 +66,11 @@ export default async function UserProfileSettings() {
         />
 
         <ChangeHomeModal
-          defaultDisplayName={user?.location ?? ""}
+          defaultHome={user?.location ?? ""}
           userId={user?.user_id ?? ""}
         />
 
-        <ThemeSwitch />
+   {/*      <ThemeSwitch /> */}
 
         <LogoutModal />
       </div>

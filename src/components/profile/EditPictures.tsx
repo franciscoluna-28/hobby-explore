@@ -27,7 +27,6 @@ type Props = {
   userId: string;
 };
 
-// TODO: DON'T OPEN THE DIALOG WHEN THE USER UPLOAD AN INVALID IMAGE
 export function EditPictures({ userId }: Props) {
   const {
     isUploadingProfilePicture,
@@ -154,7 +153,8 @@ export function EditPictures({ userId }: Props) {
           <DialogHeader>
             <DialogTitle>Upload Pictures</DialogTitle>
             <DialogDescription>
-              Change your banner or profile picture here.
+              Change your banner or profile picture here. The max. size
+              supported for both your profile and banner picture is 1MB.
             </DialogDescription>
           </DialogHeader>
           <div className="flex flex-col w-full gap-4">
