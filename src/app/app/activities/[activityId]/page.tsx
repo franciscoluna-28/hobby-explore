@@ -20,6 +20,7 @@ import {
 import { Metadata } from "next";
 import { ActivityBreadCrumb } from "@/components/layout/ActivityBreadcrumb";
 import { getCurrentUserId } from "@/services/auth";
+import { ShareActivityModal } from "@/components/activities/containers/ShareActivityModal";
 
 export async function generateMetadata({
   params,
@@ -108,6 +109,7 @@ export default async function ActivityPage({
           </p>
         </div>
       </div>
+    <ShareActivityModal activityId={activity[0].activity_id}/>
       <h2
         className="text-mainBlack text-3xl font-semibold leading-normal my-3"
         test-id={"activityTitle"}
