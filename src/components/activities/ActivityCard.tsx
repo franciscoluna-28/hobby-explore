@@ -75,13 +75,11 @@ const renderCurrentUserString = (
     : DEFAULT_USER_DISPLAY_NAME;
 };
 
-// TODO: USERS AREN'T ABLE TO SAVE THEIR OWN ACTIVITIES. ONLY ACTIVITIES FROM OTHER USERS. THAT'S WHY THE ACTIVITIES THEY HAVE CREATED HAVE A SPECIFIC UI SECTION. ALSO, AVOID USERS FROM SAVING THEIR OWN ACTIVITIES SERVER SIDE
-// TODO: ADD BLUR EFFECT TO IMAGES WHEN THEY'RE LOADING
 export function ActivityCard({ activity, userId, shouldRenderOptionsMenu = true }: Props) {
 
   return (
     <li>
-      <Card className="rounded-2xl hover:shadow-md duration-200 w-[350px] h-[500px]">
+      <Card className="rounded-2xl hover:shadow-md duration-200 w-[330px] h-[500px]">
         <div className="relative">
           <Badge className="absolute top-4 right-4 bg-mainBlack/60">
             {activity.tips.length} {activity.tips.length > 1 ? "tips" : "tip"}

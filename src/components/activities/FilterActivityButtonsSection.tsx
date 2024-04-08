@@ -8,6 +8,8 @@ import { ExistingActivityCategories } from "@/constants/activities/categories";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 
+
+
 const FilterActivityButtonsSection: React.FC = () => {
   const searchParams = useSearchParams();
   const selectedCategory = searchParams.get("category") as
@@ -17,7 +19,7 @@ const FilterActivityButtonsSection: React.FC = () => {
   return (
     <div
       className="gap-2 
-     overflow-x-scroll w-full flex px-4 sm:justify-center sm:w-full sm:px-0 overflow-hidden sm:overflow-hidden sm:flex sm:flex-wrap"
+     overflow-x-scroll w-full flex sm:justify-center scrollbar-hide sm:w-full sm:px-0 overflow-hidden sm:overflow-hidden sm:flex sm:flex-wrap"
     >
       <Link href={`explore`}>
         <Button
