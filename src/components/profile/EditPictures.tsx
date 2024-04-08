@@ -20,11 +20,12 @@ import {
 } from "@/services/userServices";
 import { toast } from "sonner";
 import { useUploadContext } from "@/hooks/context/useUploadContext";
+import { ProfileImagesFileSchema } from "@/schemas/files/ProfileImagesFileSchema";
+import { ZodError } from "zod";
 
 type Props = {
   userId: string;
 };
-
 
 // TODO: DON'T OPEN THE DIALOG WHEN THE USER UPLOAD AN INVALID IMAGE
 export function EditPictures({ userId }: Props) {
@@ -47,21 +48,36 @@ export function EditPictures({ userId }: Props) {
 
   // Make sure to use the previous state
   const closeModal = () => {
-    setOpenModal((state) => !state);
+    setOpenModal(false);
   };
 
   function handleFileChange(event: ChangeEvent<HTMLInputElement>) {
-    if (!event.target.files) return;
-    setImage(event.target.files[0]);
-    setCropperModalOpen(true);
+    try {
+      if (!event.target.files) return;
+      setImage(event.target.files[0]);
+      setCropperModalOpen(true);
+
+      ProfileImagesFileSchema.parse({
+        image: event.target.files[0],
+      });
+    } catch (error) {
+      if (error instanceof ZodError) {
+        setCropperModalOpen(false);
+        toast.error(
+          error.errors.length > 1
+            ? error.errors[1].message
+            : error.errors[0].message
+        );
+      }
+    }
   }
 
   const handleProfilePictureUpload = async (croppedImage: File) => {
     closeModal();
-    setCropperModalOpen(true);
 
     try {
       setIsUploadingProfilePicture(true);
+
       const formData = new FormData();
 
       formData.append("profilePicture", croppedImage);
@@ -94,6 +110,10 @@ export function EditPictures({ userId }: Props) {
       formData.append("bannerPicture", image as File);
 
       const res = await updateUserBannerPicture(formData, userId);
+
+      if (res.success === false) {
+        toast.error(res.message);
+      }
 
       if (res.success) {
         setIsUploadingBannerPicture(false);

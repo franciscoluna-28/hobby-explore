@@ -6,6 +6,8 @@ import { PostgrestError } from "@supabase/supabase-js";
 import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 import { uploadPictureToSupabase } from "./supabase/storage";
+import { ProfileImagesFileSchema } from "@/schemas/files/ProfileImagesFileSchema";
+import { ZodError } from "zod";
 
 type ActionResponse = {
   success?: boolean;
@@ -116,46 +118,65 @@ export async function updateUserProfilePicture(
   formData: FormData,
   userId: string
 ) {
-  const file = formData.get("profilePicture") as File | null;
+  try {
+    const file = formData.get("profilePicture") as File | null;
 
-  console.log(file);
+    console.log(file);
 
-  if (!file) {
-    throw new Error("You need to upload a profile picture!");
-  }
+    if (!file) {
+      throw new Error("You need to upload a profile picture!");
+    }
 
-  // Upload file to Supabase storage
-  const filePath = await uploadPictureToSupabase(
-    file,
-    userId,
-    supabase,
-    "avatars"
-  );
+    // Upload file to Supabase storage
+    const filePath = await uploadPictureToSupabase(
+      file,
+      userId,
+      supabase,
+      "avatars"
+    );
 
-  if (!filePath || filePath === "") {
-    throw new Error("There was an error uploading the file to Supabase");
-  }
+    if (!filePath || filePath === "") {
+      throw new Error("There was an error uploading the file to Supabase");
+    }
 
-  const { error } = await supabase
-    .from("users")
-    .update({
-      profile_picture_url: filePath,
-    })
-    .match({ user_id: userId });
+    const { error } = await supabase
+      .from("users")
+      .update({
+        profile_picture_url: filePath,
+      })
+      .match({ user_id: userId });
 
-  if (error) {
+    if (error) {
+      return {
+        ...error,
+      };
+    }
+
+    revalidatePath("/app/my-profile");
+  } catch (error) {
+    if (error instanceof ZodError) {
+      console.error(error.errors);
+
+      return {
+        success: false,
+        message:
+          error.errors.length > 1
+            ? error.errors[1].message
+            : error.errors[0].message,
+      };
+    }
+
     return {
-      ...error,
+      success: true,
+      message: "Profile picture updated successfully!",
     };
   }
-
-  revalidatePath("/app/my-profile");
-
   return {
-    success: true,
-    message: "Profile picture updated successfully!",
+    success: false,
+    message: "There was an unknown error while updating your banner picture...",
   };
 }
+
 /**
  * Updates the existing profile picture of the user. Also, updates the cache to reflect the changes in the UI
  * @param profilePictureUrl - The new profile picture url obtained from uploading an object to Supabase storage
@@ -164,40 +185,64 @@ export async function updateUserBannerPicture(
   formData: FormData,
   userId: string
 ) {
-  const file = formData.get("bannerPicture") as File | null;
+  try {
+    const file = formData.get("bannerPicture") as File | null;
 
-  if (!file) {
-    throw new Error("You must provide a banner picture to update");
-  }
+    if (!file) {
+      throw new Error("You must provide a banner picture to update");
+    }
 
-  const filePath = await uploadPictureToSupabase(
-    file,
-    userId,
-    supabase,
-    "banners"
-  );
+    const parsedImageFile = ProfileImagesFileSchema.parse({
+      image: file,
+    });
 
-  if (!filePath || filePath === "") {
-    throw new Error("There was an error uploading the file to Supabase");
-  }
+    const filePath = await uploadPictureToSupabase(
+      parsedImageFile.image,
+      userId,
+      supabase,
+      "banners"
+    );
 
-  const { error } = await supabase
-    .from("users")
-    .update({
-      banner_picture_url: filePath,
-    })
-    .match({ user_id: userId });
+    if (!filePath || filePath === "") {
+      throw new Error("There was an error uploading the file to Supabase");
+    }
 
-  if (error) {
+    const { error } = await supabase
+      .from("users")
+      .update({
+        banner_picture_url: filePath,
+      })
+      .match({ user_id: userId });
+
+    if (error) {
+      return {
+        ...error,
+      };
+    }
+
+    revalidatePath("/app/my-profile");
+
     return {
-      ...error,
+      success: true,
+      message: "Banner picture updated successfully!",
+    };
+  } catch (error) {
+    if (error instanceof ZodError) {
+      console.error(error.errors);
+
+      return {
+        success: false,
+        message:
+          error.errors.length > 1
+            ? error.errors[1].message
+            : error.errors[0].message,
+      };
+    }
+
+    return {
+      success: false,
+      message:
+        "There was an unknown error while updating your banner picture...",
     };
   }
-
-  revalidatePath("/app/my-profile");
-
-  return {
-    success: true,
-    message: "Banner picture updated successfully!",
-  };
 }
