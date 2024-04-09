@@ -73,7 +73,7 @@ export function ChangeDisplayNameModal({ defaultDisplayName, userId }: Props) {
           <DialogHeader>
             <DialogTitle>Edit profile</DialogTitle>
             <DialogDescription>
-              Change your display name here. Click save when you&apos;re done.
+              Change your display name here. Click save when you&apos;re done. This field must have at most 50 characters. 
             </DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 py-4">
@@ -85,15 +85,18 @@ export function ChangeDisplayNameModal({ defaultDisplayName, userId }: Props) {
                 Display Name
               </Label>
               <Input
+              maxLength={50}
                 id="displayName"
                 defaultValue={defaultDisplayName ?? newDisplayName}
                 onChange={(e) => setNewDisplayName(e.target.value)}
                 className="col-span-3"
               />
+              
             </div>
           </div>
           <DialogFooter>
             <ButtonLoading
+              disabled={newDisplayName === defaultDisplayName}
               onClick={handleUploading}
               isLoading={isChangingDisplayName}
               type="submit"

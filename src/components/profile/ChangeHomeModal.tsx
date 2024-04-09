@@ -84,7 +84,7 @@ export function ChangeHomeModal({ defaultHome, userId }: Props) {
             <DialogTitle>Edit Location</DialogTitle>
             <DialogDescription>
               Change your location here. This will be visible for all users.
-              Click save when you&apos;re done.
+              Click save when you&apos;re done. This field can have at most 40 characters.
             </DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 py-4">
@@ -93,6 +93,7 @@ export function ChangeHomeModal({ defaultHome, userId }: Props) {
                 Location
               </Label>
               <Input
+                maxLength={40}
                 id="location"
                 defaultValue={defaultHome ?? ""}
                 onChange={(e) => setNewHome(e.target.value)}
@@ -103,6 +104,7 @@ export function ChangeHomeModal({ defaultHome, userId }: Props) {
           <DialogFooter>
           
             <ButtonLoading
+              disabled={newHome === defaultHome}
               onClick={handleUploading}
               isLoading={isChangingHome}
               type="submit"

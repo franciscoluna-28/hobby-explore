@@ -12,30 +12,65 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { updateUserUsername } from "@/services/userServices";
 import { CaseUpper } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { Card } from "../ui/card";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { UserSchema } from "@/schemas/user/UserSchema";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { useDebounce } from "../../hooks/useDebounce";
 
 type Props = {
-  defaultUserUserName: string;
+  defaultUsername: string;
   userId: string;
 };
 
-export function ChangeUserNameModal({ defaultUserUserName, userId }: Props) {
+export function ChangeUserNameModal({ defaultUsername, userId }: Props) {
+  const form = useForm<z.infer<typeof UserSchema>>({
+    resolver: zodResolver(UserSchema),
+    defaultValues: {
+      username: defaultUsername,
+    },
+  });
+
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isChangingUserName, setIsChangingUserName] = useState<boolean>(false);
-  const [newUserName, setNewUserName] = useState<string>(defaultUserUserName);
+  const debouncedUsername = useDebounce(form.getValues().username);
+
+  useEffect(() => {
+    const triggerUserNameChange = async () => {
+      // Don't trigger validations with the default username
+      if (form.getValues().username !== defaultUsername) {
+        form.trigger("username");
+      }
+
+      // Don't do anything if the username is not valid
+      if (form.formState.errors.username || !form.formState.isDirty) {
+        return;
+      }
+    };
+
+    triggerUserNameChange();
+  }, [debouncedUsername]);
 
   const handleClose = () => {
     setIsModalOpen(false);
   };
 
-  const handleUploading = async () => {
+  async function onSubmit(values: z.infer<typeof UserSchema>) {
     setIsChangingUserName(true);
-    const result = await updateUserUsername(newUserName, userId);
+    const result = await updateUserUsername(values.username, userId);
 
     if (!result.success) {
       toast.error(result.message);
@@ -46,18 +81,14 @@ export function ChangeUserNameModal({ defaultUserUserName, userId }: Props) {
 
     toast.success(result.message);
 
-    setNewUserName(newUserName);
     setIsChangingUserName(false);
     handleClose();
-  };
+  }
 
-  // TODO: CHECK IF THE USERNAME EXISTS BEFORE TRYING TO UPLOAD IT
-  // TODO: ADD ZOD VALIDATION
-  // TODO: UPDATE DEFAULT VALUES
   return (
     <Card className=" flex items-center space-x-4 rounded-md border p-4 relative">
       <CaseUpper className="w-6 h-6" />
-      {defaultUserUserName === "" || defaultUserUserName === undefined ? (
+      {defaultUsername === "" || defaultUsername === undefined ? (
         <div className="absolute -top-1 -right-1">
           <span className="relative flex h-3 w-3">
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-500 opacity-75"></span>
@@ -68,7 +99,7 @@ export function ChangeUserNameModal({ defaultUserUserName, userId }: Props) {
 
       <div className="flex-1 space-y-1">
         <p className="text-sm font-medium leading-none">
-          {defaultUserUserName === "" || defaultUserUserName === null
+          {defaultUsername === "" || defaultUsername === null
             ? "Create username"
             : "Change username"}
         </p>
@@ -80,36 +111,50 @@ export function ChangeUserNameModal({ defaultUserUserName, userId }: Props) {
             Edit username
           </Button>
         </DialogTrigger>
+
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
-            <DialogTitle>Edit profile</DialogTitle>
+            <DialogTitle>Update Username</DialogTitle>
             <DialogDescription>
-              Make changes to your profile here. Click save when you&apos;re
-              done.
+              Your username must have only letters, numbers, a minimum of 8
+              characters and a maximum of 20.
             </DialogDescription>
           </DialogHeader>
-          <div className="grid gap-4 py-4">
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="username" className="text-right">
-                Username
-              </Label>
-              <Input
-                id="username"
-                defaultValue={defaultUserUserName ?? newUserName}
-                onChange={(e) => setNewUserName(e.target.value)}
-                className="col-span-3"
+
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)}>
+              <FormField
+                control={form.control}
+                name="username"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Username</FormLabel>
+                    <FormControl>
+                      <Input
+                        className={`col-span-3`}
+                        maxLength={20}
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
               />
-            </div>
-          </div>
-          <DialogFooter>
-            <ButtonLoading
-              onClick={handleUploading}
-              isLoading={isChangingUserName}
-              type="submit"
-            >
-              Save changes
-            </ButtonLoading>
-          </DialogFooter>
+
+              <DialogFooter>
+                <div>
+                  <ButtonLoading
+                    className="mt-8"
+                    disabled={!form.formState.isValid}
+                    isLoading={isChangingUserName}
+                    type="submit"
+                  >
+                    Save changes
+                  </ButtonLoading>
+                </div>
+              </DialogFooter>
+            </form>
+          </Form>
         </DialogContent>
       </Dialog>
     </Card>

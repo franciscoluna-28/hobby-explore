@@ -58,7 +58,7 @@ export default async function UserProfileSettings() {
         </Link>
         <ChangeUserNameModal
           userId={user?.user_id ?? ""}
-          defaultUserUserName={user?.username ?? ""}
+          defaultUsername={user?.username ?? ""}
         />
         <ChangeDisplayNameModal
           userId={user?.user_id ?? ""}
