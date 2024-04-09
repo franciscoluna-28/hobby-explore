@@ -120,7 +120,6 @@ export function CreateActivityModal() {
   });
 
   const { control } = form;
-  const { register } = form;
 
   const { fields } = useFieldArray({
     control,

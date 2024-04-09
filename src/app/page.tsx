@@ -1,7 +1,7 @@
 "use client";
 
 import "./globals.css";
-import { Toaster } from "sonner";
+import { toast, Toaster } from "sonner";
 import DarkModeLogo from "../../public/Logo-Dark.svg";
 import Image from "next/image";
 import Link from "next/link";
@@ -11,11 +11,67 @@ import { FeaturesSection } from "@/components/landing-page/FeaturesSection";
 import { BenefitsSection } from "@/components/landing-page/BenefitsSection";
 import { FaqSection } from "@/components/landing-page/FaqSection";
 import { Input } from "@/components/ui/input";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import subscribeToNewsletterAction from "@/actions/newsletter";
+import { useState } from "react";
+import { ButtonLoading } from "@/components/ui/button-loading";
 
 export default function Home() {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const NewsletterSchema = z.object({
+    email: z.string().email(),
+  });
+
+  const form = useForm<z.infer<typeof NewsletterSchema>>({
+    resolver: zodResolver(NewsletterSchema),
+    defaultValues: {
+      email: "",
+    },
+  });
+
+  // 2. Define a submit handler.
+  async function onSubmit(values: z.infer<typeof NewsletterSchema>) {
+    try {
+      setIsLoading(true);
+      const response = await subscribeToNewsletterAction(values.email);
+
+      console.log(response)
+
+      if ("error" in response) {
+        setIsLoading(false);
+        toast.error(response.error);
+        return;
+      }
+
+      if("message" in response) {
+        setIsLoading(false);
+        toast.success(response.message);
+      }
+
+     
+    } catch (err) {
+      setIsLoading(false);
+      console.error(err);
+    }
+
+    console.log(values);
+  }
+
   return (
     <>
-      <Toaster />
+      <Toaster richColors />
       <header className="w-full h-20 sticky top-0 z-[9999] bg-white border-b lg:flex justify-center hidden">
         <div className="max-w-[1100px] w-full flex px-8">
           <div className="flex items-center">
@@ -82,11 +138,38 @@ export default function Home() {
               We&apos;re adding new features often!
             </span>
             <div className="flex mt-8 m-auto justify-center">
-              <Input
-                className="rounded-r-none w-min"
-                placeholder="user@email.com"
-              ></Input>
-              <Button className="rounded-l-none">Subscribe</Button>
+              <Form {...form}>
+                <form
+                  onSubmit={form.handleSubmit(onSubmit)}
+                  className="space-y-8"
+                >
+                  <FormField
+                    control={form.control}
+                    name="email"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="text-white">Email</FormLabel>
+                        <FormControl>
+                          <Input
+                            className="w-min focus-visible:ring-0 focus-visible:ring-offset-0"
+                            placeholder="user@email.com"
+                            {...field}
+                          ></Input>
+                        </FormControl>
+                        <FormDescription>
+                          This is your public display name.
+                        </FormDescription>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <ButtonLoading isLoading={isLoading} type="submit">
+                    Subscribe
+                  </ButtonLoading>
+                </form>
+              </Form>
+
+            
             </div>
 
             <article className="grid md:grid-cols-2 lg:grid-cols-4 mt-16 gap-16 m-auto justify-center max-w-[1000px] bg-[#252525] p-8 rounded-[16px] shadow-xl">
