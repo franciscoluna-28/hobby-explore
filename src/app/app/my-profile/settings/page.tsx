@@ -17,7 +17,7 @@ export default async function UserProfileSettings() {
     return (
       <ActivityMotion>
         <div className="m-auto flex justify-center flex-col items-center my-16 gap-3 max-w-[1000px]">
-          <h4 className="font-bold text-mainBlack my-3 text-4xl">
+          <h4 className="font-bold text-mainBlack my-3 text-4xl dark:text-white">
             Unauthorized
           </h4>
           <div className="flex flex-col">
@@ -28,13 +28,13 @@ export default async function UserProfileSettings() {
 
             <div className="flex gap-4 items-center m-auto mt-4">
               <Button className="my-2" asChild>
-                <Link className="" href={"/register"}>
+                <Link className="" href={"/auth/register"}>
                   Create a new account
                 </Link>
               </Button>
               <Button variant="ghost" className="my-2" asChild>
                 <Link
-                  className="text-mainGreen font-medium"
+                  className="dark:text-white text-mainGreen font-medium"
                   href={"/app/explore"}
                 >
                   Go to feed

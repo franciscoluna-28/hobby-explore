@@ -7,11 +7,11 @@ import Link, { LinkProps } from "next/link";
 import { IconType } from "react-icons/lib";
 
 const headerLinkVariants = cva(
-  "flex w-full text-sm transition-all duration-500 dark:text-white/90 justify-center font-medium gap-2 text-white !py-0 !my-0 items-center content-none before:absolute before:w-24 before:h-[2px]  before:bottom-0",
+  "flex w-full text-sm transition-all dark:text-white/90 justify-center font-medium gap-2 text-white !py-0 !my-0 items-center content-none before:absolute before:w-24 before:h-[2px]  before:bottom-0",
   {
     variants: {
       variant: {
-        selected: "before:bg-white",
+        selected: "before:bg-white before:dark:bg-white/90",
           noSelected: "text-mainBlack/50 before:bg-transparent",
         },
       size: {

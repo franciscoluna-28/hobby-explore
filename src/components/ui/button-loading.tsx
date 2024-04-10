@@ -1,5 +1,5 @@
 import { Button, ButtonProps } from "@/components/ui/button";
-import { Loader2} from "lucide-react"
+import { Loader2, LoaderIcon } from "lucide-react";
 
 type Props = ButtonProps & {
   isLoading: boolean;
@@ -12,7 +12,7 @@ export function ButtonLoading({ ...props }: Props) {
 
   return (
     <Button {...props} disabled={props.isLoading}>
-    <Loader2 className="animate-spin"/>
+      <LoaderIcon className="animate-spin" />
     </Button>
   );
 }

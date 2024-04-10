@@ -81,7 +81,7 @@ export function ActivityCard({ activity, userId, shouldRenderOptionsMenu = true 
     <li>
       <Card className="rounded-2xl hover:shadow-md duration-200 w-[330px] h-[500px]">
         <div className="relative">
-          <Badge className="absolute top-4 right-4 bg-mainBlack/60">
+          <Badge variant="tip">
             {activity.tips.length} {activity.tips.length > 1 ? "tips" : "tip"}
           </Badge>
 
@@ -122,14 +122,14 @@ export function ActivityCard({ activity, userId, shouldRenderOptionsMenu = true 
               <AvatarFallback>CN</AvatarFallback>
             </Avatar>
             <div className="">
-              <p className="text-darkGray font-medium text-sm">
+              <p className="text-darkGray dark:text-white/80 font-medium text-sm">
                 {renderCurrentUserString(
                   activity.users?.user_id!,
                   activity.users?.displayName!,
                   userId
                 )}
               </p>
-              <p className="text-slate-600 text-sm">
+              <p className="text-slate-600 dark:text-white/60 text-sm">
                 {handleDateConversion(activity.created_at)}
               </p>
             </div>
@@ -139,7 +139,7 @@ export function ActivityCard({ activity, userId, shouldRenderOptionsMenu = true 
             key={activity.activity_id}
             href={`/app/activities/${activity.activity_id}`}
           >
-            <CardTitle className="leading-normal pt-2 text-mainBlack ">
+            <CardTitle className="leading-normal pt-2 text-mainBlack dark:text-white">
               {activity.name}
             </CardTitle>
           </Link>

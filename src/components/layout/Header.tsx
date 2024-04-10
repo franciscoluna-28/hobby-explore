@@ -25,6 +25,7 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import ThemeSwitch from "../ui/theme-switcher";
 
 type Props = {
   profilePictureUrl: string | null | undefined;
@@ -32,13 +33,16 @@ type Props = {
 
 export function Header({ profilePictureUrl }: Props) {
   return (
-    <header className="bg-mainGreen relative w-full py-2.5 md:block hidden dark:bg-extraDarkBlack transition-all duration-200 dark:border-b dark:border-black ">
+    <header className="bg-mainGreen relative w-full py-2.5 md:block hidden dark:bg-[#171717] border-b transition-all duration-200">
       <div className="w-full flex justify-between items-center max-w-[1200px] px-12 m-auto">
         <Logo />
         <HeaderLinksContainer />
+        <div className="flex gap-4 items-center">
         <DropdownMenu>
           <DropdownMenuTrigger className="cursor-pointer" asChild>
             <Avatar>
+           
+          
               <AvatarImage
                 src={
                   profilePictureUrl !== "" && profilePictureUrl
@@ -51,7 +55,9 @@ export function Header({ profilePictureUrl }: Props) {
                 alt="User"
               />
               <AvatarFallback>User</AvatarFallback>
+           
             </Avatar>
+          
           </DropdownMenuTrigger>
           <DropdownMenuContent className="w-56">
             <DropdownMenuLabel>My Account</DropdownMenuLabel>
@@ -74,7 +80,11 @@ export function Header({ profilePictureUrl }: Props) {
             </DropdownMenuGroup>
           </DropdownMenuContent>
         </DropdownMenu>
-      </div>
+        <ThemeSwitch shouldBeCard={false}/>
+        </div>
+
+        </div>
+    
     </header>
   );
 }

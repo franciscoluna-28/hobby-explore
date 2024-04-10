@@ -30,13 +30,13 @@ export async function CreateActivityCard() {
     return (
       <Dialog>
          <DialogTrigger className="w-full">
-        <Card className="transition-all !w-full rounded-2xl border border-slate-200/50 shadow-sm hover:shadow-md duration-200 shadow-black/5 cursor-pointer">
+        <Card className="transition-all !w-full rounded-2xl border  shadow-sm hover:shadow-md duration-200 shadow-black/5 cursor-pointer">
           <CardContent className="flex items-center !p-4 gap-2">
             <Avatar>
               <AvatarImage src={"https://github.com/shadcn.png"} alt="User" />
               <AvatarFallback>User</AvatarFallback>
             </Avatar>
-            <p className="text-textGray">{`Hey guest! Welcome to Hobby Explore!`}</p>
+            <p className="text-textGray dark:text-darkGray">{`Hey guest! Welcome to Hobby Explore!`}</p>
             <div className="ml-auto bg-mainGreen p-1 rounded-full text-white">
               <Plus className="text-white" />
             </div>
@@ -67,7 +67,7 @@ export async function CreateActivityCard() {
 
   return (
     <Link href="/app/create" className="cursor-pointer">
-      <Card className="transition-all !w-full rounded-2xl border border-slate-200/50 shadow-sm hover:shadow-md duration-200 shadow-black/5">
+      <Card className="transition-all !w-full rounded-2xl border shadow-sm hover:shadow-md duration-200 shadow-black/5">
         <CardContent className="flex items-center !p-4 gap-2">
           <Avatar key={user?.user_id}>
             <AvatarImage
