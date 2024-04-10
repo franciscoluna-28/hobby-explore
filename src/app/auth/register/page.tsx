@@ -74,7 +74,7 @@ export default function Register() {
       </div>
       <div className="items-center flex justify-center h-screen flex-col w-full">
         <Form {...form}>
-          <h1 className="font-semibold text-3xl text-mainBlack my-6 text-center max-w-[300px] leading-normal">
+          <h1 className="font-semibold text-3xl text-mainBlack my-6 text-center max-w-[300px] leading-normal dark:text-white">
             Share your Unique Hobbies
           </h1>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">

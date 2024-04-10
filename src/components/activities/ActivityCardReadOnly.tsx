@@ -13,9 +13,9 @@ type ActivityCardReadOnlyProps = {
 
 export function ActivityCardReadOnly({ activity }: ActivityCardReadOnlyProps) {
   return (
-    <Card className="rounded-2xl hover:shadow-md duration-200 w-[350px] h-[500px]">
+    <Card className="rounded-2xl hover:shadow-md duration-200 w-[350px] h-[500px] shadow-md">
       <div className="relative">
-        <Badge className="absolute top-4 right-4 bg-mainBlack/60">
+        <Badge variant="tip">
           {activity.tipsNumber} {activity.tipsNumber > 1 ? "tips" : "tip"}
         </Badge>
 
@@ -37,16 +37,16 @@ export function ActivityCardReadOnly({ activity }: ActivityCardReadOnlyProps) {
             <AvatarFallback>{activity.user.displayName}</AvatarFallback>
           </Avatar>
           <div className="">
-            <p className="text-darkGray font-medium text-sm">
+            <p className="text-darkGray font-medium text-sm dark:text-white/80">
               {activity.user.displayName}
             </p>
-            <p className="text-slate-600 text-sm">
+            <p className="text-slate-600 text-sm dark:text-white/60">
               {handleDateConversion(activity.created_at)}
             </p>
           </div>
         </div>
 
-        <CardTitle className="leading-normal pt-2 text-mainBlack ">
+        <CardTitle className="leading-normal pt-2 text-mainBlack dark:text-white">
           {activity.name}
         </CardTitle>
         <div className="absolute right-4 bottom-4">

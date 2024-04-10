@@ -43,7 +43,7 @@ export function SaveActivityButtonReadOnly({ activity }: Props) {
       onClick={() => {
         handleSaveActivity(activity);
       }}
-      className="bg-white disabled:opacity-100 p-2 w-12 h-12 transition-all  hover:shadow-lg hover:border-mainGreen  hover:bg-white duration-200 rounded-full shadow-sm"
+      variant="saveActivity"
     >
       {getActivitySaveStatus(activity.activity_id) ? (
         <SavedIcon />

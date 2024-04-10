@@ -2,7 +2,8 @@
 
 import "./globals.css";
 import { toast, Toaster } from "sonner";
-import DarkModeLogo from "../../public/Logo-Dark.svg";
+import LightModeLogo from "../../public/Logo-Dark.svg";
+import DarkModeLogo from "../../public/Logo (Web).svg";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -26,9 +27,12 @@ import {
 import subscribeToNewsletterAction from "@/actions/newsletter";
 import { useState } from "react";
 import { ButtonLoading } from "@/components/ui/button-loading";
+import { useTheme } from "next-themes";
+import ThemeSwitch from "@/components/ui/theme-switcher";
 
 export default function Home() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const { theme } = useTheme();
 
   const NewsletterSchema = z.object({
     email: z.string().email(),
@@ -70,34 +74,47 @@ export default function Home() {
   return (
     <>
       <Toaster richColors />
-      <header className="w-full h-20 sticky top-0 z-[9999] bg-white border-b lg:flex justify-center hidden">
+
+      <header className="w-full  h-20 sticky top-0 z-[9999] bg-white border-b dark:bg-[#171717] lg:flex justify-center hidden">
         <div className="max-w-[1100px] w-full flex px-8">
           <div className="flex items-center">
             <Image
-              src={DarkModeLogo}
-              alt="Hobby Explore"
-              className="h-16 w-auto"
+              src={theme !== "light" ? DarkModeLogo : LightModeLogo}
+              alt="Hobby DarkModeLogo"
+              className={theme !== "light" ? "h-18 w-auto" : "h-18 w-auto"}
             />
           </div>
           <div className="flex flex-row items-center w-full max-w-[1000px]">
             <ul className="flex gap-8 m-auto">
               <li>
-                <Link className="text-sm text-mainBlack/80 link" href="#">
+                <Link
+                  className="text-sm text-mainBlack/80 dark:text-white link"
+                  href="#"
+                >
                   About
                 </Link>
               </li>
               <li>
-                <Link className="text-sm text-mainBlack/80 link" href="#">
+                <Link
+                  className="text-sm text-mainBlack/80 dark:text-white link"
+                  href="#"
+                >
                   Features
                 </Link>
               </li>
               <li>
-                <Link className="text-sm text-mainBlack/80 link" href="#">
+                <Link
+                  className="text-sm text-mainBlack/80 dark:text-white link"
+                  href="#"
+                >
                   Benefits
                 </Link>
               </li>
               <li>
-                <Link className="text-sm text-mainBlack/80 link" href="#">
+                <Link
+                  className="text-sm text-mainBlack/80 dark:text-white link"
+                  href="#"
+                >
                   FAQ
                 </Link>
               </li>
@@ -116,6 +133,9 @@ export default function Home() {
                 Sign Up
               </Link>
             </Button>
+            <li>
+              <ThemeSwitch shouldBeCard={false} />
+            </li>
           </ul>
         </div>
       </header>
@@ -158,7 +178,11 @@ export default function Home() {
                       </FormItem>
                     )}
                   />
-                  <ButtonLoading className="min-w-[150px]" isLoading={isLoading} type="submit">
+                  <ButtonLoading
+                    className="min-w-[150px]"
+                    isLoading={isLoading}
+                    type="submit"
+                  >
                     Subscribe
                   </ButtonLoading>
                 </form>
