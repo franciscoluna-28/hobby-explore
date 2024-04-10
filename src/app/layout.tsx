@@ -22,7 +22,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={cn(inter.className)}>
+      <body className={`${cn(inter.className)} `}>
         <ErrorBoundary>
           <ReactQueryProvider>
             <Providers>{children}</Providers>

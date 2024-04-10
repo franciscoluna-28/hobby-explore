@@ -47,7 +47,7 @@ export default function Home() {
       setIsLoading(true);
       const response = await subscribeToNewsletterAction(values.email);
 
-      console.log(response)
+      console.log(response);
 
       if ("error" in response) {
         setIsLoading(false);
@@ -55,12 +55,10 @@ export default function Home() {
         return;
       }
 
-      if("message" in response) {
+      if ("message" in response) {
         setIsLoading(false);
         toast.success(response.message);
       }
-
-     
     } catch (err) {
       setIsLoading(false);
       console.error(err);
@@ -156,20 +154,15 @@ export default function Home() {
                             {...field}
                           ></Input>
                         </FormControl>
-                        <FormDescription>
-                          This is your public display name.
-                        </FormDescription>
                         <FormMessage />
                       </FormItem>
                     )}
                   />
-                  <ButtonLoading isLoading={isLoading} type="submit">
+                  <ButtonLoading className="min-w-[150px]" isLoading={isLoading} type="submit">
                     Subscribe
                   </ButtonLoading>
                 </form>
               </Form>
-
-            
             </div>
 
             <article className="grid md:grid-cols-2 lg:grid-cols-4 mt-16 gap-16 m-auto justify-center max-w-[1000px] bg-[#252525] p-8 rounded-[16px] shadow-xl">
