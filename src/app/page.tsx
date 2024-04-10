@@ -77,11 +77,11 @@ export default function Home() {
 
       <header className="w-full  h-20 sticky top-0 z-[9999] bg-white border-b dark:bg-[#171717] lg:flex justify-center hidden">
         <div className="max-w-[1100px] w-full flex px-8">
-          <div className="flex items-center">
+          <div className="flex items-center aspect-video">
             <Image
               src={theme !== "light" ? DarkModeLogo : LightModeLogo}
               alt="Hobby DarkModeLogo"
-              className={theme !== "light" ? "h-18 w-auto" : "h-18 w-auto"}
+              className={theme !== "light" ? "h-32 w-auto" : "h-32 w-auto "}
             />
           </div>
           <div className="flex flex-row items-center w-full max-w-[1000px]">
@@ -142,7 +142,8 @@ export default function Home() {
       <main className="flex relative w-full min-h-screen flex-col items-center m-auto">
         <HeroSection />
         <FeaturesSection />
-        <BenefitsSection />
+        <BenefitsSection/>
+      
         <FaqSection />
       </main>
 

@@ -12,22 +12,6 @@ type Props = {
   activity: ActivityPreview;
 };
 
-function SavedIcon(): React.JSX.Element {
-  return (
-    <ActivityMotion>
-      <FaBookmark className="h-5 w-5 text-mainGreen text-xl"></FaBookmark>
-    </ActivityMotion>
-  );
-}
-
-function NotSavedIcon(): React.JSX.Element {
-  return (
-    <ActivityMotion>
-      <Bookmark className="h-6 w-6 text-slate-300"></Bookmark>
-    </ActivityMotion>
-  );
-}
-
 export function SaveActivityButtonReadOnly({ activity }: Props) {
   const handleSaveActivity = useActivityStore(
     (state) => state.handleSaveActivity
@@ -45,11 +29,21 @@ export function SaveActivityButtonReadOnly({ activity }: Props) {
       }}
       variant="saveActivity"
     >
-      {getActivitySaveStatus(activity.activity_id) ? (
-        <SavedIcon />
-      ) : (
-        <NotSavedIcon />
-      )}
+      <FaBookmark
+        className="duration-200 transition-all w-6 h-6"
+
+        color="#000000"
+        strokeWidth={`${
+          getActivitySaveStatus(activity.activity_id)
+            ? 0
+            : 4
+        }`}
+        fill={`${
+          getActivitySaveStatus(activity.activity_id)
+            ? "#00CAA7"
+            : "transparent"
+        }`}
+      />
     </Button>
   );
 }

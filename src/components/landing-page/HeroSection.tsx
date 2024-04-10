@@ -20,12 +20,12 @@ export function HeroSection() {
         <h1 className="font-semibold text-6xl leading-normal text-mainBlack dark:text-white">
           Find your New Hobbies Today
         </h1>
-        <p className="text-mainBlack/80 text-[18px] mt-8 dark:text-white/60">
+        <p className="text-mainBlack/80 text-[18px] mt-4 dark:text-white/60">
           Discover exciting pastimes, connect with fellow enthusiasts, and grow
           personally. Welcome to&nbsp;Hobby Explore, your gateway to a vibrant
           world of hobbies and innovation.
         </p>
-        <Button className="mt-12">Try it for free</Button>
+        <Button className="mt-8">Try it for free</Button>
       </div>
       <div>
         <div
