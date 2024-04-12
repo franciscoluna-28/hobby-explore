@@ -20,7 +20,11 @@ function FeatureCard({
   description: string;
 }) {
   return (
-    <article className={`w-full max-w-[1100px] grid grid-cols-2 py-16 m-auto mt-16 ${shouldBeReversed ? "" : ""} gap-8`}>
+    <article
+      className={`w-full max-w-[1100px] grid lg:grid-cols-2 py-16 m-auto mt-0 md:mt-8 lg:mt-16  px-8 ${
+        shouldBeReversed ? "" : ""
+      } gap-8`}
+    >
       <div className={`lg:max-w-[500px] ${shouldBeReversed ? "order-1" : ""}`}>
         <h3 className="text-5xl leading-normal dark:text-white">{title}</h3>
         <p className="text-[#1E1E1E]/80 mt-4 text-[18px] dark:text-white/60">
@@ -48,20 +52,21 @@ export function FeaturesSection() {
           imageUrl="/ss-test.png"
         />
       </SectionMain>
-      <FeatureCard shouldBeReversed
-          title="Discover New Passions"
-          description="             Dive into a world of limitless discovery. At Hobby Explore, we
+      <FeatureCard
+        shouldBeReversed
+        title="Discover New Passions"
+        description="             Dive into a world of limitless discovery. At Hobby Explore, we
           invite you to explore the unexplored, to find new passions that
           ignite your soul and lead you to exciting adventures. Let
           curiosity be your guide and uncover what truly excites you!"
-          imageUrl="/ss-test-2.png"
-        />
-              <SectionMain>
+        imageUrl="/ss-test-2.png"
+      />
+      <SectionMain>
         <FeatureCard
           title="Let the World Find Your Hobbies"
           description=" Share your interests with the world and let your hobbies shine. At
           Hobby Explore, your community awaits to celebrate your passions
-          and connect with fellow enthusiasts. Whether it&apos;s a lifelong
+          and connect with fellow enthusiasts. Whether it's a lifelong
           pursuit or a newfound interest, showcase what makes you uniquely
           you!"
           imageUrl="/ss-test-3.png"

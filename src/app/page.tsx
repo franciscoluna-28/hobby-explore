@@ -149,7 +149,7 @@ export default function Home() {
 
       <footer className="w-full bg-mainBlack mt-32">
         <div className="flex flex-col min-w-full max-w-[1100px] items-center justify-center m-auto p-8 ">
-          <div>
+          <div className="w-full">
             <h4 className="text-white font-bold text-3xl max-w-[250px] text-center leading-normal m-auto">
               Subscribe To our Newsletter
             </h4>
