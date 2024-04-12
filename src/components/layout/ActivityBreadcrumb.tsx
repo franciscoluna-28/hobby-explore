@@ -12,7 +12,10 @@ export function ActivityBreadCrumb({
     <nav aria-label="Breadcrumb" className="py-4 mr-auto flex items-center">
       <ol className="flex flex-wrap gap-2 text-sm text-gray-500 dark:text-gray-400 items-center">
         <li>
-          <Link className="text-slate-500" href="/app/explore">
+          <Link
+            className="text-slate-500 dark:text-white/50"
+            href="/app/explore"
+          >
             Home
           </Link>
         </li>
@@ -21,7 +24,7 @@ export function ActivityBreadCrumb({
         </li>
         <li
           aria-current="page"
-          className="text-mainGreen font-medium dark:text-gray-50"
+          className="text-mainGreen font-medium dark:text-white"
         >
           {activityName}
         </li>

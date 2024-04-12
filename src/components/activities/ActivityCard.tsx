@@ -79,7 +79,7 @@ export function ActivityCard({ activity, userId, shouldRenderOptionsMenu = true 
 
   return (
     <li>
-      <Card className="rounded-2xl hover:shadow-md duration-200 w-[330px] h-[500px]">
+      <Card className="rounded-2xl hover:shadow-md duration-200 flex flex-col h-[500px]">
         <div className="relative">
           <Badge variant="tip">
             {activity.tips.length} {activity.tips.length > 1 ? "tips" : "tip"}
@@ -92,7 +92,7 @@ export function ActivityCard({ activity, userId, shouldRenderOptionsMenu = true 
           </div>
 
           <img
-            className="object-cover rounded-t-2xl w-full h-[200px]"
+            className="object-cover rounded-t-2xl w-full h-52"
             src={
               activity.tips.length
                 ? getSupabaseFileUrlFromRelativePath(

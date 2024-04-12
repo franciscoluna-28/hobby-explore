@@ -19,7 +19,7 @@ const buttonVariants = cva(
           secondarySelected: "bg-mainGreen text-white !rounded-full disabled:opacity-100",
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
-        saveActivity: "bg-white disabled:opacity-80 !h-16 !w-16 transition-all  hover:shadow-lg hover:border-mainGreen  hover:bg-white duration-200 rounded-full shadow-sm",
+        saveActivity: "bg-white disabled:opacity-80 !h-14 !w-14 transition-all  hover:shadow-lg hover:border-mainGreen  hover:bg-white duration-200 rounded-full shadow-sm",
         icon: "bg-mainGreen flex gap-2 text-white rounded-full hover:bg-white border border-transparent hover:border-mainGreen hover:text-mainGreen",
       },
       size: {

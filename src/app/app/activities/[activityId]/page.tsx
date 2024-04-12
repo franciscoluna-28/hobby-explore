@@ -2,7 +2,6 @@ import {
   ActivityQueryResponse,
   getActivityById,
 } from "@/services/activities/getActivities";
-import { toast } from "sonner";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { getCategoryNameById } from "@/services/activities/categories";
@@ -133,8 +132,6 @@ export default async function ActivityPage({
     );
   }
 
-  // TODO: CREATE CUSTOM COMPONENT
-
   // Now we're certain that response is of type ActivityQueryResponse[]
   const activity = activityData as ActivityQueryResponse[];
 
@@ -168,7 +165,7 @@ export default async function ActivityPage({
       </div>
       <ShareActivityModal activityId={activity[0].activity_id} />
       <h2
-        className="text-mainBlack text-3xl font-semibold leading-normal my-3"
+        className="text-mainBlack dark:text-white text-3xl font-semibold leading-normal my-3"
         test-id={"activityTitle"}
       >
         {activity[0].name}

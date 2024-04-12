@@ -3,10 +3,10 @@
 import { Tables } from "@/lib/database";
 import { Button } from "../ui/button";
 import { useSaveActivity } from "@/hooks/activities/useSaveActivity";
-import { FaBookmark } from "react-icons/fa6";
 import { Bookmark } from "lucide-react";
 import React from "react";
 import { ActivityMotion } from "../motion/ActivityMotion";
+
 
 type Props = {
   isSaved?: boolean;
@@ -26,10 +26,12 @@ export function SaveActivityButton({ activityId, userId }: Props) {
       onClick={() => mutation.mutate(activityId!)}
       variant="saveActivity"
     >
-      <FaBookmark
-        className="duration-200 transition-all w-6 h-6"
-        color="#000000"
-        strokeWidth={`${initialData ? 0 : 4}`}
+      <Bookmark
+        className="duration-200 transition-all"
+        width={24}
+        height={24}
+        color="#9d9d9d"
+        strokeWidth={`${initialData ? 0 : 1.5}`}
         fill={`${initialData ? "#00CAA7" : "transparent"}`}
       />
     </Button>
