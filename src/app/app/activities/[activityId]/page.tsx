@@ -21,6 +21,11 @@ import { Metadata } from "next";
 import { ActivityBreadCrumb } from "@/components/layout/ActivityBreadcrumb";
 import { getCurrentUserId } from "@/services/auth";
 import { ShareActivityModal } from "@/components/activities/containers/ShareActivityModal";
+import Image from "next/image";
+import NotFound from "../../../../../public/not-found.webp";
+import { ActivityMotion } from "@/components/motion/ActivityMotion";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 export async function generateMetadata({
   params,
@@ -42,14 +47,19 @@ export async function generateMetadata({
   const activity = activityData as ActivityQueryResponse[];
 
   return {
-    title: activity[0].name,
-    description: activity[0].description,
+    title: activity.length > 0 ? activity[0].name : "Not Found Activity",
+    description:
+      activity.length > 0
+        ? activity[0].description
+        : "Couldn't find a description for this activity...",
     openGraph: {
       images: [
-        getSupabaseFileUrlFromRelativePath(
-          activity[0].tips[0].display_image_url ?? "",
-          "tips"
-        ),
+        activity.length > 0
+          ? getSupabaseFileUrlFromRelativePath(
+              activity[0].tips[0].display_image_url ?? "",
+              "tips"
+            )
+          : "",
       ],
     },
   };
@@ -65,18 +75,65 @@ export default async function ActivityPage({
   const activityData = await getActivityById(params.activityId);
   const userId = await getCurrentUserId();
 
-  // TODO: CREATE CUSTOM COMPONENT
-  // First case: activities is null
-  if (activityData === null) {
-    return <div>No activities available.</div>;
+  // Second case: activities throws an error because of invalid types and verifications
+  if (activityData && "code" in activityData) {
+    return (
+      <ActivityMotion>
+        <div className="max-w-[1000px] m-auto flex justify-center flex-col items-center my-12 gap-3">
+          <Image
+            src={NotFound}
+            width={0}
+            height={0}
+            sizes="100vw"
+            className="min-h-[150px] max-h-[200px]"
+            style={{ width: "auto" }}
+            alt="Not found"
+          />
+          <h4 className="font-bold text-mainBlack my-3 text-4xl text-center">
+            Invalid Activity.
+          </h4>
+          <span className="text-slate-500 text-center">
+            The activity you were looking for wasn't a valid one. It probably
+            doesn't exist.
+          </span>
+          <Button variant="ghost" className="w-full">
+            <Link href="/app/explore">Go to feed</Link>
+          </Button>
+        </div>
+      </ActivityMotion>
+    );
+  }
+
+  // First case: The activity doesn't exist
+  if (Array.isArray(activityData) && activityData.length === 0) {
+    return (
+      <ActivityMotion>
+        <div className="max-w-[1000px] m-auto flex justify-center flex-col items-center my-12 gap-3">
+          <Image
+            src={NotFound}
+            width={0}
+            height={0}
+            sizes="100vw"
+            className="min-h-[150px] max-h-[200px]"
+            style={{ width: "auto" }}
+            alt="Not found"
+          />
+          <h4 className="font-bold text-mainBlack my-3 text-4xl text-center">
+            This activity doesn't exist.
+          </h4>
+          <span className="text-slate-500 text-center">
+            We're sorry. The activity you're looking for wasn't found or was
+            deleted.
+          </span>
+          <Button variant="ghost" className="w-full">
+            <Link href="/app/explore">Go to feed</Link>
+          </Button>
+        </div>
+      </ActivityMotion>
+    );
   }
 
   // TODO: CREATE CUSTOM COMPONENT
-  // Second case: activities throws an error
-  if ("code" in activityData) {
-    toast.error("Failed to fetch activities.");
-    return <div>Error fetching activity.</div>;
-  }
 
   // Now we're certain that response is of type ActivityQueryResponse[]
   const activity = activityData as ActivityQueryResponse[];
@@ -109,7 +166,7 @@ export default async function ActivityPage({
           </p>
         </div>
       </div>
-    <ShareActivityModal activityId={activity[0].activity_id}/>
+      <ShareActivityModal activityId={activity[0].activity_id} />
       <h2
         className="text-mainBlack text-3xl font-semibold leading-normal my-3"
         test-id={"activityTitle"}
