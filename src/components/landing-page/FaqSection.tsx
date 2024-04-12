@@ -6,14 +6,12 @@ import {
 } from "../ui/accordion";
 import { HelpCircle } from "lucide-react";
 import Image from "next/image";
-import Decoration from "../../../public/line-3.svg"
+import Decoration from "../../../public/line-3.svg";
 
 type FaqElement = {
   title: string;
   description: string;
 };
-
-
 
 const FAQ: FaqElement[] = [
   {
@@ -64,7 +62,13 @@ const FAQ: FaqElement[] = [
 export function FaqSection() {
   return (
     <section className=" max-w-[1100px] px-8 m-auto mt-16 lg:mt-32 w-full relative">
-      <Image className="absolute invisible lg:visible lg:translate-x-[400px] mt-12 -rotate-12" alt="Decoration" src={Decoration} width={200} height={200}></Image>
+      <Image
+        className="absolute invisible lg:visible lg:translate-x-[400px] mt-12 -rotate-12"
+        alt="Decoration"
+        src={Decoration}
+        width={200}
+        height={200}
+      ></Image>
       <h2 className="font-semibold text-5xl text-left my-16 max-w-[500px] leading-normal">
         Frequently Asked Questions
       </h2>
@@ -77,12 +81,12 @@ export function FaqSection() {
             >
               <AccordionTrigger className="text-[18px] text-left">
                 <div className="flex gap-2 items-center">
-                  <HelpCircle className="w-4 h-4 text-mainBlack" />{" "}
+                  <HelpCircle className="w-4 h-4 text-mainBlack dark:text-white duration-200 transition-all" />{" "}
                   {/* eslint-disable-next-line react/no-unescaped-entities */}
                   {element.title}
                 </div>
               </AccordionTrigger>
-              <AccordionContent className="text-darkGray">
+              <AccordionContent >
                 {/* eslint-disable-next-line react/no-unescaped-entities */}
                 {element.description}
               </AccordionContent>

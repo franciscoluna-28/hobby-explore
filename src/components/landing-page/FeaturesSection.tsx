@@ -32,7 +32,7 @@ function FeatureCard({
         </p>
       </div>
       <img
-        className={`h-48 rounded-lg shadow-md border md:h-64 md:min-w-[300px] lg:h-72 overflow-hidden mt-4 object-cover mr-auto}`}
+        className={`w-full rounded-lg shadow-md border md:min-w-[300px] lg:h-72 overflow-hidden mt-4 object-cover mr-auto}`}
         alt="test"
         src={imageUrl}
       />
@@ -76,48 +76,3 @@ export function FeaturesSection() {
   );
 }
 
-{
-  /* <div className="max-w-[1100px] px-8 m-auto">
-<article className="flex overflow-hidden lg:mt-32 max-w-[1100px] m-auto py-16 lg:flex-row-reverse flex-col gap-8">
-    <div className="w-full lg:max-w-[400px] flex justify-center flex-col">
-     
-    </div>
-    <img
-      className="h-48 md:h-64 md:min-w-[300px] lg:h-72 overflow-hidden mt-4 object-cover mr-auto"
-      alt="test"
-      src={"/feed.png"}
-    />
-  </article>
-
-
- 
-</div>
-
-<div className="bg-slate-50 px-8">
-  <article className="flex overflow-hidden mt-16 lg:mt-32 max-w-[1100px] m-auto py-16 lg:flex-row flex-col lg:px-8 gap-8 w-full">
-    <div className="w-full lg:max-w-[400px] flex justify-center flex-col">
-      <h3 className="text-5xl leading-normal">Discover New Passions</h3>
-      <p className="text-[#1E1E1E]/80 mt-4 text-[18px]">
-       
-      </p>
-    </div>
-  
-  </article>
-</div>
-<div className="max-w-[1100px] px-8 m-auto">
-<article className="flex overflow-hidden lg:mt-32 max-w-[1100px] m-auto py-16 lg:flex-row-reverse flex-col gap-8 w-full">
-    <div className="w-full lg:max-w-[400px] flex justify-center flex-col">
-      <h3 className="text-5xl leading-normal">   </h3>
-      <p className="text-[#1E1E1E]/80 mt-4 text-[18px]">
-     
-      </p>
-    </div>
-    <img
-      className="h-48 md:h-64 md:min-w-[300px] lg:h-72 overflow-hidden mt-4 object-cover mr-auto"
-      alt="test"
-      src={"/feed.png"}
-    />
-  </article>
-</div>
- */
-}

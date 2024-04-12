@@ -6,12 +6,15 @@ import { BenefitsSection } from "@/components/landing-page/BenefitsSection";
 import { FaqSection } from "@/components/landing-page/FaqSection";
 import LandingPageHeader from "@/components/layout/LandingPageHeader";
 import LandingPageFooter from "@/components/layout/LandingPageFooter";
+import { getCurrentUser } from "@/services/auth";
 
-export default function Home() {
+export default async function Home() {
+  const user = await getCurrentUser();
+
   return (
     <>
       <Toaster richColors />
-      <LandingPageHeader />
+      <LandingPageHeader user={user} />
       <main className="flex relative w-full min-h-screen flex-col items-center m-auto">
         <HeroSection />
         <FeaturesSection />
