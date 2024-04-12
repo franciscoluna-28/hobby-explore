@@ -9,9 +9,9 @@ export function HeroSection() {
   const randomIndex = Math.floor(Math.random() * DEFAULT_ACTIVITIES.length);
 
   return (
-    <section className="relative flex flex-col md:flex-row gap-16 mt-16 lg:justify-between w-full max-w-[1100px] p-8">
+    <section className="relative flex flex-col md:flex-row gap-16 mt-8 lg:mt-16 lg:justify-between w-full max-w-[1100px] p-8">
       <Image
-        className="absolute translate-x-[400px] rotate-12 translate-y-6 opacity-0 lg:opacity-100"
+        className="absolute invisible lg:visible lg:translate-x-[400px] rotate-12 translate-y-6"
         alt="Decoration"
         src={Decoration}
         width={200}

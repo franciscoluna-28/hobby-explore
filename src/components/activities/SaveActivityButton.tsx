@@ -15,22 +15,6 @@ type Props = {
   activityId?: Tables<"activities">["activity_id"];
 };
 
-function SavedIcon(): React.JSX.Element {
-  return (
-    <ActivityMotion>
-      <FaBookmark className="h-5 w-5 text-mainGreen text-xl"></FaBookmark>
-    </ActivityMotion>
-  );
-}
-
-function NotSavedIcon(): React.JSX.Element {
-  return (
-    <ActivityMotion>
-      <Bookmark className="h-6 w-6 text-slate-300"></Bookmark>
-    </ActivityMotion>
-  );
-}
-
 export function SaveActivityButton({ activityId, userId }: Props) {
   const { mutation, initialData } = useSaveActivity({
     activityId: activityId!,
@@ -42,7 +26,12 @@ export function SaveActivityButton({ activityId, userId }: Props) {
       onClick={() => mutation.mutate(activityId!)}
       variant="saveActivity"
     >
-      {initialData ? <SavedIcon /> : <NotSavedIcon />}
+      <FaBookmark
+        className="duration-200 transition-all w-6 h-6"
+        color="#000000"
+        strokeWidth={`${initialData ? 0 : 4}`}
+        fill={`${initialData ? "#00CAA7" : "transparent"}`}
+      />
     </Button>
   );
 }

@@ -2,7 +2,7 @@
 
 function SectionMain({ children }: { children: React.ReactNode }) {
   return (
-    <div className="bg-slate-50 dark:bg-[#121212] w-full lg:mt-32">
+    <div className="bg-slate-50 dark:bg-[#121212] w-full lg:mt-32 duration-200 transition-all">
       {children}
     </div>
   );

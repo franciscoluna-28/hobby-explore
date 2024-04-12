@@ -10,7 +10,6 @@ export async function checkIfUsernameIsAvailableInDatabaseAction(
   username: string
 ): Promise<boolean> {
  
-    console.log(username)
  
     try {
     const { data, error } = await supabase
@@ -18,7 +17,7 @@ export async function checkIfUsernameIsAvailableInDatabaseAction(
       .select("username")
       .eq("username", username);
 
-      console.log(data);
+  
 
     if (error) {
       console.error("Error fetching data:", error);

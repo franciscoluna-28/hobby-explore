@@ -63,8 +63,8 @@ const FAQ: FaqElement[] = [
 
 export function FaqSection() {
   return (
-    <section className="max-w-[1100px] px-8 m-auto mt-16 lg:mt-32 w-full relative">
-      <Image className="absolute translate-x-[400px] mt-12 -rotate-12 opacity-0 lg:opacity-100" alt="Decoration" src={Decoration} width={200} height={200}></Image>
+    <section className=" max-w-[1100px] px-8 m-auto mt-16 lg:mt-32 w-full relative">
+      <Image className="absolute invisible lg:visible lg:translate-x-[400px] mt-12 -rotate-12" alt="Decoration" src={Decoration} width={200} height={200}></Image>
       <h2 className="font-semibold text-5xl text-left my-16 max-w-[500px] leading-normal">
         Frequently Asked Questions
       </h2>
