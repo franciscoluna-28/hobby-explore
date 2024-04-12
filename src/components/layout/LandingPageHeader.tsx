@@ -158,9 +158,7 @@ export default function LandingPageHeader({ user }: LandingPageHeaderProps) {
                 </Link>
               </Button>
             </li>
-            <UserDropdownMenu>
-              <UserAvatar profilePictureUrl={user?.profile_picture_url} />
-            </UserDropdownMenu>
+              <UserAvatar profilePictureUrl={user?.profile_picture_url} shouldHaveLink />
             <li>
               <ThemeSwitch shouldBeCard={false} />
             </li>
