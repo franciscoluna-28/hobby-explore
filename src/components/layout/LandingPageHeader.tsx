@@ -149,7 +149,7 @@ export default function LandingPageHeader({ user }: LandingPageHeaderProps) {
         {user ? (
           <ul className="gap-8 flex items-center">
             <li>
-              <Button asChild variant="ghost">
+              <Button asChild>
                 <Link
                   className="text-sm w-full font-medium"
                   href="/app/explore"

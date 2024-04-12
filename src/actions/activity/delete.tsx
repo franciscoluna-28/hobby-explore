@@ -13,10 +13,9 @@ export async function deleteActivityByIdAction(activityId: number) {
   });
 
   if (error) {
-    console.error(error)
+    console.error(error);
     throw new Error(error.message);
   }
 
   revalidatePath("/app/saved/my-activities");
-
 }
