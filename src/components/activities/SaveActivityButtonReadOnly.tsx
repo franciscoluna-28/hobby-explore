@@ -1,10 +1,8 @@
 "use client";
 
 import { Button } from "../ui/button";
-import { FaBookmark } from "react-icons/fa6";
 import { Bookmark } from "lucide-react";
 import React from "react";
-import { ActivityMotion } from "../motion/ActivityMotion";
 import useActivityStore from "@/store/useLandingPageActivities";
 import { ActivityPreview } from "@/data/DefaultActivities";
 
@@ -20,8 +18,6 @@ export function SaveActivityButtonReadOnly({ activity }: Props) {
     (state) => state.getSaveStatus
   );
 
-  const activities = useActivityStore((state) => state.activities);
-
   return (
     <Button
       onClick={() => {
@@ -29,14 +25,14 @@ export function SaveActivityButtonReadOnly({ activity }: Props) {
       }}
       variant="saveActivity"
     >
-      <FaBookmark
+      <Bookmark
         className="duration-200 transition-all w-6 h-6"
 
         color="#000000"
         strokeWidth={`${
           getActivitySaveStatus(activity.activity_id)
             ? 0
-            : 4
+            : 1.5
         }`}
         fill={`${
           getActivitySaveStatus(activity.activity_id)
