@@ -3,6 +3,7 @@ import { ActivityCardReadOnly } from "@/components/activities/ActivityCardReadOn
 import { Button } from "@/components/ui/button";
 import Decoration from "../../../public/line-1.svg";
 import Image from "next/image";
+import Link from "next/link";
 
 export function HeroSection() {
   const randomIndex = Math.floor(Math.random() * DEFAULT_ACTIVITIES.length);
@@ -25,7 +26,9 @@ export function HeroSection() {
           personally. Welcome to&nbsp;Hobby Explore, your gateway to a vibrant
           world of hobbies and innovation.
         </p>
-        <Button className="mt-8">Try it for free</Button>
+        <Button className="mt-8" asChild>
+          <Link href="/app/explore">Try it for free</Link>
+        </Button>
       </div>
       <div>
         <div
