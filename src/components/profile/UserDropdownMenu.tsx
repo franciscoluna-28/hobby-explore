@@ -19,7 +19,7 @@ import Link from "next/link";
 export function UserDropdownMenu({ children }: { children: React.ReactNode }) {
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger className="cursor-pointer" asChild>
+      <DropdownMenuTrigger className="cursor-pointer">
         {children}
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56">

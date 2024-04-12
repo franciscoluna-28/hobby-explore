@@ -18,8 +18,8 @@ export function UserAvatar({
   }
 
   return (
-    <Avatar>
-      <AvatarImage
+    <Avatar className="cursor-pointer">
+      <AvatarImage className="cursor-pointer"
         src={
           profilePictureUrl !== "" && profilePictureUrl
             ? getSupabaseFileUrlFromRelativePath(profilePictureUrl, "avatars")
