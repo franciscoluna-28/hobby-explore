@@ -92,8 +92,8 @@ export default async function ActivityPage({
             Invalid Activity.
           </h4>
           <span className="text-slate-500 text-center">
-            The activity you were looking for wasn't a valid one. It probably
-            doesn't exist.
+            The activity you were looking for wasn&apos;t a valid one. It probably
+            doesn&apos;t exist.
           </span>
           <Button variant="ghost" className="w-full">
             <Link href="/app/explore">Go to feed</Link>
@@ -118,10 +118,10 @@ export default async function ActivityPage({
             alt="Not found"
           />
           <h4 className="font-bold text-mainBlack my-3 text-4xl text-center">
-            This activity doesn't exist.
+            This activity doesn&apos;t exist.
           </h4>
           <span className="text-slate-500 text-center">
-            We're sorry. The activity you're looking for wasn't found or was
+            We&apos;re sorry. The activity you&apos;re looking for wasn&apos;t found or was
             deleted.
           </span>
           <Button variant="ghost" className="w-full">
