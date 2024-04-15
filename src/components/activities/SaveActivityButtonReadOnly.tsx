@@ -28,7 +28,7 @@ export function SaveActivityButtonReadOnly({ activity }: Props) {
       <Bookmark
         className="duration-200 transition-all w-6 h-6"
 
-        color="#000000"
+        color="#9d9d9d"
         strokeWidth={`${
           getActivitySaveStatus(activity.activity_id)
             ? 0
