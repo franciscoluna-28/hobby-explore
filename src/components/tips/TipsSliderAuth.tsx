@@ -56,7 +56,7 @@ export function TipsSliderAuth() {
         height={1080}
         blurDataURL={TIPS[currentTipIndex].blurhash}
         placeholder="blur"
-        className="aspect-square max-h-[500px] transition-all object-cover rounded-lg !m-auto !w-full"
+        className="aspect-square max-h-[500px] transition-all object-cover rounded-[16px] !m-auto !w-full"
       />
             </motion.div>
       </AnimatePresence>
@@ -73,7 +73,7 @@ export function TipsSliderAuth() {
           variants={variants}
           className="w-full overflow-hidden"
         >
-          <div className="absolute bottom-16 left-0 bg-ratingYellow p-4 rounded-b-[16px] shadow-lg w-full">
+          <div className="absolute bottom-28 left-6 bg-ratingYellow p-4 rounded-[16px] shadow-lg w-11/12">
             <span className="text-mainBlack font-semibold">
               Tip #{currentTipIndex + 1}
             </span>
