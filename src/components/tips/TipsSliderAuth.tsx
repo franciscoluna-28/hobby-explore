@@ -40,7 +40,7 @@ export function TipsSliderAuth() {
   return (
     <>
     <div className="min-h-full min-w-full flex items-center">
-    <AnimatePresence mode="wait">
+{/*     <AnimatePresence mode="wait">
         <motion.div
           key={currentTipIndex}
           initial="initial"
@@ -59,7 +59,7 @@ export function TipsSliderAuth() {
         className="aspect-square max-h-[500px] transition-all object-cover rounded-[16px] !m-auto !w-full"
       />
             </motion.div>
-      </AnimatePresence>
+      </AnimatePresence> */}
 
       </div>
 

@@ -56,7 +56,13 @@ export default function Register() {
   return (
     <article className="grid lg:grid-cols-2 w-full grid-flow-row">
       <div className="min-h-full items-center hidden lg:flex relative">
-      
+      <Image
+          alt="test"
+          src="/login.png"
+          width="1920"
+          height="1080"
+          className="aspect-square max-h-[700px] bg-cover object-cover"
+        ></Image>      
 <TipsSliderAuth/>
       </div>
       <div className="items-center flex justify-center h-screen flex-col w-full">
