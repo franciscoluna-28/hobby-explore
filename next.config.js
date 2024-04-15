@@ -7,6 +7,11 @@ const nextConfig = {
         hostname: "pnfnkpwwfjrotsossegq.supabase.co",
         pathname: "**",
       },
+      {
+        protocol: "https",
+        hostname: "images.unsplash.com",
+        pathname: "**"
+      }
     ],
   },
 /*   experimental: {

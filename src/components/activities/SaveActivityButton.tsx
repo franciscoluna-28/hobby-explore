@@ -7,7 +7,6 @@ import { Bookmark } from "lucide-react";
 import React from "react";
 import { ActivityMotion } from "../motion/ActivityMotion";
 
-
 type Props = {
   isSaved?: boolean;
   isSaving?: boolean;

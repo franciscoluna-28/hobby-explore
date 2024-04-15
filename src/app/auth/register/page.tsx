@@ -21,6 +21,7 @@ import Link from "next/link";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import { TipsSliderAuth } from "@/components/tips/TipsSliderAuth";
 
 export default function Register() {
   const router = useRouter();
@@ -50,27 +51,13 @@ export default function Register() {
     if (data.session?.user) {
       router.push("/app/explore");
     }
-
-    console.log(data);
   }
 
   return (
     <article className="grid lg:grid-cols-2 w-full grid-flow-row">
-      <div className="min-h-full hidden lg:flex items-center relative">
-        <Image
-          alt="test"
-          src="/login.png"
-          width="1920"
-          height="1080"
-          className="aspect-square max-h-[700px] bg-cover object-cover"
-        ></Image>
-        <div className="absolute bottom-16 left-16 bg-ratingYellow p-4 rounded-[16px] shadow-lg">
-          <span className="text-mainBlack font-semibold">Tip #1</span>
-          <p className="text-sm mt-2 text-mainBlack">
-            Still your body when you enter the water, and relax your hands and
-            legs
-          </p>
-        </div>
+      <div className="min-h-full items-center hidden lg:flex relative">
+      
+<TipsSliderAuth/>
       </div>
       <div className="items-center flex justify-center h-screen flex-col w-full">
         <Form {...form}>
