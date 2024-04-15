@@ -61,7 +61,7 @@ export function NewsletterForm() {
   return (
     <div className="flex mt-8 m-auto justify-center">
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 w-full max-w-[250px]">
           <FormField
             control={form.control}
             name="email"
@@ -70,7 +70,7 @@ export function NewsletterForm() {
                 <FormLabel className="text-white">Email</FormLabel>
                 <FormControl>
                   <Input
-                    className="w-min focus-visible:ring-0 focus-visible:ring-offset-0"
+                    className="focus-visible:ring-0 focus-visible:ring-offset-0 w-full"
                     placeholder="user@email.com"
                     {...field}
                   ></Input>
@@ -80,7 +80,7 @@ export function NewsletterForm() {
             )}
           />
           <ButtonLoading
-            className="min-w-[150px]"
+            className="min-w-[150px] w-full"
             isLoading={isLoading}
             type="submit"
           >

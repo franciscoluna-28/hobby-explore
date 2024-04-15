@@ -5,8 +5,8 @@ export default function LandingPageFooter() {
   return (
     <footer className="w-full bg-mainBlack mt-32">
       <div className="flex flex-col min-w-full max-w-[1100px] items-center justify-center m-auto p-8 ">
-        <div className="w-full">
-          <h4 className="text-white font-bold text-3xl max-w-[250px] text-center leading-normal m-auto">
+        <div className="w-full ">
+          <h4 className="text-white font-bold text-3xl max-w-[500px] text-center leading-normal m-auto">
             Subscribe To our Newsletter
           </h4>
           <span className="text-[#9d9d9d] text-sm mt-4 text-center m-auto flex justify-center">
