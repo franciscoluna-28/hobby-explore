@@ -48,9 +48,9 @@ export async function getExactActivitiesCount(
 }
 
 export type ActivityQueryResponse = Tables<"activities"> & {
-  tips: Tables<"tips">[],
-  users: Tables<"users"> | null,
-      average_rating: number
+  tips: Tables<"tips">[];
+  users: Tables<"users"> | null;
+  average_rating: number;
 };
 
 export type SavedActivitiesFromOtherUsersQueryResponse = {
@@ -66,7 +66,7 @@ export type SavedActivitiesFromOtherUsersQueryResponse = {
     description: Tables<"activities">["description"];
     accessibility_max_value: Tables<"activities">["accessibility_max_value"];
     accessibility_min_value: Tables<"activities">["accessibility_min_value"];
-    average_rating: number
+    average_rating: number;
   };
 };
 
@@ -95,12 +95,14 @@ export async function getTenRandomActivities(
     GLOBAL_ACTIVITIES_PER_PAGE
   );
 
+  console.log(from, to);
+
   if (!categoryName) {
     const { data, error } = await supabase
       .from("activities")
       .select(RANDOM_ACTIVITY_WITH_TIPS_QUERY)
+      .order("activity_id", { ascending: false })
       .range(from, to);
-
 
     if (error) {
       console.log(error);
@@ -113,6 +115,7 @@ export async function getTenRandomActivities(
   const { data, error } = await supabase
     .from("activities")
     .select(`${RANDOM_ACTIVITY_WITH_TIPS_QUERY} `)
+    .order("activity_id", { ascending: false })
     .match({ category_id: getCategoryIdByName(categoryName) })
     .range(from, to);
 
@@ -173,7 +176,7 @@ export async function getCurrentUserSavedActivities(): Promise<Response> {
     return error;
   }
 
-  console.log(data)
+  console.log(data);
 
   return data as unknown as SavedActivitiesFromOtherUsersQueryResponse[];
 }

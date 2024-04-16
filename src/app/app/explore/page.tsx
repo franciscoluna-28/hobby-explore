@@ -4,14 +4,14 @@ import { CreateActivityCard } from "@/components/activities/CreateActivityCard";
 import { CreateActivityCardSkeleton } from "@/components/skeletons/CreateActivityCardSkeleton";
 import { ActivitiesFeed } from "@/components/activities/containers/ActivitiesFeed";
 import { ActivitiesPagination } from "@/components/pagination/ActivitiesPagination";
-import { getCurrentUserId } from "@/services/auth";
+import { getCurrentUser } from "@/services/auth";
 
 export default async function ExplorePage({
   searchParams,
 }: {
   searchParams: { [key: string]: string | string[] | undefined };
 }) {
-  const userId = await getCurrentUserId();
+  const user = await getCurrentUser();
 
   return (
     <>
@@ -21,10 +21,10 @@ export default async function ExplorePage({
       <FilterActivityButtonsSection />
       <section className="w-full my-6 m-auto">
         <Suspense fallback={<CreateActivityCardSkeleton />}>
-          <CreateActivityCard />
+          <CreateActivityCard user={user} />
         </Suspense>
       </section>
-      <ActivitiesFeed userId={userId ?? ""} />
+      <ActivitiesFeed userId={user?.user_id ?? ""} />
       <ActivitiesPagination searchParams={searchParams} />
     </>
   );

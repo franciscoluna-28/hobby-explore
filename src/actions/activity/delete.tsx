@@ -1,6 +1,8 @@
 "use server";
 
 import { Database } from "@/lib/database";
+import { generateErrorResult } from "@/services/errors/generateErrors";
+import { generateSuccessResult } from "@/services/success/generateSuccess";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
@@ -13,9 +15,11 @@ export async function deleteActivityByIdAction(activityId: number) {
   });
 
   if (error) {
-    console.error(error);
-    throw new Error(error.message);
+    return generateErrorResult("There was an error deleting activity", error);
   }
 
   revalidatePath("/app/saved/my-activities");
+  return generateSuccessResult("Activity deleted successfully!");
+
+
 }
