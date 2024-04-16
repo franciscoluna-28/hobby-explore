@@ -1,11 +1,5 @@
 import { ActivityQueryResponse } from "@/services/activities/getActivities";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
@@ -15,33 +9,8 @@ import { getSupabaseFileUrlFromRelativePath } from "@/services/supabase/storage"
 import Sample from "../../../public/sample.jpg";
 import { Tables } from "@/lib/database";
 import { RatingReadOnly } from "../rating/RatingOnlyRead";
-import { MoreHorizontal } from "lucide-react";
-import { Button } from "../ui/button";
-import { Trash2 } from "lucide-react";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuPortal,
-  DropdownMenuSeparator,
-  DropdownMenuShortcut,
-  DropdownMenuSub,
-  DropdownMenuSubContent,
-  DropdownMenuSubTrigger,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import {
-  Dialog,
-  DialogFooter,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
 import { DeleteActivityDialog } from "./DeleteActivityDialog";
+import { ActivityDropdownMenu } from "./ActivityDropdownMenu";
 
 const DEFAULT_USER_NAME = "Shadcn";
 const DEFAULT_USER_DISPLAY_NAME = "User";
@@ -75,11 +44,14 @@ const renderCurrentUserString = (
     : DEFAULT_USER_DISPLAY_NAME;
 };
 
-export function ActivityCard({ activity, userId, shouldRenderOptionsMenu = true }: Props) {
-
+export function ActivityCard({
+  activity,
+  userId,
+  shouldRenderOptionsMenu = true,
+}: Props) {
   return (
     <li>
-      <Card className="rounded-2xl hover:shadow-md duration-200 flex flex-col h-[500px]">
+      <Card className="rounded-2xl hover:shadow-md duration-200 flex flex-col h-[500px] lg:min-w-[350px]">
         <div className="relative">
           <Badge variant="tip">
             {activity.tips.length} {activity.tips.length > 1 ? "tips" : "tip"}
@@ -87,12 +59,15 @@ export function ActivityCard({ activity, userId, shouldRenderOptionsMenu = true 
 
           <div className="absolute bottom-4 left-4 z-50">
             {!isCreatedByCurrentUser(activity.users?.user_id ?? "", userId) ? (
-              <SaveActivityButton userId={userId} activityId={activity.activity_id} />
+              <SaveActivityButton
+                userId={userId}
+                activityId={activity.activity_id}
+              />
             ) : null}
           </div>
 
           <img
-            className="object-cover rounded-t-2xl w-full h-52"
+            className="object-cover rounded-t-2xl w-full h-64 lg:h-52"
             src={
               activity.tips.length
                 ? getSupabaseFileUrlFromRelativePath(
@@ -139,7 +114,7 @@ export function ActivityCard({ activity, userId, shouldRenderOptionsMenu = true 
             key={activity.activity_id}
             href={`/app/activities/${activity.activity_id}`}
           >
-            <CardTitle className="leading-normal pt-2 text-mainBlack dark:text-white">
+            <CardTitle className="leading-normal pt-2 text-mainBlack dark:text-white max-w-[250px] lg:max-w-[400px]">
               {activity.name}
             </CardTitle>
           </Link>
@@ -147,32 +122,11 @@ export function ActivityCard({ activity, userId, shouldRenderOptionsMenu = true 
             <div className="absolute right-4 bottom-4">
               <RatingReadOnly activityId={activity.activity_id} />
             </div>
-            {isCreatedByCurrentUser(activity.users?.user_id ?? "", userId) && shouldRenderOptionsMenu ? (
+            {isCreatedByCurrentUser(activity.users?.user_id ?? "", userId) &&
+            shouldRenderOptionsMenu ? (
               <div className="absolute left-4 bottom-4">
                 <DeleteActivityDialog activityId={activity.activity_id}>
-                  <DropdownMenu>
-                    <DropdownMenuTrigger>
-                      <Button className="bg-white !p-0 w-8 h-8 hover:bg-white border rounded-full">
-                        <MoreHorizontal className="w-6 h-6 text-slate-300" />
-                      </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent className="w-56">
-                      <DropdownMenuLabel>More Options</DropdownMenuLabel>
-                      <DropdownMenuSeparator />
-                      <DropdownMenuGroup>
-                        <DropdownMenuItem className="text-red-500 flex gap-2 hover:bg-red-500 hover:text-white duration-200">
-                          <DialogTrigger className="flex items-center gap-2">
-                            Delete Activity <Trash2 className="w-4 h-4" />
-                          </DialogTrigger>
-                        </DropdownMenuItem>
-
-                        <DropdownMenuItem>
-                          Share Activity
-                          <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
-                        </DropdownMenuItem>
-                      </DropdownMenuGroup>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
+                  <ActivityDropdownMenu />
                 </DeleteActivityDialog>
               </div>
             ) : null}
