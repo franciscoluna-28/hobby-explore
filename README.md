@@ -1,19 +1,19 @@
 
 # Hobby Explore
 
-Hobby Explore is a modern social media application that allow users to find new hobbies and share their favorite activities with people. Inspired by Instagram.
+Hobby Explore is a modern social media application that allow users to find new hobbies and share their favorite activities with people. Inspired by Instagram and The Bored API.
 
 
 ## Features
 
-- Light/dark mode toggle
-- Create activities
-- Delete activities from your own user
-- Profile customization 
-- Filter activities using categories
-- Bookmark activities
-- Rate activities
-- Preview activities dynamically
+- Light/dark mode toggle 🕯
+- Create activities 🦌
+- Delete activities from your own user ❌
+- Profile customization 💅
+- Filter activities using categories 🏷
+- Bookmark activities ✈
+- Rate activities 🌟
+- Preview activities dynamically 👁
 
 
 ## Tech Stack
@@ -61,7 +61,15 @@ To run the test with Vitest use the following command:
 
 ## Screenshots
 
-![App Screenshot](https://via.placeholder.com/468x300?text=App+Screenshot+Here)
+![App Screenshot 1](https://github.com/franciscoluna-28/hobby-explore/assets/87947841/993bd46a-df46-4f4a-b231-30821c05ed5e)
+![App Screenshot 2](https://github.com/franciscoluna-28/hobby-explore/assets/87947841/cdfeae6a-bd35-4788-ab5c-5dfbccd25061)
+![App Screenshot 3](https://github.com/franciscoluna-28/hobby-explore/assets/87947841/927981cc-4596-4597-af2c-9840363c6036)
+![App Screenshot 4](https://github.com/franciscoluna-28/hobby-explore/assets/87947841/d14264de-7c71-455e-be6a-a7c700a04b25)
+
+
+
+
+
 
 
 ## Demo
