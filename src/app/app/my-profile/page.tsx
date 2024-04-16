@@ -23,6 +23,7 @@ export default async function Profile() {
           defaultProfilePictureUrl={user?.profile_picture_url ?? ""}
           defaultBannerPictureUrl={user?.banner_picture_url ?? ""}
           description={user?.description ?? ""}
+          username={user?.username ?? ""}
         />
 
         <ProfileEditButtonsSection
