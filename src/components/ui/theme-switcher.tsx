@@ -30,16 +30,16 @@ const ThemeSwitch = ({ shouldBeCard = true }: Props) => {
 
   if (!mounted) {
     {shouldBeCard ? (
-      <Skeleton className="flex items-center space-x-4 rounded-md p-4 min-h-[75px] min-w-[450px]" />
+      <Skeleton suppressHydrationWarning className="flex items-center space-x-4 rounded-md p-4 min-h-[75px] min-w-[450px]" />
     ) : (
-      <div>Loading...</div>
+      <div suppressHydrationWarning>Loading...</div>
     )}
   }
 
   return (
-    <div>
+    <div suppressHydrationWarning>
       {shouldBeCard ? (
-        <Card className=" flex items-center space-x-4 rounded-md border p-4">
+        <Card  className=" flex items-center space-x-4 rounded-md border p-4">
           <SunMoon />
           <div className="flex-1 space-y-1">
             <p className="text-sm font-medium leading-none">Change Theme</p>
@@ -51,7 +51,7 @@ const ThemeSwitch = ({ shouldBeCard = true }: Props) => {
           <Label htmlFor="change-theme">{theme}</Label>
         </Card>
       ) : (
-       <Button className="dark:border-[#454545] dark:hover:bg-[#171717] rounded-full" onClick={toggleTheme} size="icon" variant="outline">{theme === LIGHT_THEME ? <Sun height={20} width={20}/> : <Moon height={20} width={20}/>}</Button>
+       <Button suppressHydrationWarning className="dark:border-[#454545] dark:hover:bg-[#171717] rounded-full" onClick={toggleTheme} size="icon" variant="outline">{theme !== LIGHT_THEME ? <Sun height={20} width={20}/> : <Moon height={20} width={20}/>}</Button>
       )}
     </div>
   );

@@ -9,16 +9,15 @@ export function TipsSliderAuth() {
     {
       text: "Use the mixolydian scale when composing emotional Synthwave music!",
       imageSrc:
-        "https://images.unsplash.com/photo-1633933703119-5d25460ad829?q=80&w=1471&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D", 
-      blurhash: "L9BL;f4R?a$*?aGs-pOq0e{fNaWX", 
+        "https://images.unsplash.com/photo-1633933703119-5d25460ad829?q=80&w=1471&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      blurhash: "L9BL;f4R?a$*?aGs-pOq0e{fNaWX",
     },
     {
       text: "Use your nights to build side projects and grow as a developer.",
       imageSrc:
-        "https://images.unsplash.com/photo-1580927752452-89d86da3fa0a?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D", 
-      blurhash: "LA8po*nS01TGJUWVw]sp00XO~Wn7", 
-
-    }
+        "https://images.unsplash.com/photo-1580927752452-89d86da3fa0a?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      blurhash: "LA8po*nS01TGJUWVw]sp00XO~Wn7",
+    },
   ];
 
   useEffect(() => {
@@ -39,8 +38,8 @@ export function TipsSliderAuth() {
 
   return (
     <>
-    <div className="min-h-full min-w-full flex items-center">
-{/*     <AnimatePresence mode="wait">
+      <div className="min-h-full min-w-full flex items-center">
+        {/*     <AnimatePresence mode="wait">
         <motion.div
           key={currentTipIndex}
           initial="initial"
@@ -60,24 +59,21 @@ export function TipsSliderAuth() {
       />
             </motion.div>
       </AnimatePresence> */}
-
       </div>
-
 
       <AnimatePresence mode="wait">
         <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
           key={currentTipIndex}
-          initial="initial"
-          animate="animate"
-          exit="exit"
-          variants={variants}
-          className="w-full overflow-hidden"
+          className="w-full overflow-hidden pointer-events-none"
         >
-          <div className="absolute bottom-[100px] left-6 bg-ratingYellow p-4 rounded-[16px] shadow-lg w-11/12">
-            <span className="text-mainBlack font-semibold">
+          <div className="absolute bottom-[100px] left-6 bg-ratingYellow p-4 rounded-[16px] shadow-lg w-11/12 pointer-events-none">
+            <span className="text-mainBlack font-semibold pointer-events-none">
               Tip #{currentTipIndex + 1}
             </span>
-            <p className="text-sm mt-2 text-mainBlack">
+            <p className="text-sm mt-2 text-mainBlack pointer-events-none">
               {TIPS[currentTipIndex].text}
             </p>
           </div>

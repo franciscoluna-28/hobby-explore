@@ -1,5 +1,4 @@
 import { Card, CardContent } from "@/components/ui/card";
-import { getCurrentUser } from "@/services/auth";
 import { Plus } from "lucide-react";
 import Link from "next/link";
 import {
@@ -14,6 +13,7 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "../ui/button";
 import { UserAvatar } from "../profile/UserAvatar";
+import { Tables } from "@/lib/database";
 
 const getRenderText = (displayName: string | null | undefined): string => {
   return `Hey  ${
@@ -21,9 +21,11 @@ const getRenderText = (displayName: string | null | undefined): string => {
   }! share some activities and tell us how to do it.`;
 };
 
-export async function CreateActivityCard() {
-  const user = await getCurrentUser();
-
+export async function CreateActivityCard({
+  user,
+}: {
+  user?: Tables<"users"> | null;
+}) {
   if (!user) {
     return (
       <Dialog>
