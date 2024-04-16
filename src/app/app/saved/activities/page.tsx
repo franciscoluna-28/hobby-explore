@@ -1,4 +1,5 @@
 import { ActivityCard } from "@/components/activities/ActivityCard";
+import { ActivitiesLayout } from "@/components/activities/containers/ActivitiesLayout";
 import { NoExistingSavedActivities } from "@/components/activities/NoExistingSavedActivities";
 import { NotFoundActivities } from "@/components/activities/NotFoundActivities";
 import { ActivityMotion } from "@/components/motion/ActivityMotion";
@@ -40,7 +41,7 @@ export default async function SavedActivities() {
 
   return (
     <div className="h-screen">
-      <ul className="flex flex-wrap gap-6 justify-center">
+      <ActivitiesLayout>
         {activities.map((activity) => (
           <ActivityMotion key={activity.activities?.activity_id}>
             <ActivityCard
@@ -50,7 +51,7 @@ export default async function SavedActivities() {
             />
           </ActivityMotion>
         ))}
-      </ul>
+</ActivitiesLayout>
     </div>
   );
 }

@@ -59,7 +59,7 @@ export default function Login() {
 
   return (
     <article className="grid lg:grid-cols-2 w-full grid-flow-row">
-      <div className="min-h-full hidden lg:flex items-center relative">
+      <div className="min-h-full hidden lg:flex items-center relative pointer-events-none">
       <Image
           alt="test"
           src="/login.png"

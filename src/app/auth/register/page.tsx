@@ -55,7 +55,7 @@ export default function Register() {
 
   return (
     <article className="grid lg:grid-cols-2 w-full grid-flow-row">
-      <div className="min-h-full items-center hidden lg:flex relative">
+      <div className="min-h-full items-center hidden lg:flex relative pointer-events-none">
       <Image
           alt="test"
           src="/login.png"
