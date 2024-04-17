@@ -108,5 +108,5 @@ Not right now. However, you can share your ideas and suggestions with me for thi
 
 #### Will you be adding new functionalities and updating the application?
 
-Yes! There are already new features planned to add to the application. I want to see how the application performs to start improving the MVP.
+Yes! There are already new features planned to add to the application. I want to see how the application performs to further improve the MVP.
 
