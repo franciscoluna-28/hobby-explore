@@ -64,8 +64,8 @@ export function HeaderLink({
       <LinkIcon
         width={20}
         height={20}
-        className={`${!isActiveLink ? "opacity-50" : ""}`}
-        color={`${isActiveLink ? "#ffffff" : "#1E1E1E"}`}
+        className={`${!isActiveLink ? "opacity-50 text-[#1e1e1e] dark:text-footerGray" : "text-white opacity-100"}`}
+
         strokeWidth={2}
       ></LinkIcon>
       {children}
