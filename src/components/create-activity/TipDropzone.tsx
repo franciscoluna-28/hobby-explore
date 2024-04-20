@@ -24,14 +24,14 @@ export function TipDropzone({ form, index, item }: TipDropzoneProps) {
   const handleTip = useTipStore((state) => state.addOrUpdateTip);
 
   return (
-    <motion.div 
+    <motion.div
       key={item.id}
       initial={{ opacity: 0 }}
       transition={{ duration: 0.5 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
     >
-      <Controller 
+      <Controller
         control={form.control}
         name={`tips.${index}.imageFile`}
         rules={{
@@ -41,7 +41,7 @@ export function TipDropzone({ form, index, item }: TipDropzoneProps) {
           },
         }}
         render={({ field: { onChange, onBlur }, fieldState }) => (
-          <Dropzone 
+          <Dropzone
             noClick
             multiple={false}
             accept={{
@@ -55,14 +55,9 @@ export function TipDropzone({ form, index, item }: TipDropzoneProps) {
             }}
             onDrop={async (acceptedFiles) => {
               try {
-                
-
                 const file = acceptedFiles;
 
                 const parsedFile = ImageFileSchema.shape.document.parse(file);
-
-        
-                
 
                 const dataUrl = await readFileAsDataURL(parsedFile[0]);
                 handleTip(item.id, dataUrl as string);
@@ -77,20 +72,14 @@ export function TipDropzone({ form, index, item }: TipDropzoneProps) {
 
                 // Avoid the app from displaying debugging errors when the file is not valid
               } catch (error) {
-                if(error instanceof ZodError) {
+                if (error instanceof ZodError) {
                   const errorObject = JSON.parse(error as unknown as string);
 
-
-
                   toast.error(errorObject[0].message);
-                  form.setValue(
-                    `tips.${index}.imageFile`,
-                    undefined
-                  );
+                  form.setValue(`tips.${index}.imageFile`, undefined);
                 }
 
                 console.error(error);
-        
               }
             }}
           >
@@ -105,7 +94,7 @@ export function TipDropzone({ form, index, item }: TipDropzoneProps) {
                 className={`relative hover:cursor-pointer duration-200 border-2 border-dashed z-10 w-[350px] h-[380px]`}
               >
                 <CardContent
-                  className="flex border-none flex-col items-center justify-center rounded-xl space-y-2 px-2 py-4 text-xs h-full bg-[#171717]"
+                  className="flex border-none flex-col items-center justify-center rounded-xl space-y-2 px-2 py-4 text-xs h-full bg-white dark:bg-[#171717]"
                   {...getRootProps()}
                 >
                   <div className="text-muted-foreground m-auto">
@@ -123,7 +112,7 @@ export function TipDropzone({ form, index, item }: TipDropzoneProps) {
                       <Plus className="text-white" />
                     </div>
 
-                    <label 
+                    <label
                       onClick={() => {
                         open();
                       }}
@@ -132,8 +121,9 @@ export function TipDropzone({ form, index, item }: TipDropzoneProps) {
                       Upload Tip
                     </label>
 
-                    <input data-testid="dropzone"
-                      className="h-full" 
+                    <input
+                      data-testid="dropzone"
+                      className="h-full"
                       {...getInputProps({
                         id: "spreadsheet",
                         onChange,
