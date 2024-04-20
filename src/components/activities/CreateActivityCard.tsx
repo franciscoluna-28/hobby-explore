@@ -56,7 +56,7 @@ export async function CreateActivityCard({
                 </Button>
               </DialogClose>
               <Button asChild>
-                <Link href="/register"> Create account</Link>
+                <Link href="/auth/register">Create account</Link>
               </Button>
             </div>
           </DialogFooter>

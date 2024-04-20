@@ -1,7 +1,9 @@
+import { z } from "zod";
+
 export const MINIMUM_SUPABASE_PASSWORD_LENGTH: number = 6;
 export const MAXIMUM_SUPABASE_PASSWORD_LENGTH: number = 24;
 
-import { z } from "zod";
+
 
 export const EmailPasswordAuthSchema = z.object({
   email: z.string().email(),
