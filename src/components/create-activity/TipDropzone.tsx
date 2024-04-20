@@ -105,7 +105,7 @@ export function TipDropzone({ form, index, item }: TipDropzoneProps) {
                 className={`relative hover:cursor-pointer duration-200 border-2 border-dashed z-10 w-[350px] h-[380px]`}
               >
                 <CardContent
-                  className="flex border-none flex-col items-center justify-center rounded-xl space-y-2 px-2 py-4 text-xs h-full bg-white"
+                  className="flex border-none flex-col items-center justify-center rounded-xl space-y-2 px-2 py-4 text-xs h-full bg-[#171717]"
                   {...getRootProps()}
                 >
                   <div className="text-muted-foreground m-auto">
