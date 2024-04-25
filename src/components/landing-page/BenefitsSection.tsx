@@ -49,8 +49,7 @@ export function BenefitsSection() {
                   <Check className="text-white w-4 min-w-[40px]" />
                 </div>
                 <p className="text-mainBlack/80 dark:text-white/60">
-                  Whether it&apos;s art, coding, or anything in between, find
-                  your niche on our app with the categories.
+                  Meet like minded individuals and what their passions are!
                 </p>
               </li>
             </ul>
