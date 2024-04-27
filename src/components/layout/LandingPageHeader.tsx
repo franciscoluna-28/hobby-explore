@@ -7,15 +7,15 @@ import LightModeLogo from "../../../public/Logo-Dark.svg";
 import DarkModeLogo from "../../../public/Logo (Web).svg";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { AnimatePresence } from "framer-motion";
 import { Home, Menu } from "lucide-react";
 import { UserRound } from "lucide-react";
 import { useOutsideClick } from "@/hooks/useClickOutside";
 import { Tables } from "@/lib/database";
-import { UserDropdownMenu } from "../profile/UserDropdownMenu";
 import { UserAvatar } from "../profile/UserAvatar";
+import { LandingPageHeaderLink } from "./LandingPageHeaderLink";
 
 type MobileLinkProps = {
   children: React.ReactNode;
@@ -27,6 +27,46 @@ type LandingPageHeaderProps = {
 };
 
 export default function LandingPageHeader({ user }: LandingPageHeaderProps) {
+  let [activeSection, setActiveSection] = useState("hero");
+
+  useEffect(() => {
+    let hero = document.getElementById("hero");
+    let features = document.getElementById("features");
+    let benefits = document.getElementById("benefits");
+    let faq = document.getElementById("faq");
+
+    let sections = [hero, features, benefits, faq];
+
+    const observerOptions = {
+      root: null,
+      rootMargin: "0px",
+      threshold: 0.2,
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          if (entry.target.id == "hero") {
+            setActiveSection("hero");
+          }
+          if (entry.target.id == "features") {
+            setActiveSection("features");
+          }
+          if (entry.target.id == "benefits") {
+            setActiveSection("benefits");
+          }
+          if (entry.target.id == "faq") {
+            setActiveSection("faq");
+          }
+        }
+      });
+    }, observerOptions);
+
+    sections?.forEach((section) => {
+      section && observer.observe(section);
+    });
+  }, []);
+
   function MobileLink({ href, children }: MobileLinkProps) {
     return (
       <Link
@@ -63,7 +103,7 @@ export default function LandingPageHeader({ user }: LandingPageHeaderProps) {
           src={theme !== "light" ? DarkModeLogo : LightModeLogo}
           alt="Hobby DarkModeLogo"
           className={
-            theme !== "light" ? "h-6 lg:h-32 w-auto" : "h-6 lg:h-32 w-auto "
+            theme !== "light" ? "h-6 lg:h-48 w-auto" : "h-6 lg:h-32 w-auto "
           }
         />
         <Button onClick={handleOpen}>
@@ -103,46 +143,43 @@ export default function LandingPageHeader({ user }: LandingPageHeaderProps) {
         ) : null}
       </AnimatePresence>
       <div className="max-w-[1100px] w-full lg:flex px-8 hidden">
-        <div className="flex items-center aspect-video">
-          <Image
-            src={theme !== "light" ? DarkModeLogo : LightModeLogo}
-            alt="Hobby DarkModeLogo"
-            className={theme !== "light" ? "h-32 w-auto" : "h-32 w-auto "}
-          />
+        <div className="flex items-center aspect-video min-h-[70px]">
+          <Link className="w-full" href={"#hero"}>
+            <Image
+              src={theme !== "light" ? DarkModeLogo : LightModeLogo}
+              alt="Hobby DarkModeLogo"
+              className={theme !== "light" ? "h-32 w-auto" : "h-48 w-auto "}
+            />
+          </Link>
         </div>
         <div className="flex flex-row items-center w-full max-w-[1000px]">
           <ul className="flex gap-8 m-auto">
             <li>
-              <Link
-                className="text-sm text-mainBlack/80 dark:text-white link"
-                href="#"
-              >
-                About
-              </Link>
-            </li>
-            <li>
-              <Link
-                className="text-sm text-mainBlack/80 dark:text-white link"
-                href="#"
+              <LandingPageHeaderLink
+                activeSection="features"
+                currentSection={activeSection}
+                href="#features"
               >
                 Features
-              </Link>
+              </LandingPageHeaderLink>
             </li>
             <li>
-              <Link
-                className="text-sm text-mainBlack/80 dark:text-white link"
-                href="#"
+              <LandingPageHeaderLink
+                activeSection="benefits"
+                currentSection={activeSection}
+                href="#benefits"
               >
                 Benefits
-              </Link>
+              </LandingPageHeaderLink>
             </li>
             <li>
-              <Link
-                className="text-sm text-mainBlack/80 dark:text-white link"
-                href="#"
+              <LandingPageHeaderLink
+                activeSection="faq"
+                currentSection={activeSection}
+                href="#faq"
               >
                 FAQ
-              </Link>
+              </LandingPageHeaderLink>
             </li>
           </ul>
         </div>
@@ -158,7 +195,10 @@ export default function LandingPageHeader({ user }: LandingPageHeaderProps) {
                 </Link>
               </Button>
             </li>
-              <UserAvatar profilePictureUrl={user?.profile_picture_url} shouldHaveLink />
+            <UserAvatar
+              profilePictureUrl={user?.profile_picture_url}
+              shouldHaveLink
+            />
             <li>
               <ThemeSwitch shouldBeCard={false} />
             </li>

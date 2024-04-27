@@ -95,8 +95,6 @@ export async function getTenRandomActivities(
     GLOBAL_ACTIVITIES_PER_PAGE
   );
 
-  console.log(from, to);
-
   if (!categoryName) {
     const { data, error } = await supabase
       .from("activities")
@@ -127,7 +125,7 @@ export async function getTenRandomActivities(
 }
 
 /*
-Function to retrieve an activity based on its id
+Retrieves an activity based on its id
 @param - activityId: Refers to the activity's id to fetch
 @return - Response: Returns an array of activities, an empty array or an error
 */

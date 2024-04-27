@@ -42,7 +42,7 @@ function FeatureCard({
 
 export function FeaturesSection() {
   return (
-    <section className="w-full relative">
+    <section className="w-full relative" id="features">
       <SectionMain>
         <FeatureCard
           title="    Share Who you are with the World"

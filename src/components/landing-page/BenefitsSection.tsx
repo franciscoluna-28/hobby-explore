@@ -2,7 +2,7 @@ import { Check } from "lucide-react";
 
 export function BenefitsSection() {
   return (
-    <section className="w-full mt-8 md:mt-16 lg:mt-32 max-w-[1100px] px-8 m-auto">
+    <section className="w-full mt-8 md:mt-16 lg:mt-32 max-w-[1100px] px-8 m-auto" id="benefits">
       <h2 className="font-semibold text-5xl text-left my-16 max-w-[500px] leading-normal">
         How Hobby Explore Will Help You
       </h2>

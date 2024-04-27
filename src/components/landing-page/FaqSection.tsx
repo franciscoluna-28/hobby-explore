@@ -61,7 +61,7 @@ const FAQ: FaqElement[] = [
 
 export function FaqSection() {
   return (
-    <section className=" max-w-[1100px] px-8 m-auto mt-16 lg:mt-32 w-full relative">
+    <section className=" max-w-[1100px] px-8 m-auto mt-16 lg:mt-32 w-full relative" id="faq">
       <Image
         className="absolute invisible lg:visible lg:translate-x-[400px] mt-12 -rotate-12"
         alt="Decoration"
