@@ -50,8 +50,8 @@ export function ActivityCard({
   shouldRenderOptionsMenu = true,
 }: Props) {
   return (
-    <li>
       <Card className="rounded-2xl hover:shadow-md duration-200 flex flex-col h-[500px] lg:min-w-[350px]">
+        
         <div className="relative">
           <Badge variant="tip">
             {activity.tips.length} {activity.tips.length > 1 ? "tips" : "tip"}
@@ -65,7 +65,11 @@ export function ActivityCard({
               />
             ) : null}
           </div>
-
+          <Link
+            className="group-hover:bg-red-500"
+            key={activity.activity_id}
+            href={`/app/activities/${activity.activity_id}`}
+          >
           <img
             className="object-cover rounded-t-2xl w-full h-64 lg:h-52"
             src={
@@ -78,6 +82,7 @@ export function ActivityCard({
             }
             alt={activity.name ?? "Activity"}
           />
+                  </Link>
         </div>
 
         <CardHeader className="max-w-[350px] flex flex-wrap overflow-hidden flex-col max-h-[300px] h-full relative">
@@ -109,15 +114,11 @@ export function ActivityCard({
               </p>
             </div>
           </div>
-          <Link
-            className=""
-            key={activity.activity_id}
-            href={`/app/activities/${activity.activity_id}`}
-          >
+        
             <CardTitle className="leading-normal pt-2 text-mainBlack dark:text-white max-w-[250px] lg:max-w-[400px]">
               {activity.name}
             </CardTitle>
-          </Link>
+         
           <div className="flex items-center">
             <div className="absolute right-4 bottom-4">
               <RatingReadOnly activityId={activity.activity_id} />
@@ -132,7 +133,8 @@ export function ActivityCard({
             ) : null}
           </div>
         </CardHeader>
+
       </Card>
-    </li>
+   
   );
 }

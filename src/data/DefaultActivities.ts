@@ -44,7 +44,7 @@ export const DEFAULT_ACTIVITIES: ActivityPreview[] = [
   },
   {
     activity_id: 2,
-    name: "Prepare your own Meal at Home",
+    name: "Learn a New Song in the Piano",
     created_at: "2024-03-28T14:42:50Z",
     category_id: 6,
     user: {

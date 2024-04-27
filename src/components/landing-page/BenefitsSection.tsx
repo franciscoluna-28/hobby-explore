@@ -2,7 +2,7 @@ import { Check } from "lucide-react";
 
 export function BenefitsSection() {
   return (
-    <section className="w-full mt-8 md:mt-16 lg:mt-32 max-w-[1100px] px-8 m-auto">
+    <section className="w-full mt-8 md:mt-16 lg:mt-32 max-w-[1100px] px-8 m-auto" id="benefits">
       <h2 className="font-semibold text-5xl text-left my-16 max-w-[500px] leading-normal">
         How Hobby Explore Will Help You
       </h2>
@@ -49,8 +49,7 @@ export function BenefitsSection() {
                   <Check className="text-white w-4 min-w-[40px]" />
                 </div>
                 <p className="text-mainBlack/80 dark:text-white/60">
-                  Whether it&apos;s art, coding, or anything in between, find
-                  your niche on our app with the categories.
+                  Meet like minded individuals and what their passions are!
                 </p>
               </li>
             </ul>

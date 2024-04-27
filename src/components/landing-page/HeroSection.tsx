@@ -9,7 +9,10 @@ export function HeroSection() {
   const randomIndex = Math.floor(Math.random() * DEFAULT_ACTIVITIES.length);
 
   return (
-    <section className="relative flex flex-col md:flex-row gap-16 mt-8 lg:mt-16 lg:justify-between w-full max-w-[1100px] p-8">
+    <section
+      className="relative flex flex-col md:flex-row gap-16 mt-8 lg:mt-16 lg:justify-between w-full max-w-[1100px] p-8"
+      id="hero"
+    >
       <Image
         className="absolute invisible lg:visible lg:translate-x-[400px] rotate-12 translate-y-6"
         alt="Decoration"
@@ -22,9 +25,9 @@ export function HeroSection() {
           Find your New Hobbies Today
         </h1>
         <p className="text-mainBlack/80 text-[18px] mt-4 dark:text-white/60">
-          Discover exciting pastimes, connect with fellow enthusiasts, and grow
-          personally. Welcome to&nbsp;Hobby Explore, your gateway to a vibrant
-          world of hobbies and innovation.
+          Tired of the same boring hobbies? Welcome to&nbsp;Hobby Explore, your
+          gateway to a vibrant world of hobbies and innovation where you&apos;ll be
+          able to share your passions with other people.
         </p>
         <Button className="mt-8" asChild>
           <Link href="/app/explore">Try it for free</Link>
