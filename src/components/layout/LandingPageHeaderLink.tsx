@@ -16,8 +16,8 @@ export function LandingPageHeaderLink({
 }: Props) {
   return (
     <Link
-      className={`text-sm text-mainBlack/80 dark:text-white link duration-200 transition-all ${
-        activeSection === currentSection && "text-mainGreen"
+      className={`text-sm text-mainBlack/80 dark:text-white/80 link duration-200 transition-all ${
+        activeSection === currentSection && "text-mainGreen dark:text-mainGreen"
       }`}
       href={href}
     >
