@@ -26,11 +26,11 @@ export function HeroSection() {
         </h1>
         <p className="text-mainBlack/80 text-[18px] mt-4 dark:text-white/60">
           Tired of the same boring hobbies? Welcome to&nbsp;Hobby Explore, your
-          gateway to a vibrant world of hobbies and innovation where you&apos;ll be
-          able to share your passions with other people.
+          gateway to a vibrant world of hobbies and innovation where you&apos;ll
+          be able to share your passions with other people.
         </p>
         <Button className="mt-8" asChild>
-          <Link href="/app/explore">Try it for free</Link>
+          <Link href="/app/explore">Start Finding New Hobbies</Link>
         </Button>
       </div>
       <div>
