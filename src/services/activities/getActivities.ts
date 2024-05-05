@@ -4,12 +4,12 @@ import { Database, Tables } from "@/lib/database";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { PostgrestError } from "@supabase/supabase-js";
 import { cookies } from "next/headers";
-import { getCategoryIdByName } from "./categories";
+import { getCategoryIdByName } from "@/services/activities/categories";
 import { ExistingActivityCategories } from "@/constants/activities/categories";
-import { handlePaginationGetFromAndTo } from "../pagination/paginationServices";
+import { handlePaginationGetFromAndTo } from "@/services/pagination/paginationServices";
 import { GLOBAL_FIRST_PAGINATION_PAGE } from "@/constants/pagination/globals";
 import { GLOBAL_ACTIVITIES_PER_PAGE } from "@/constants/pagination/globals";
-import { getCurrentUserId } from "../auth";
+import { getCurrentUserId } from "@/services/auth";
 
 const supabase = createServerComponentClient<Database>({ cookies });
 
@@ -95,29 +95,27 @@ export async function getTenRandomActivities(
     GLOBAL_ACTIVITIES_PER_PAGE
   );
 
+  const baseQuery = supabase
+  .from("activities")
+  .select(RANDOM_ACTIVITY_WITH_TIPS_QUERY)
+  .order("activity_id", { ascending: false })
+  .range(from, to);
+
   if (!categoryName) {
-    const { data, error } = await supabase
-      .from("activities")
-      .select(RANDOM_ACTIVITY_WITH_TIPS_QUERY)
-      .order("activity_id", { ascending: false })
-      .range(from, to);
+    const { data, error } = await baseQuery;
 
     if (error) {
-      console.log(error);
+      console.error(error);
       return error;
     }
 
     return data as unknown as Response;
   }
 
-  const { data, error } = await supabase
-    .from("activities")
-    .select(`${RANDOM_ACTIVITY_WITH_TIPS_QUERY} `)
-    .order("activity_id", { ascending: false })
-    .match({ category_id: getCategoryIdByName(categoryName) })
-    .range(from, to);
+  const { data, error } = await baseQuery.match({ category_id: getCategoryIdByName(categoryName) })
 
   if (error) {
+    console.error(error);
     return error;
   }
 

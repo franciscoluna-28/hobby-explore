@@ -71,7 +71,7 @@ export const TipForm = ({ form, index, item }: TipFormProps) => {
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
               <DialogHeader>
-                <DialogTitle>Fist Tip</DialogTitle>
+                <DialogTitle>First Tip</DialogTitle>
                 <DialogDescription>
                   The image you&apos;ve added to the first tip of your activity
                   will be used as the one will be displayed in your activity
