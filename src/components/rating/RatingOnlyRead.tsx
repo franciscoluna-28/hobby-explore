@@ -1,32 +1,34 @@
 "use client";
 
-import { Tables } from "@/lib/database";
-import { useGetActivityCountRating } from "@/hooks/activities/useGetActivityCountRating";
 import { Star } from "lucide-react";
 
 type RatingOnlyReadProps = {
-  activityId: Tables<"activities_rating">["activity_id"];
+  average?: number;
+  count?: number;
 };
 
-export function RatingReadOnly({ activityId }: RatingOnlyReadProps) {
-  const { initialData } = useGetActivityCountRating({ activityId: activityId });
-  const FIXED_NUMBER_TARGET = 2;
+export function RatingReadOnly({ average, count }: RatingOnlyReadProps) {
   const WIDTH_STROKE_TARGET = 0;
-  const DEFAULT_RATING_AND_COUNT_VALUE = 0;
 
   return (
     <div className="flex gap-2 items-center">
-      <Star fill="#F6B704" strokeWidth={WIDTH_STROKE_TARGET} />
+      <Star
+        fill={`${average ? "#F6B704" : "transparent"}`}
+        absoluteStrokeWidth
+        className="text-slate-300"
+        strokeWidth={`${average ? WIDTH_STROKE_TARGET : 1.5}`}
+      />
 
-      <p className="text-[#F6B704] text-sm">
-        {Number(
-          initialData?.rating.toFixed(FIXED_NUMBER_TARGET) ??
-            DEFAULT_RATING_AND_COUNT_VALUE
-        )}
+      <p
+        className={`${average ? "text-[#F6B704]" : "!text-slate-300"} text-sm`}
+      >
+        {average ?? "No ratings yet..."}
       </p>
-      <p className="text-[#D9D9D9] text-sm">
-        ( {initialData?.count ?? DEFAULT_RATING_AND_COUNT_VALUE} )
-      </p>
+      {average && (
+        <p className="text-sm !text-slate-300">{`(${count} ${
+          count && count > 1 ? "reviews" : "review"
+        })`}</p>
+      )}
     </div>
   );
 }

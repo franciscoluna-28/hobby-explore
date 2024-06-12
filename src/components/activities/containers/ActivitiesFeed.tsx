@@ -22,6 +22,7 @@ export function ActivitiesFeed({ userId }: ActivitiesFeedProps) {
     page: Number(page),
   });
 
+
   if (isLoading) {
     return (
       <ActivityMotion>
