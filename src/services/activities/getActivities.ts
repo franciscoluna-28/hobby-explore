@@ -47,10 +47,19 @@ export async function getExactActivitiesCount(
   return 0;
 }
 
+type AverageRatings = {
+  avg: number;
+};
+
+type AverageCounts = {
+  count: number;
+};
+
 export type ActivityQueryResponse = Tables<"activities"> & {
   tips: Tables<"tips">[];
   users: Tables<"users"> | null;
-  average_rating: number;
+  average_rating: AverageRatings[];
+  ratings_count: AverageCounts[];
 };
 
 export type SavedActivitiesFromOtherUsersQueryResponse = {
@@ -66,14 +75,14 @@ export type SavedActivitiesFromOtherUsersQueryResponse = {
     description: Tables<"activities">["description"];
     accessibility_max_value: Tables<"activities">["accessibility_max_value"];
     accessibility_min_value: Tables<"activities">["accessibility_min_value"];
-    average_rating: number;
+    average_rating: AverageRatings[];
+    ratings_count: AverageCounts[];
   };
 };
 
-// TODO: ONLY RETRIEVE THE TIP COUNT
-// Query to retrieve the activity as well as their tips information
+/** Query to retrieve the activity with its tips. Additionally, we've added rating counts and averages! There's no need to fetch it from the components anymore. */
 const RANDOM_ACTIVITY_WITH_TIPS_QUERY =
-  "*, users!activities_created_by_user_id_fkey(user_id, username, profile_picture_url, displayName), tips(*), average_rating:activities_rating(activity_id).avg(rating), rating_count:activities_rating(activity_id).count(activity_id)";
+  "*, users!activities_created_by_user_id_fkey(user_id, username, profile_picture_url, displayName), tips(*), average_rating:activities_rating(rating.avg()), ratings_count:activities_rating(count)";
 
 // Query to retrieve activities saved by other users
 const ACTIVITIES_WITH_TIPS_AND_USER_FROM_OTHER_USERS_QUERY =
@@ -96,10 +105,10 @@ export async function getTenRandomActivities(
   );
 
   const baseQuery = supabase
-  .from("activities")
-  .select(RANDOM_ACTIVITY_WITH_TIPS_QUERY)
-  .order("activity_id", { ascending: false })
-  .range(from, to);
+    .from("activities")
+    .select(RANDOM_ACTIVITY_WITH_TIPS_QUERY)
+    .order("activity_id", { ascending: false })
+    .range(from, to);
 
   if (!categoryName) {
     const { data, error } = await baseQuery;
@@ -112,7 +121,9 @@ export async function getTenRandomActivities(
     return data as unknown as Response;
   }
 
-  const { data, error } = await baseQuery.match({ category_id: getCategoryIdByName(categoryName) })
+  const { data, error } = await baseQuery.match({
+    category_id: getCategoryIdByName(categoryName),
+  });
 
   if (error) {
     console.error(error);
