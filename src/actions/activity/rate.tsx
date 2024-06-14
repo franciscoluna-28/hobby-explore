@@ -1,11 +1,10 @@
 "use server";
 
-import { Database, Tables } from "@/lib/database";
+import { Tables } from "@/lib/database";
 import { getCurrentUserId } from "@/services/auth";
 import { generateErrorResult } from "@/services/errors/generateErrors";
 import { generateSuccessResult } from "@/services/success/generateSuccess";
-import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
-import { cookies } from "next/headers";
+import supabaseServer from "@/utils/supabase/server";
 
 const MINIMUM_RATING_VALUE: number = 1;
 const MAXIMUM_RATING_VALUE: number = 5;
@@ -13,7 +12,7 @@ const DEFAULT_ACTIVITY_RATING_HELPER_VALUE: number = 0;
 
 type ActivityId = Tables<"activities">["activity_id"];
 
-const supabase = createServerComponentClient<Database>({ cookies });
+const supabase = supabaseServer()
 
 async function getRatingMeanInActivity(
   activityId: ActivityId

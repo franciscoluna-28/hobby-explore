@@ -1,10 +1,8 @@
 "use server";
 
-import { ZodError, z } from "zod";
-import { uploadPictureToSupabase } from "../supabase/storage";
-import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
-import { cookies } from "next/headers";
-import { Database, Tables } from "@/lib/database";
+import { ZodError } from "zod";
+import { uploadPictureToSupabase } from "../supabase/storage";;
+import { Tables } from "@/lib/database";
 import { ErrorResult, generateErrorResult } from "../errors/generateErrors";
 import { generateSuccessResult } from "../success/generateSuccess";
 import { ServerImageFileSchema } from "@/schemas/files/ImageFileSchema";
@@ -12,8 +10,9 @@ import { ActivityServerSideSchemaValidation } from "@/schemas/activities/Activit
 import { TipServerSideSchema } from "@/schemas/tips/TipSchema";
 import { getCurrentUserId } from "../auth";
 import { revalidatePath } from "next/cache";
+import supabaseServer from "@/utils/supabase/server";
 
-const supabase = createServerComponentClient<Database>({ cookies });
+const supabase = supabaseServer()
 
 // Tips obtained from the form data and processed afterwards
 type ProcessedTip = {

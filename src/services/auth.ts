@@ -1,12 +1,11 @@
 "use server";
 
-import { cookies } from "next/headers";
-import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { Database, Tables } from "@/lib/database";
 import { redirect } from "next/navigation";
 import { AuthError } from "@supabase/supabase-js";
+import supabaseServer from "@/utils/supabase/server";
 
-const supabase = createServerComponentClient<Database>({ cookies });
+const supabase = supabaseServer()
 
 type ErrorResponse = {
   error: string;
@@ -35,16 +34,18 @@ type User = Tables<"users">;
  *  or an error if one occurs
  */
 export async function getCurrentUser(): Promise<User | null> {
-  const userId = (await supabase.auth.getSession()).data.session?.user.id ?? "";
+  const user = await supabaseServer().auth.getUser()
 
-  if (!userId) {
+  console.log(user);
+
+  if (!user) {
     return null;
   }
 
   const { data, error } = await supabase
     .from("users")
     .select("*")
-    .match({ user_id: userId })
+    .match({ user_id: user.data.user?.id })
     .single();
 
   if (!error && data) {

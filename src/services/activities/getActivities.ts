@@ -1,7 +1,6 @@
 "use server";
 
 import { Database, Tables } from "@/lib/database";
-import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { PostgrestError } from "@supabase/supabase-js";
 import { cookies } from "next/headers";
 import { getCategoryIdByName } from "@/services/activities/categories";
@@ -10,8 +9,9 @@ import { handlePaginationGetFromAndTo } from "@/services/pagination/paginationSe
 import { GLOBAL_FIRST_PAGINATION_PAGE } from "@/constants/pagination/globals";
 import { GLOBAL_ACTIVITIES_PER_PAGE } from "@/constants/pagination/globals";
 import { getCurrentUserId } from "@/services/auth";
+import supabaseServer from "@/utils/supabase/server";
 
-const supabase = createServerComponentClient<Database>({ cookies });
+const supabase = supabaseServer()
 
 export async function getExactActivitiesCount(
   categoryName: ExistingActivityCategories | undefined
@@ -86,7 +86,7 @@ const RANDOM_ACTIVITY_WITH_TIPS_QUERY =
 
 // Query to retrieve activities saved by other users
 const ACTIVITIES_WITH_TIPS_AND_USER_FROM_OTHER_USERS_QUERY =
-  "activity_id, activities!inner(tips(*), *, users!activities_created_by_user_id_fkey(*))";
+  "activity_id, activities!inner(tips(*), *, average_rating:activities_rating(rating.avg()), ratings_count:activities_rating(count), users!activities_created_by_user_id_fkey(*))";
 
 // Response type
 type Response =
@@ -178,6 +178,8 @@ export async function getCurrentUserSavedActivities(): Promise<Response> {
     .from("saved-activities")
     .select(ACTIVITIES_WITH_TIPS_AND_USER_FROM_OTHER_USERS_QUERY)
     .match({ created_by_user_id: currentUserId });
+
+  console.log(data);
 
   if (error) {
     return error;
