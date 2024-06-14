@@ -1,10 +1,8 @@
 "use server"
 
-import { Database } from "@/lib/database";
-import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
-import { cookies } from "next/headers";
+import supabaseServer from "@/utils/supabase/server";
 
-const supabase = createServerComponentClient<Database>({ cookies });
+const supabase = supabaseServer()
 
 export async function checkIfUsernameIsAvailableInDatabaseAction(
   username: string

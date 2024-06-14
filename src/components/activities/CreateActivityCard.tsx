@@ -1,3 +1,5 @@
+"use client";
+
 import { Card, CardContent } from "@/components/ui/card";
 import { Plus } from "lucide-react";
 import Link from "next/link";
@@ -14,6 +16,7 @@ import {
 import { Button } from "../ui/button";
 import { UserAvatar } from "../profile/UserAvatar";
 import { Tables } from "@/lib/database";
+import { useGetCurrentUser } from "@/hooks/user/useGetCurrentUser";
 
 const getRenderText = (displayName: string | null | undefined): string => {
   return `Hey  ${
@@ -21,12 +24,10 @@ const getRenderText = (displayName: string | null | undefined): string => {
   }! share some activities and tell us how to do it.`;
 };
 
-export async function CreateActivityCard({
-  user,
-}: {
-  user?: Tables<"users"> | null;
-}) {
-  if (!user) {
+export function CreateActivityCard() {
+  const { data } = useGetCurrentUser();
+
+  if (!data) {
     return (
       <Dialog>
         <DialogTrigger className="w-full">
@@ -69,8 +70,8 @@ export async function CreateActivityCard({
     <Link href="/app/create" className="cursor-pointer">
       <Card className="transition-all !w-full rounded-2xl border shadow-sm hover:shadow-md duration-200 shadow-black/5">
         <CardContent className="flex items-center !p-4 gap-2">
-          <UserAvatar profilePictureUrl={user?.profile_picture_url} />
-          <p className="text-textGray">{getRenderText(user?.displayName)}</p>
+          <UserAvatar profilePictureUrl={data?.profile_picture_url} />
+          <p className="text-textGray">{getRenderText(data?.displayName)}</p>
           <div className="ml-auto bg-mainGreen p-1 rounded-full text-white">
             <Plus className="text-white" />
           </div>

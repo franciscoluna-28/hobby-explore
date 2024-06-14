@@ -87,6 +87,7 @@ export function ActivityCard({
 
       <CardHeader className="max-w-[350px] flex flex-wrap overflow-hidden flex-col max-h-[300px] h-full relative">
         <div className="flex items-center gap-2">
+          
           <Avatar>
             <AvatarImage
               src={
@@ -101,6 +102,7 @@ export function ActivityCard({
             />
             <AvatarFallback>CN</AvatarFallback>
           </Avatar>
+     
           <div className="">
             <p className="text-darkGray dark:text-white/80 font-medium text-sm">
               {renderCurrentUserString(
@@ -113,7 +115,9 @@ export function ActivityCard({
               {handleDateConversion(activity.created_at)}
             </p>
           </div>
+          
         </div>
+        
 
         <CardTitle className="leading-normal pt-2 text-mainBlack dark:text-white max-w-[250px] lg:max-w-[400px]">
           {activity.name}
@@ -121,7 +125,10 @@ export function ActivityCard({
 
         <div className="flex items-center">
           <div className="absolute right-4 bottom-4">
-            <RatingReadOnly average={activity.average_rating[0].avg} count={activity.ratings_count[0].count} />
+            <RatingReadOnly
+              average={activity.average_rating[0].avg}
+              count={activity.ratings_count[0].count}
+            />
           </div>
           {isCreatedByCurrentUser(activity.users?.user_id ?? "", userId) &&
           shouldRenderOptionsMenu ? (

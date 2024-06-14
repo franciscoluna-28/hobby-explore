@@ -1,13 +1,11 @@
 "use server";
 
-import { Database } from "@/lib/database";
 import { generateErrorResult } from "@/services/errors/generateErrors";
 import { generateSuccessResult } from "@/services/success/generateSuccess";
-import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
+import supabaseServer from "@/utils/supabase/server";
 import { revalidatePath } from "next/cache";
-import { cookies } from "next/headers";
 
-const supabase = createServerComponentClient<Database>({ cookies });
+const supabase = supabaseServer()
 
 export async function deleteActivityByIdAction(activityId: number) {
   const { error } = await supabase.from("activities").delete().match({
