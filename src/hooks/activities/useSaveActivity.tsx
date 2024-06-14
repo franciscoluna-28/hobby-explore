@@ -28,7 +28,8 @@ export function useSaveActivity({ activityId }: useSaveActivityProps) {
   async function handleSaveDeleteActivity(
     activityId: number
   ): Promise<boolean> {
-    await handleAddActivity(activityId);
+   await handleAddActivity(activityId);
+
 
     return await getActivitySavedStatusAction(activityId);
   }

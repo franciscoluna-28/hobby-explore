@@ -1,16 +1,15 @@
 "use server";
 
 import { Database, Tables } from "@/lib/database";
-import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
-import { cookies } from "next/headers";
 import { z } from "zod";
 import { generateError, generateErrorResult } from "../errors/generateErrors";
 import { SAVE_ACTIVITY_ERRORS_CONSTANTS } from "@/constants/errors/activities";
 import { generateSuccessResult } from "../success/generateSuccess";
 import { getCurrentUserId } from "../auth";
 import { revalidatePath } from "next/cache";
+import supabaseServer from "@/utils/supabase/server";
 
-const supabase = createServerComponentClient<Database>({ cookies });
+const supabase = supabaseServer();
 /**
  * Returns a boolean indicating whether the activity exists in the database.
  * @param activityId

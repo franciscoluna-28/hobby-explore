@@ -1,13 +1,13 @@
 "use server";
 
 import { Database, Tables } from "@/lib/database";
-import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { PostgrestError } from "@supabase/supabase-js";
 import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 import { uploadPictureToSupabase } from "./supabase/storage";
 import { ProfileImagesFileSchema } from "@/schemas/files/ProfileImagesFileSchema";
 import { ZodError } from "zod";
+import supabaseServer from "@/utils/supabase/server";
 
 type ActionResponse = {
   success?: boolean;
@@ -16,7 +16,7 @@ type ActionResponse = {
 };
 
 // File used exclusively created for user CRUD operations
-const supabase = createServerComponentClient<Database>({ cookies });
+const supabase = supabaseServer()
 
 export async function updateUserDescription(
   description: string,
