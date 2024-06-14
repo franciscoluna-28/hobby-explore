@@ -1,6 +1,6 @@
- import { getUserByUserId } from "@/services/auth";
-
-export default async function UserProfilePage({
+import UserProfilePage from "@/components/profile/pages/UserProfilePage";
+import { getUserByUserId } from "@/services/auth";
+export default async function Page({
   params,
 }: {
   params: {
@@ -9,10 +9,5 @@ export default async function UserProfilePage({
 }) {
   const user = await getUserByUserId(params.userId);
 
-  console.log(user);
-
-  // TODO: CREATE DYNAMIC PAGE TO HANDLE BOTH THE CURRENT USER LAYOUT AND ANOTHER USER PAGE.
-  // The current user is able to edit its profile and see their settings. However, when you visit other profiles
-  // You must be able only to see their profile information
-  return (<div>{user?.email}</div>);
+  return <UserProfilePage user={user} />;
 }
