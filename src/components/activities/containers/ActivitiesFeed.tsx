@@ -1,27 +1,24 @@
-"use client";
+"use client"
 
 import { useGetActivities } from "@/hooks/activities/useGetActivities";
 import { ActivityMotion } from "@/components/motion/ActivityMotion";
 import { ActivityCard } from "../ActivityCard";
 import { useSearchParams } from "next/navigation";
-import { Tables } from "@/lib/database";
 import { ActivityFeedSkeletons } from "@/components/skeletons/containers/ActivityFeedSkeleton";
-import { NotFoundActivities } from "../NotFoundActivities";
+import { NotFoundActivities } from "../NoFoundActivities";
 import { ActivitiesLayout } from "./ActivitiesLayout";
 import { GLOBAL_FIRST_PAGINATION_PAGE } from "@/constants/pagination/globals";
+import { useGetCurrentUser } from "@/hooks/user/useGetCurrentUser";
 
-type ActivitiesFeedProps = {
-  userId: Tables<"users">["user_id"];
-};
-
-export function ActivitiesFeed({ userId }: ActivitiesFeedProps) {
+export function ActivitiesFeed() {
   const searchParams = useSearchParams();
   const page = searchParams.get("page") ?? GLOBAL_FIRST_PAGINATION_PAGE;
+  const { data: user } = useGetCurrentUser();
+
 
   const { activities, isLoading, isError } = useGetActivities({
     page: Number(page),
   });
-
 
   if (isLoading) {
     return (
@@ -48,7 +45,7 @@ export function ActivitiesFeed({ userId }: ActivitiesFeedProps) {
               shouldRenderOptionsMenu={false}
               key={activity.activity_id}
               activity={activity}
-              userId={userId}
+              userId={user?.user_id}
             />
           </ActivityMotion>
         ))}

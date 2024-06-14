@@ -154,7 +154,7 @@ export function EditPictures({ userId }: Props) {
             <DialogTitle>Upload Pictures</DialogTitle>
             <DialogDescription>
               Change your banner or profile picture here. The max. size
-              supported for both your profile and banner picture is 1MB.
+              supported for both your profile and banner picture is 2MB.
             </DialogDescription>
           </DialogHeader>
           <div className="flex flex-col w-full gap-4">
