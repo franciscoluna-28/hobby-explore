@@ -3,9 +3,8 @@
 import { Database, Tables } from "@/lib/database";
 import { redirect } from "next/navigation";
 import { AuthError } from "@supabase/supabase-js";
-import supabaseServer from "@/utils/supabase/server";
+import { createSupabaseServerClient } from "@/utils/supabase/server";
 
-const supabase = supabaseServer()
 
 type ErrorResponse = {
   error: string;
@@ -34,7 +33,7 @@ type User = Tables<"users">;
  *  or an error if one occurs
  */
 export async function getCurrentUser(): Promise<User | null> {
-  const user = await supabaseServer().auth.getUser()
+  const user = await createSupabaseServerClient().auth.getUser()
 
   console.log(user);
 
@@ -42,7 +41,7 @@ export async function getCurrentUser(): Promise<User | null> {
     return null;
   }
 
-  const { data, error } = await supabase
+  const { data, error } = await createSupabaseServerClient()
     .from("users")
     .select("*")
     .match({ user_id: user.data.user?.id })
@@ -64,7 +63,7 @@ export async function getCurrentUser(): Promise<User | null> {
 export async function getUserByUserId(userId: string) {
   console.log(userId)
 
-  const { data, error } = await supabase
+  const { data, error } = await createSupabaseServerClient()
     .from("users")
     .select("*")
     .match({ user_id: userId })
@@ -90,7 +89,7 @@ const LANDING_PAGE_ROUTE = "/";
  *  if the user is not authenticated or an error occurs
  */
 export async function handleProtectedRoute(): Promise<void | null> {
-  const { data, error } = await supabase.auth.getUser();
+  const { data, error } = await createSupabaseServerClient().auth.getUser();
 
   // Function to handle redirection to the landing page
   const handleRedirect = () => {
@@ -104,6 +103,6 @@ export async function handleProtectedRoute(): Promise<void | null> {
 }
 
 export async function getCurrentUserId(): Promise<string | undefined> {
-  return (await supabase.auth.getUser()).data.user?.id;
+  return (await createSupabaseServerClient().auth.getUser()).data.user?.id;
 }
 

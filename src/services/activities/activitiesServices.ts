@@ -7,9 +7,10 @@ import { SAVE_ACTIVITY_ERRORS_CONSTANTS } from "@/constants/errors/activities";
 import { generateSuccessResult } from "../success/generateSuccess";
 import { getCurrentUserId } from "../auth";
 import { revalidatePath } from "next/cache";
-import supabaseServer from "@/utils/supabase/server";
+import { createSupabaseServerClient } from "@/utils/supabase/server";
 
-const supabase = supabaseServer();
+
+
 /**
  * Returns a boolean indicating whether the activity exists in the database.
  * @param activityId
@@ -18,7 +19,7 @@ const supabase = supabaseServer();
 async function doesActivityExist(
   activityId: Tables<"activities">["activity_id"]
 ): Promise<boolean> {
-  const { data, error } = await supabase
+  const { data, error } = await createSupabaseServerClient()
     .from("activities")
     .select("activity_id")
     .match({ activity_id: activityId })
@@ -79,7 +80,7 @@ export async function handleAddActivity(
   try {
     const userId = await getCurrentUserId();
 
-    const { data: savedActivity, error } = await supabase
+    const { data: savedActivity, error } = await createSupabaseServerClient()
       .from("saved-activities")
       .select("*")
       .match({ activity_id: activityId, created_by_user_id: userId })
@@ -117,7 +118,7 @@ async function saveActivityByUserAndActivityId(
     const { validatedActivityId, validatedUserId } =
       await validateActivityExistence(activityId, userId);
 
-    const { error } = await supabase.from("saved-activities").insert({
+    const { error } = await createSupabaseServerClient().from("saved-activities").insert({
       created_by_user_id: validatedUserId,
       activity_id: Number(validatedActivityId),
     });
@@ -153,7 +154,7 @@ export async function deleteSavedActivityByUserAndActivityId(
     const { validatedActivityId, validatedUserId } =
       await validateActivityExistence(activityId, userId);
 
-    const { error } = await supabase
+    const { error } = await createSupabaseServerClient()
       .from("saved-activities")
       .delete()
       .match({
@@ -189,7 +190,7 @@ export async function getActivitySavedStatusAction(
 ): Promise<boolean> {
   const userId = await getCurrentUserId();
 
-  const { data, error } = await supabase
+  const { data, error } = await createSupabaseServerClient()
     .from("saved-activities")
     .select("activity_id")
     .match({

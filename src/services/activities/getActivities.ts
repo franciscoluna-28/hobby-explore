@@ -1,7 +1,6 @@
 "use server";
 
 import { Database, Tables } from "@/lib/database";
-import { PostgrestError } from "@supabase/supabase-js";
 import { cookies } from "next/headers";
 import { getCategoryIdByName } from "@/services/activities/categories";
 import { ExistingActivityCategories } from "@/constants/activities/categories";
@@ -9,15 +8,16 @@ import { handlePaginationGetFromAndTo } from "@/services/pagination/paginationSe
 import { GLOBAL_FIRST_PAGINATION_PAGE } from "@/constants/pagination/globals";
 import { GLOBAL_ACTIVITIES_PER_PAGE } from "@/constants/pagination/globals";
 import { getCurrentUserId } from "@/services/auth";
-import supabaseServer from "@/utils/supabase/server";
+import { createSupabaseServerClient } from "@/utils/supabase/server";
+import { PostgrestError } from "@supabase/supabase-js";
 
-const supabase = supabaseServer()
+const cookieStore = cookies()
 
 export async function getExactActivitiesCount(
   categoryName: ExistingActivityCategories | undefined
 ) {
   if (!categoryName) {
-    const { error, data, count } = await supabase
+    const { error, data, count } = await createSupabaseServerClient()
       .from("activities")
       .select("activity_id", { count: "exact" });
 
@@ -31,7 +31,7 @@ export async function getExactActivitiesCount(
 
     return 0;
   }
-  const { error, data, count } = await supabase
+  const { error, data, count } = await createSupabaseServerClient()
     .from("activities")
     .select("activity_id", { count: "exact" })
     .match({ category_id: getCategoryIdByName(categoryName) });
@@ -104,7 +104,7 @@ export async function getTenRandomActivities(
     GLOBAL_ACTIVITIES_PER_PAGE
   );
 
-  const baseQuery = supabase
+  const baseQuery = createSupabaseServerClient()
     .from("activities")
     .select(RANDOM_ACTIVITY_WITH_TIPS_QUERY)
     .order("activity_id", { ascending: false })
@@ -139,7 +139,7 @@ Retrieves an activity based on its id
 @return - Response: Returns an array of activities, an empty array or an error
 */
 export async function getActivityById(activityId: string): Promise<Response> {
-  const { data, error } = await supabase
+  const { data, error } = await createSupabaseServerClient()
     .from("activities")
     .select(RANDOM_ACTIVITY_WITH_TIPS_QUERY)
     .match({ activity_id: activityId });
@@ -159,7 +159,7 @@ Retrieves all the activities created from a user
 export async function getUserActivitiesByUserId(
   userId: string | undefined
 ): Promise<Response> {
-  const { data, error } = await supabase
+  const { data, error } = await createSupabaseServerClient()
     .from("activities")
     .select(RANDOM_ACTIVITY_WITH_TIPS_QUERY)
     .match({ created_by_user_id: userId ?? "" });
@@ -174,7 +174,7 @@ export async function getUserActivitiesByUserId(
 export async function getCurrentUserSavedActivities(): Promise<Response> {
   const currentUserId = await getCurrentUserId();
 
-  const { data, error } = await supabase
+  const { data, error } = await createSupabaseServerClient()
     .from("saved-activities")
     .select(ACTIVITIES_WITH_TIPS_AND_USER_FROM_OTHER_USERS_QUERY)
     .match({ created_by_user_id: currentUserId });
