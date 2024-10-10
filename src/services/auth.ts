@@ -1,12 +1,10 @@
 "use server";
 
-import { cookies } from "next/headers";
-import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { Database, Tables } from "@/lib/database";
 import { redirect } from "next/navigation";
 import { AuthError } from "@supabase/supabase-js";
+import { createSupabaseServerClient } from "@/utils/supabase/server";
 
-const supabase = createServerComponentClient<Database>({ cookies });
 
 type ErrorResponse = {
   error: string;
@@ -35,16 +33,18 @@ type User = Tables<"users">;
  *  or an error if one occurs
  */
 export async function getCurrentUser(): Promise<User | null> {
-  const userId = (await supabase.auth.getSession()).data.session?.user.id ?? "";
+  const user = await createSupabaseServerClient().auth.getUser()
 
-  if (!userId) {
+  console.log(user);
+
+  if (!user) {
     return null;
   }
 
-  const { data, error } = await supabase
+  const { data, error } = await createSupabaseServerClient()
     .from("users")
     .select("*")
-    .match({ user_id: userId })
+    .match({ user_id: user.data.user?.id })
     .single();
 
   if (!error && data) {
@@ -63,7 +63,7 @@ export async function getCurrentUser(): Promise<User | null> {
 export async function getUserByUserId(userId: string) {
   console.log(userId)
 
-  const { data, error } = await supabase
+  const { data, error } = await createSupabaseServerClient()
     .from("users")
     .select("*")
     .match({ user_id: userId })
@@ -89,7 +89,7 @@ const LANDING_PAGE_ROUTE = "/";
  *  if the user is not authenticated or an error occurs
  */
 export async function handleProtectedRoute(): Promise<void | null> {
-  const { data, error } = await supabase.auth.getUser();
+  const { data, error } = await createSupabaseServerClient().auth.getUser();
 
   // Function to handle redirection to the landing page
   const handleRedirect = () => {
@@ -103,6 +103,6 @@ export async function handleProtectedRoute(): Promise<void | null> {
 }
 
 export async function getCurrentUserId(): Promise<string | undefined> {
-  return (await supabase.auth.getUser()).data.user?.id;
+  return (await createSupabaseServerClient().auth.getUser()).data.user?.id;
 }
 

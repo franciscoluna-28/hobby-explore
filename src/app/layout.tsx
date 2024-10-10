@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { Providers } from "./providers";
-import ReactQueryProvider from "@/providers/ReactQueryProvider";
 import ErrorBoundary from "@/components/layout/ErrorBoundary";
 import { cn } from "@/lib/utils";
 
@@ -24,9 +23,9 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={`${cn(inter.className)} `}>
         <ErrorBoundary>
-          <ReactQueryProvider>
-            <Providers>{children}</Providers>
-          </ReactQueryProvider>
+          <Providers>
+          {children}
+          </Providers>
         </ErrorBoundary>
       </body>
     </html>

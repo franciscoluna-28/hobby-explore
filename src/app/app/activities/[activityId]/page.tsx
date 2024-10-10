@@ -92,8 +92,8 @@ export default async function ActivityPage({
             Invalid Activity.
           </h4>
           <span className="text-slate-500 text-center">
-            The activity you were looking for wasn&apos;t a valid one. It probably
-            doesn&apos;t exist.
+            The activity you were looking for wasn&apos;t a valid one. It
+            probably doesn&apos;t exist.
           </span>
           <Button variant="ghost" className="w-full">
             <Link href="/app/explore">Go to feed</Link>
@@ -121,8 +121,8 @@ export default async function ActivityPage({
             This activity doesn&apos;t exist.
           </h4>
           <span className="text-slate-500 text-center">
-            We&apos;re sorry. The activity you&apos;re looking for wasn&apos;t found or was
-            deleted.
+            We&apos;re sorry. The activity you&apos;re looking for wasn&apos;t
+            found or was deleted.
           </span>
           <Button variant="ghost" className="w-full">
             <Link href="/app/explore">Go to feed</Link>
@@ -170,11 +170,13 @@ export default async function ActivityPage({
       >
         {activity[0].name}
       </h2>
-      <p className="text-slate-500 text-sm mb-6">{activity[0].description}</p>
+      <p className="text-slate-500 text-sm mb-6 overflow-hidden break-words	text-ellipsis">
+        {activity[0].description}
+      </p>
       <Badge variant="secondary" className="w-fit">
         {getCategoryNameById(activity[0].category_id)}
       </Badge>
-      <section className="mr-auto">
+      <section className="mr-auto max-w-full">
         <TipCarousel tips={activity[0].tips} />
       </section>
       <h3 className="my-6">Learn More 📕</h3>

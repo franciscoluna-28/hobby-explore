@@ -49,10 +49,11 @@ export function ActivityCard({
   userId,
   shouldRenderOptionsMenu = true,
 }: Props) {
+
   return (
     <Card className="rounded-2xl hover:shadow-md duration-200 flex flex-col h-[500px] lg:min-w-[350px]">
       <div className="relative">
-        <Badge variant="tip">
+        <Badge variant="tip" className="z-50">
           {activity.tips.length} {activity.tips.length > 1 ? "tips" : "tip"}
         </Badge>
 
@@ -70,7 +71,7 @@ export function ActivityCard({
           href={`/app/activities/${activity.activity_id}`}
         >
           <img
-            className="object-cover rounded-t-2xl w-full h-64 lg:h-52"
+            className="object-cover rounded-t-2xl hover:brightness-90 duration-200 w-full h-64 lg:h-52"
             src={
               activity.tips.length
                 ? getSupabaseFileUrlFromRelativePath(
@@ -86,6 +87,7 @@ export function ActivityCard({
 
       <CardHeader className="max-w-[350px] flex flex-wrap overflow-hidden flex-col max-h-[300px] h-full relative">
         <div className="flex items-center gap-2">
+          
           <Avatar>
             <AvatarImage
               src={
@@ -100,6 +102,7 @@ export function ActivityCard({
             />
             <AvatarFallback>CN</AvatarFallback>
           </Avatar>
+     
           <div className="">
             <p className="text-darkGray dark:text-white/80 font-medium text-sm">
               {renderCurrentUserString(
@@ -112,7 +115,9 @@ export function ActivityCard({
               {handleDateConversion(activity.created_at)}
             </p>
           </div>
+          
         </div>
+        
 
         <CardTitle className="leading-normal pt-2 text-mainBlack dark:text-white max-w-[250px] lg:max-w-[400px]">
           {activity.name}
@@ -120,7 +125,10 @@ export function ActivityCard({
 
         <div className="flex items-center">
           <div className="absolute right-4 bottom-4">
-            <RatingReadOnly activityId={activity.activity_id} />
+            <RatingReadOnly
+              average={activity.average_rating[0].avg}
+              count={activity.ratings_count[0].count}
+            />
           </div>
           {isCreatedByCurrentUser(activity.users?.user_id ?? "", userId) &&
           shouldRenderOptionsMenu ? (

@@ -1,7 +1,7 @@
 import { ActivityCard } from "@/components/activities/ActivityCard";
 import { ActivitiesLayout } from "@/components/activities/containers/ActivitiesLayout";
 import { NoExistingSavedActivities } from "@/components/activities/NoExistingSavedActivities";
-import { NotFoundActivities } from "@/components/activities/NotFoundActivities";
+import { NotFoundActivities } from "@/components/activities/NoFoundActivities";
 import { ActivityMotion } from "@/components/motion/ActivityMotion";
 import {
   ActivityQueryResponse,
@@ -13,6 +13,7 @@ import { getCurrentUser, getCurrentUserId } from "@/services/auth";
 export default async function SavedActivities() {
   const savedActivities = await getCurrentUserSavedActivities();
   const currentUserId = await getCurrentUserId();
+
   const EMPTY_ACTIVITY_ARRAY_LENGTH: number = 0;
 
   if (!currentUserId) {
